@@ -1,0 +1,11 @@
+impro-photo/photos/dates/*
+impro-photo/photos/impro/*
+impro-photo/photos/intro/*
+impro-photo/photos/joueurs/*
+impro-photo/photos/videos_intro/*
+impro-photo/.mvn
+impro-photo/.idea
+impro-photo/target
+impro-photo/improPhoto.iml
+impro-photo/.git
+impro-photo/git_bash_impro.lnk

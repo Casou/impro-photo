@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>GIT - Impro diapo</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/index.css" />
+
+    <link rel="shortcut icon" HREF="images/Git_logo_rose.png">
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body id="index">
+    <header>
+        <div id="button_regie"><a href="#" class="button" title="Lancer l'interface Régie.">Régie</a></div>
+        <img src="images/Git_logo_rose.png" />
+        <div id="button_spectateur"><a href="#" class="button" title="Lancer l'interface Spectateur.">Spectateur</a></div>
+    </header>
+
+    <main>
+        <div id="menu">
+            <a href="/preparation" class="button" title="Préparation d'une impro">Préparation</a>
+        </div>
+
+        <div id="check_impro">
+            <ul>
+                <li><span class="check_label">Chemin des catégories : </span><span id="status_categories" class="check_status loading">Loading...</span></li>
+                <li><span class="check_label">Vidéos de présentation : </span><span id="status_video" class="check_status loading">Loading...</span></li>
+                <li><span class="check_label">Texte de remerciements : </span><span id="status_remerciements" class="check_status loading">Loading...</span></li>
+                <li><span class="check_label">Photos des joueurs : </span><span id="status_photos_joueurs" class="check_status loading">Loading...</span></li>
+                <li><span class="check_label">Photo de présentation des dates : </span><span id="status_photos_dates" class="check_status loading">Loading...</span></li>
+            </ul>
+        </div>
+    </main>
+
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/statutPreparation',
+            type: 'GET',
+            encoding: "UTF-8",
+            dataType: 'json',
+//            data: JSON.stringify(inputDto),
+            contentType: 'application/json'
+        })
+        .done(function (statusDto) {
+            updateStatut(statusDto);
+        })
+        .fail(function (resultat, statut, erreur) {
+            console.log(resultat, statut, erreur);
+            alert("Erreur lors de la récuparation du statut de la préparation : " + erreur);
+        })
+        .always(function () {
+        });
+    });
+
+
+
+    function updateStatut(statusDto) {
+        console.log(statusDto);
+
+        updateStatutCategories(statusDto);
+        updateStatutVideo(statusDto);
+        updateStatutPhotosJoueurs(statusDto);
+        updateStatutRemerciements(statusDto);
+        updatePhotosPresentationDates(statusDto);
+    }
+
+
+    function updateStatutCategories(statusDto) {
+        if (statusDto.categories) {
+            $("span#status_categories").addClass("ok").removeClass("ko").removeClass("loading").html("OK");
+        } else {
+            $("span#status_categories").addClass("ko").removeClass("ok").removeClass("loading").html("KO");
+        }
+    }
+
+    function updateStatutVideo(statusDto) {
+        let etatVideo = "";
+        if (!statusDto.videoPresentationPresentateur) {
+            etatVideo += '<span class="ko">Vidéo présentateur [KO]</span>';
+        } else {
+            etatVideo += '<span class="ok">Vidéo présentateur [OK]</span>';
+        }
+        if (!statusDto.videoPresentationJoueurs) {
+            etatVideo += '<span class="ko">Vidéo joueur [KO]</span>';
+        } else {
+            etatVideo += '<span class="ok">Vidéo joueur [OK]</span>';
+        }
+        $("span#status_video").removeClass("loading").html(etatVideo);
+    }
+
+    function updateStatutPhotosJoueurs(statusDto) {
+        $("span#status_photos_joueurs").removeClass("loading").html(statusDto.photosJoueurs);
+        if (statusDto.photosJoueurs == 0) {
+            $("span#status_photos_joueurs").addClass("ko");
+        } else {
+            $("span#status_photos_joueurs").addClass("ok");
+        }
+    }
+
+    function updateStatutRemerciements(statusDto) {
+        if (statusDto.remerciements == null) {
+            $("span#status_remerciements").removeClass("loading").html("Aucun");
+        } else {
+            $("span#status_photos_joueurs").removeClass("loading").html("Défini").addClass("ok").prop("title", statusDto.remerciements);
+        }
+    }
+
+    function updatePhotosPresentationDates(statusDto) {
+        if (statusDto.photosPresentationDates != 5) {
+            $("span#status_photos_dates").removeClass("loading").addClass("ko").html(statusDto.photosPresentationDates
+                + " photo(s) dans le dossier (Attendus : 5)");
+        } else {
+            $("span#status_photos_dates").removeClass("loading").addClass("ok").html("OK");
+        }
+    }
+
+</script>
