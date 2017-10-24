@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.domain;
 
+import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,8 @@ public class Categorie {
 
     @NonNull
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private CategorieTypeEnum type;
 
     @NonNull
     @Column(name = "path_folder")

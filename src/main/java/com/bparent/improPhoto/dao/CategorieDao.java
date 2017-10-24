@@ -7,9 +7,12 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @RepositoryRestResource
 public interface CategorieDao extends CrudRepository<Categorie, BigInteger> {
+
+    List<Categorie> findAll();
 
     // http://localhost:8000/categories/all
 //    @RestResource(path = "all")

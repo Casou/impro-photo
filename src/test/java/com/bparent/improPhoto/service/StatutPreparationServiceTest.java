@@ -3,8 +3,8 @@ package com.bparent.improPhoto.service;
 import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Categorie;
-import com.bparent.improPhoto.domain.Remerciement;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
+import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -36,17 +36,17 @@ public class StatutPreparationServiceTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        when(categorieDao.findAll()).thenReturn(() -> new ArrayList<Categorie>().iterator());
-        when(remerciementDao.findAll()).thenReturn(() -> new ArrayList<Remerciement>().iterator());
+        when(categorieDao.findAll()).thenReturn(new ArrayList<>());
+        when(remerciementDao.findAll()).thenReturn(new ArrayList<>());
     }
 
 
     @Test
     public void shouldCheckCategoriesFalse() {
-        when(categorieDao.findAll()).thenReturn(() -> Arrays.asList(
-                new Categorie(BigInteger.valueOf(1), "nom1", "type1", "pathFolder1", false, 1),
-                new Categorie(BigInteger.valueOf(2), "nom2", "type2", "pathFolder2", false, 2)
-                ).iterator());
+        when(categorieDao.findAll()).thenReturn(Arrays.asList(
+                new Categorie(BigInteger.valueOf(1), "nom1", CategorieTypeEnum.PHOTO, "pathFolder1", false, 1),
+                new Categorie(BigInteger.valueOf(2), "nom2", CategorieTypeEnum.PHOTO, "pathFolder2", false, 2)
+                ));
         StatutPreparationDto statutPreparation = statutPreparationService.getStatutPreparation();
         assertFalse(statutPreparation.getCategories());
     }

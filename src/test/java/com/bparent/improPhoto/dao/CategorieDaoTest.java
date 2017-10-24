@@ -23,12 +23,12 @@ public class CategorieDaoTest {
     @Autowired
     private CategorieDao categorieDao;
 
-//    @Test
-//    public void shouldFindThreeCategories() {
-//        List<Categorie> cat = categorieDao.findAll();
-//        assertNotNull(cat);
-//        assertEquals(3, cat.size());
-//    }
+    @Test
+    public void shouldFindThreeCategories() {
+        List<Categorie> cat = categorieDao.findAll();
+        assertNotNull(cat);
+        assertEquals(3, cat.size());
+    }
 
     @Test
     public void shouldFindOneCategorieById() {

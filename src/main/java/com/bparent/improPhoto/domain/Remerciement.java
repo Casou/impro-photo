@@ -16,7 +16,9 @@ import javax.persistence.Table;
 public class Remerciement {
 
     @Id
-    @NonNull
+    @Column(name = "id")
+    private Integer id;
+
     @Column(name = "texte")
     private String texte;
 

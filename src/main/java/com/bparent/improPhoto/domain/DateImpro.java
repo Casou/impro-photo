@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name="imp_dates")
 @Data
 @NoArgsConstructor
-public class Dates {
+public class DateImpro {
 
     @Id
     @NonNull

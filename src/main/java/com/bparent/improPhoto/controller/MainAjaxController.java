@@ -18,8 +18,9 @@ public class MainAjaxController {
     @Autowired
     private StatutPreparationService statutPreparationService;
 
+
     @RequestMapping(value = "/statutPreparation", method = RequestMethod.GET)
-    public StatutPreparationDto getStatutPreparration() {
+    public StatutPreparationDto getStatutPreparation() {
         return statutPreparationService.getStatutPreparation();
     }
 

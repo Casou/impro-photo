@@ -7,32 +7,57 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>GIT - Impro diapo</title>
 	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet" href="css/views/admin/preparation.css" />
+	<link rel="stylesheet/less" type="text/css" href="css/views/admin/preparation.less">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui/jquery-ui.css" />
 
 	<link rel="shortcut icon" HREF="images/Git_logo_rose.png">
 
 	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/less.js"></script>
+	<script type="text/javascript" src="js/screens/preparation/preparation.datas.js"></script>
+	<script type="text/javascript" src="js/screens/preparation/preparation.updateLists.js"></script>
 </head>
 <body id="newImpro" class="admin">
 	<h1>Préparation d'une impro</h1>
 
-	<form action="newImpro.php" method="post">
-		<h2>Liste des catégories <button onClick="addCategorie(); return false;">Ajouter</button></h2>
-		<input type="hidden" name="action" value="update" />
-		
-		<ul id="categories">
-		</ul>
-		
-		<h2>Texte de remerciement (70 caractères max)</h2>
-		<h3>"Un grand merci : "</h3>
-		<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70"></textarea>
-		<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
+	<div id="back">
+		<a href="/"><< Retour à l'accueil</a>
+	</div>
 
-		<h2>Prochaines dates <button onClick="addDate(); return false;">Ajouter</button></h2>
-		<ul id="dates">
-		</ul>
+	<form action="#" method="post">
+		<div class="submitButton">
+			<input class="submitChanges" type="submit" value="Enregistrer les modifications" />
+		</div>
 
-		<input id="submitChanges" type="submit" value="Enregistrer les modifications" />
+		<div id="categories">
+			<h2>Liste des catégories <button onClick="addCategorie(); return false;">Ajouter</button></h2>
+			<input type="hidden" name="action" value="update" />
+
+			<span class="loading">Loading...</span>
+			<ul id="categoriesList">
+			</ul>
+		</div>
+
+		<div id="remerciements">
+			<h2>Texte de remerciement (<span id="nb_max_chars"></span> caractères max)</h2>
+			<h3>"Un grand merci : "</h3>
+			<input type="hidden" id="remerciements_id" />
+			<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70">Loading...</textarea>
+			<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
+		</div>
+
+		<div id="dates">
+			<h2>Prochaines dates <button onClick="addDate(); return false;">Ajouter</button></h2>
+			<span class="loading">Loading...</span>
+			<ul id="datesList">
+			</ul>
+		</div>
+
+		<div class="submitButton">
+			<input class="submitChanges" type="submit" value="Enregistrer les modifications" />
+		</div>
 
 	</form>
 
@@ -43,19 +68,19 @@
 				<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 				
 				<span class="help id_tech" title="Id technique"></span>
-				<input type="hidden" name="categorie_id[]" value="" />
-				<input type="text" name="categorie_nom[]" value="" />
+				<input type="hidden" class="categorie_id" name="categorie_id[]" value="" />
+				<input type="text" class="categorie_nom" name="categorie_nom[]" value="" />
 				
 				<span class="type">
 					Type : 
-					<select name="categorie_type[]">
+					<select class="categorie_type" name="categorie_type[]">
 					</select>
 				</span>
 				<span class="chemin">
 					<span>
 					Chemin :
 					</span>
-					<input type="text" name="categorie_path[]" value="" /> 
+					<input type="text" class="categorie_path" name="categorie_path[]" value="" />
 				</span> 
 				
 				<a class="delete" href="#" onClick="removeCategorie($(this).parents('li')); return false;">
@@ -63,9 +88,9 @@
 				</a>
 			</li>
 			<li id="date_clone">
-				<input type="hidden" class="date_date" name="date_id[]" maxlength="10" placeholder="Date" value="" />
-				<input type="date" class="date_date" name="date_date[]" maxlength="10" placeholder="Date" value="" />
-				<input type="text" class="date_nom" name="date_nom[]" maxlength="40" placeholder="Nom de l'évènement" value="" />
+				<input type="hidden" class="date_date date_id_hidden" name="date_id[]" maxlength="10" placeholder="Date" value="" />
+				<input type="text" class="date_date date_date_input" name="date_date[]" maxlength="10" placeholder="Date" value="" />
+				<input type="text" class="date_nom date_nom_input" name="date_nom[]" maxlength="40" placeholder="Nom de l'évènement" value="" />
 				<a class="delete" href="#" onClick="removeDate($(this).parents('li')); return false;">
 					[X]
 				</a>
@@ -73,54 +98,15 @@
 		</ul>
 	</div>
 	
-	
-	<div id="back">
-		<a href="/"><< Retour à l'accueil</a>
-	</div>
-	
+
 	<script>
-		/*
-		var TEXTEAREA_MAX_CHARS = $('#remerciements_texte').attr('maxlength');
-
 		$(document).ready(function() {
-			$("ul#categories").sortable();
-
 			calcRemainingChars();
 			$('#remerciements_texte').on("keyup", calcRemainingChars);
+
+            retrieveAllDatas();
 		});
 
-		function addCategorie() {
-			$('#categories').append($('#hiddenClones #cat_clone').first().clone().attr('id', 'cat_' + generateRandom(7)));
-			$('#categories li').last().find('input').val('');
-			$('#categories li').last().find('select').val('PHOTO');
-			$('#categories li').last().find('.id_tech').html('&nbsp;');
-		}
-
-		function addDate() {
-			var newId = 'date_' + generateRandom(7);
-			$('#dates').append($('#hiddenClones #date_clone').first().clone().attr('id', newId));
-		}
-
-		function removeCategorie(li) {
-			if ($('#categories li').size() == 1) {
-				alert('Vous ne pouvez pas supprimer toutes les catégories.');
-				return;
-			}
-			$(li).remove();
-		}
-
-		function removeDate(li) {
-			$(li).remove();
-		}
-
-		function calcRemainingChars() {
-			$('#nb_remaining_chars').html(TEXTEAREA_MAX_CHARS - $('#remerciements_texte').val().length);
-		}
-
-		$(document).on('focus',"input.date_date", function() {
-			$(this).datepicker({ dateFormat: 'dd/mm/yy', minDate: 0 });
-		});
-		*/
 	</script>
 	
 </body>

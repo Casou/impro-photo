@@ -8261,7 +8261,7 @@ $.extend(Datepicker.prototype, {
 					return maxI;
 				};
 				date.setMonth(findMax(this._get(inst, (dateFormat.match(/MM/) ?
-					"monthNames" : "monthNamesShort"))));
+					"MONTH_NAMES_FULL" : "monthNamesShort"))));
 				date.setDate(findMax(this._get(inst, (dateFormat.match(/DD/) ?
 					"dayNames" : "dayNamesShort"))) + 20 - date.getDay());
 			}
@@ -9082,7 +9082,7 @@ $.extend(Datepicker.prototype, {
 	 *					dayNamesShort	string[7] - abbreviated names of the days from Sunday (optional)
 	 *					dayNames		string[7] - names of the days from Sunday (optional)
 	 *					monthNamesShort string[12] - abbreviated names of the months (optional)
-	 *					monthNames		string[12] - names of the months (optional)
+	 *					MONTH_NAMES_FULL		string[12] - names of the months (optional)
 	 * @return  Date - the extracted date value or null if value is blank
 	 */
 	parseDate: function (format, value, settings) {
@@ -9291,7 +9291,7 @@ $.extend(Datepicker.prototype, {
 	 *					dayNamesShort	string[7] - abbreviated names of the days from Sunday (optional)
 	 *					dayNames		string[7] - names of the days from Sunday (optional)
 	 *					monthNamesShort string[12] - abbreviated names of the months (optional)
-	 *					monthNames		string[12] - names of the months (optional)
+	 *					MONTH_NAMES_FULL		string[12] - names of the months (optional)
 	 * @return  string - the date in the above format
 	 */
 	formatDate: function (format, date, settings) {
@@ -9952,7 +9952,7 @@ $.extend(Datepicker.prototype, {
 			new Date().getFullYear() % 100 + parseInt(shortYearCutoff, 10));
 		return {shortYearCutoff: shortYearCutoff,
 			dayNamesShort: this._get(inst, "dayNamesShort"), dayNames: this._get(inst, "dayNames"),
-			monthNamesShort: this._get(inst, "monthNamesShort"), monthNames: this._get(inst, "monthNames")};
+			monthNamesShort: this._get(inst, "monthNamesShort"), monthNames: this._get(inst, "MONTH_NAMES_FULL")};
 	},
 
 	/* Format the given date for display. */

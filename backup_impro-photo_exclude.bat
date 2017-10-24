@@ -4,12 +4,26 @@ set folderPath=../%folder%
 set backup_exclude_list=backup_%folder%_exclude.lst
 set version_separator=-
 
+:InputVersion
 set version=
 set /p version="Entrer la version pour l'archive %folder% : "
-IF NOT [%version%] EQU [] (
-	set version=%version_separator%%version%
+
+:InputSnapshot
+set isSnapshot=
+set /p isSnapshot="Version SNAPSHOT ? [y/n] : "
+IF /I NOT "%isSnapshot%" == "n" (
+	set version=%version%-SNAPSHOT
 )
 
+:SetVersion
+IF NOT "%version%" == "" (
+    call mvn versions:set -DnewVersion=%version%
+
+	set version=%version_separator%%version%
+	goto ZipFile
+)
+
+:ZipFile
 set zip_file=%folderPath%%version%.zip
 if exist %zip_file% (
     del %zip_file%

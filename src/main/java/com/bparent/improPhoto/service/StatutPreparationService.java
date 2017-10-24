@@ -41,16 +41,15 @@ public class StatutPreparationService {
     private Boolean checkCategories() {
         int nbCategories = 0;
         boolean categorieOk = true;
-        Iterator<Categorie> allCategories = categorieDao.findAll().iterator();
-        while(allCategories.hasNext()) {
-            Categorie cat = allCategories.next();
+        for (Categorie cat : categorieDao.findAll()) {
             File folder = new File(IConstants.PATH_PHOTOS + cat.getPathFolder());
             if (!folder.exists() || !folder.isDirectory()) {
                 categorieOk = false;
                 break;
             }
             nbCategories++;
-        }
+        };
+
         if (categorieOk && nbCategories == 0) {
             categorieOk = false;
         }
