@@ -1,7 +1,7 @@
 package com.bparent.improPhoto.mapper;
 
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
-import com.bparent.improPhoto.exception.ImproException;
+import com.bparent.improPhoto.exception.ImproMappingException;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class BasicMapperTest {
 
     @Test
-    public void shouldMapDto() throws ImproException {
+    public void shouldMapDto() throws ImproMappingException {
         BasicMapper<TestDto, TestEntity> mapper = new BasicMapper<>();
         Date d = new Date();
         TestDto dto = mapper.map(TestDto.class, new TestEntity(
@@ -34,7 +34,7 @@ public class BasicMapperTest {
     }
 
     @Test
-    public void shouldMapEntity() throws ImproException {
+    public void shouldMapEntity() throws ImproMappingException {
         BasicMapper<TestEntity, TestDto> mapper = new BasicMapper<>();
         Date d = new Date();
         TestEntity entity = mapper.map(TestEntity.class, new TestDto(
