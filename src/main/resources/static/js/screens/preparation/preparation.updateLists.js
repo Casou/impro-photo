@@ -4,6 +4,11 @@ function addCategorie(dto) {
     $(`#categories li#${ idCategorie } input.categorie_nom`).val(dto.nom);
     $(`#categories li#${ idCategorie } select.categorie_type`).val(dto.type);
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
+
+    if (dto.pathInError) {
+        $(`#categories li#${ idCategorie } input.categorie_path`).addClass("error").addClass("help")
+            .prop('title', 'Ce répertoire n\'existe pas : ' + dto.pathFolder);
+    }
 }
 
 function newCategorie(id) {

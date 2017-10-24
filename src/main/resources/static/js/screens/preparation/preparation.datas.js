@@ -13,7 +13,10 @@ function retrieveDatas(url, callback) {
     .fail(function (resultat, statut, erreur) {
         console.error(url);
         console.error(resultat, statut, erreur);
-        alert("Erreur lors de la récuparation des données de la préparation de l'impro : " + erreur);
+        alert("Erreur lors de la récuparation des données de la préparation de l'impro : \n" +
+            "Erreur : " + erreur + "\n" +
+            "Statut : " + statut + "\n" +
+            "Résultat : " + resultat);
     })
     .always(function () {
     });

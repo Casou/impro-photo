@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dto.CategorieDto;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,9 @@ public class CategorieMapper extends BasicMapper<CategorieDto, Categorie> {
     public List<CategorieDto> map(List<Categorie> entities) throws ImproMappingException {
         List<CategorieDto> list = new ArrayList<>();
         for (Categorie entity : entities) {
-            list.add(this.map(CategorieDto.class, entity));
+            CategorieDto dto = this.map(CategorieDto.class, entity);
+            dto.setPathInError(!new File(dto.getPathFolder()).exists());
+            list.add(dto);
         }
 
         return list;
