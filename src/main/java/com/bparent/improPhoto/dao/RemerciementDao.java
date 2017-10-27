@@ -9,4 +9,6 @@ public interface RemerciementDao extends CrudRepository<Remerciement, Integer> {
 
     List<Remerciement> findAll();
 
+    void deleteByIdNotIn(List<Integer> ids);
+
 }

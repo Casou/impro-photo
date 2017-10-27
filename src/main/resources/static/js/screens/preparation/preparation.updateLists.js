@@ -36,22 +36,26 @@ function addDate(dto) {
     let idDate = newDate(dto.id);
     $(`#datesList li#${ idDate } input.date_id_hidden`).val(dto.id);
     $(`#datesList li#${ idDate } input.date_date_input`).attr("id", idDate + "_date")
-        .datepicker({
-            dateFormat: 'dd/mm/yy',
-            firstDay : 1,
-            dayNames : DAY_NAMES_FULL,
-            dayNamesMin : DAY_NAMES_SHORT,
-            dayNamesShort : DAY_NAMES_SHORT,
-            monthNames : MONTH_NAMES_FULL,
-            monthNamesShort : MONTH_NAMES_SHORT})
-        .datepicker("setDate", new Date(dto.date))
-    ;
+        .datepicker("setDate", new Date(dto.date));
     $(`#datesList li#${ idDate } input.date_nom_input`).val(dto.nom);
+}
+
+function datePickerize(selector) {
+    return $(selector).datepicker({
+        dateFormat: 'dd/mm/yy',
+        firstDay : 1,
+        dayNames : DAY_NAMES_FULL,
+        dayNamesMin : DAY_NAMES_SHORT,
+        dayNamesShort : DAY_NAMES_SHORT,
+        monthNames : MONTH_NAMES_FULL,
+        monthNamesShort : MONTH_NAMES_SHORT})
+    ;
 }
 
 function newDate(id) {
     let newId = 'date_' + ((id == undefined) ? generateRandom(7) : id);
     $('#datesList').append($('#hiddenClones #date_clone').first().clone().attr('id', newId));
+    datePickerize(`#datesList li#${ newId } input.date_date_input`);
     return newId;
 }
 

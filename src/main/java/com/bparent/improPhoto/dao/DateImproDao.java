@@ -12,4 +12,6 @@ public interface DateImproDao extends CrudRepository<DateImpro, BigInteger> {
 
     List<DateImpro> findAll();
 
+    void deleteByIdNotIn(List<BigInteger> ids);
+
 }

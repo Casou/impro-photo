@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,7 +44,10 @@ public class PreparationService {
     private DateImproMapper dateImproMapper;
 
     public void prepareImpro(List<CategorieDto> categories, RemerciementDto remerciement, List<DateImproDto> dates) throws ImproServiceException {
-        categorieDao.deleteAll();
+        categorieDao.deleteByIdNotIn(categories.stream()
+                .filter(categorie -> categorie.getId() != null)
+                .map(categorie -> categorie.getId())
+                .collect(Collectors.toList()));
         try {
             categories.forEach(cat -> cat.setTermine(false));
             categorieDao.save(categorieMapper.toEntity(categories));
@@ -50,14 +55,17 @@ public class PreparationService {
             throw new ImproServiceException("Error while saving categories", e);
         }
 
-        remerciementDao.deleteAll();
+        remerciementDao.deleteByIdNotIn(Arrays.asList(remerciement.getId()));
         try {
             remerciementDao.save(remerciementMapper.toEntity(Remerciement.class, remerciement));
         } catch (ImproMappingException e) {
             throw new ImproServiceException("Error while saving remerciements", e);
         }
 
-        dateImproDao.deleteAll();
+        dateImproDao.deleteByIdNotIn(dates.stream()
+                .filter(categorie -> categorie.getId() != null)
+                .map(date -> date.getId())
+                .collect(Collectors.toList()));
         try {
             dateImproDao.save(dateImproMapper.toEntity(DateImpro.class, dates));
         } catch (ImproMappingException e) {

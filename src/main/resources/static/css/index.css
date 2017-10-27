@@ -71,11 +71,15 @@ a.button {
 }
 
 #index main div#check_impro span.ok {
-    color : green;
+    color : #26F21F;
 }
 
 #index main div#check_impro span.ko {
-    color : red;
+    color : #FF3F45;
+}
+
+#index main div#check_impro span.warning {
+    color : #FFB130;
 }
 
 #index main div#check_impro span.neutre {

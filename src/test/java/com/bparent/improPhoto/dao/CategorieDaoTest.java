@@ -9,6 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -43,12 +44,14 @@ public class CategorieDaoTest {
 
 
     @Test
-    public void shouldDeleteAllRecords() {
+    public void shouldDeleteAllRecordsExceptOne() {
         assertEquals(3, categorieDao.findAll().size());
 
-        categorieDao.deleteAll();
+        categorieDao.deleteByIdNotIn(Arrays.asList(BigInteger.valueOf(3)));
 
-        assertEquals(0, categorieDao.findAll().size());
+        List<Categorie> remainingCategories = categorieDao.findAll();
+        assertEquals(1, remainingCategories.size());
+        assertEquals(BigInteger.valueOf(3), remainingCategories.get(0).getId());
     }
 
 }

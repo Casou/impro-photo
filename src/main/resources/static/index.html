@@ -85,12 +85,12 @@
     function updateStatutVideo(statusDto) {
         let etatVideo = "";
         if (!statusDto.videoPresentationPresentateur) {
-            etatVideo += '<span class="ko">Vidéo présentateur [KO]</span>';
+            etatVideo += '<span class="warning">Vidéo présentateur [KO]</span>';
         } else {
             etatVideo += '<span class="ok">Vidéo présentateur [OK]</span>';
         }
         if (!statusDto.videoPresentationJoueurs) {
-            etatVideo += '<span class="ko">Vidéo joueur [KO]</span>';
+            etatVideo += '<span class="warning">Vidéo joueur [KO]</span>';
         } else {
             etatVideo += '<span class="ok">Vidéo joueur [OK]</span>';
         }
@@ -100,23 +100,23 @@
     function updateStatutPhotosJoueurs(statusDto) {
         $("span#status_photos_joueurs").removeClass("loading").html(statusDto.photosJoueurs);
         if (statusDto.photosJoueurs == 0) {
-            $("span#status_photos_joueurs").addClass("ko");
+            $("span#status_photos_joueurs").addClass("warning");
         } else {
             $("span#status_photos_joueurs").addClass("ok");
         }
     }
 
     function updateStatutRemerciements(statusDto) {
-        if (statusDto.remerciements == null) {
-            $("span#status_remerciements").removeClass("loading").html("Aucun");
+        if (statusDto.remerciements != null && statusDto.remerciements.texte != undefined && statusDto.remerciements.texte != "") {
+            $("span#status_remerciements").removeClass("loading").html("Défini").addClass("ok").prop("title", statusDto.remerciements);
         } else {
-            $("span#status_photos_joueurs").removeClass("loading").html("Défini").addClass("ok").prop("title", statusDto.remerciements);
+            $("span#status_remerciements").removeClass("loading").html("Aucun").addClass("neutre");
         }
     }
 
     function updatePhotosPresentationDates(statusDto) {
         if (statusDto.photosPresentationDates != 5) {
-            $("span#status_photos_dates").removeClass("loading").addClass("ko").html(statusDto.photosPresentationDates
+            $("span#status_photos_dates").removeClass("loading").addClass("warning").html(statusDto.photosPresentationDates
                 + " photo(s) dans le dossier (Attendus : 5)");
         } else {
             $("span#status_photos_dates").removeClass("loading").addClass("ok").html("OK");

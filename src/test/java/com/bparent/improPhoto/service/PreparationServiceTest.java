@@ -71,13 +71,13 @@ public class PreparationServiceTest {
         ArgumentCaptor<List> categorieDtoCaptor = ArgumentCaptor.forClass(List.class);
         List<CategorieDto> categories = Arrays.asList(
                 new CategorieDto(BigInteger.valueOf(1), "Categorie 1", CategorieTypeEnum.PHOTO, "path", true, 1, false),
-                new CategorieDto(BigInteger.valueOf(1), "Categorie 2", CategorieTypeEnum.PHOTO, "path", false, 2, false),
-                new CategorieDto(BigInteger.valueOf(1), "Categorie 3", CategorieTypeEnum.PHOTO, "path", true, 3, false)
+                new CategorieDto(BigInteger.valueOf(2), "Categorie 2", CategorieTypeEnum.PHOTO, "path", false, 2, false),
+                new CategorieDto(BigInteger.valueOf(3), "Categorie 3", CategorieTypeEnum.PHOTO, "path", true, 3, false)
         );
 
         this.preparationService.prepareImpro(categories, new RemerciementDto(), Arrays.asList());
 
-        verify(this.categorieDao).deleteAll();
+        verify(this.categorieDao).deleteByIdNotIn(Arrays.asList(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3)));
         verify(this.categorieDao).save(categorieDtoCaptor.capture());
 
         List<Categorie> allCategories = categorieDtoCaptor.getValue();
@@ -93,7 +93,7 @@ public class PreparationServiceTest {
         ArgumentCaptor<Remerciement> remerciementCaptor = ArgumentCaptor.forClass(Remerciement.class);
         this.preparationService.prepareImpro(Arrays.asList(), new RemerciementDto(1, "Test remerciements"), Arrays.asList());
 
-        verify(this.remerciementDao).deleteAll();
+        verify(this.remerciementDao).deleteByIdNotIn(Arrays.asList(1));
         verify(this.remerciementDao).save(remerciementCaptor.capture());
 
         Remerciement remerciement = remerciementCaptor.getValue();
@@ -106,10 +106,10 @@ public class PreparationServiceTest {
         ArgumentCaptor<List> dateImproCaptor = ArgumentCaptor.forClass(List.class);
         this.preparationService.prepareImpro(Arrays.asList(), new RemerciementDto(), Arrays.asList(
                 new DateImproDto(BigInteger.valueOf(1), dateFormatter.parse("06/01/2018"), "Prochaine date"),
-                new DateImproDto(BigInteger.valueOf(1), dateFormatter.parse("22/05/2018"), "Date d'après")
+                new DateImproDto(BigInteger.valueOf(2), dateFormatter.parse("22/05/2018"), "Date d'après")
         ));
 
-        verify(this.dateImproDao).deleteAll();
+        verify(this.dateImproDao).deleteByIdNotIn(Arrays.asList(BigInteger.valueOf(1), BigInteger.valueOf(2)));
         verify(this.dateImproDao).save(dateImproCaptor.capture());
 
         List<DateImpro> allDates = dateImproCaptor.getValue();
