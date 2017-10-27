@@ -49,7 +49,7 @@ public class ListController {
 
     @RequestMapping("/categories")
     public List<CategorieDto> getAllCategories() throws ImproMappingException {
-        return categorieMapper.map(this.categorieDao.findAll());
+        return categorieMapper.toDto(this.categorieDao.findAll());
     }
 
     @RequestMapping("/categories/types")
@@ -61,12 +61,12 @@ public class ListController {
 
     @RequestMapping("/dates")
     public List<DateImproDto> getAllDates() throws ImproMappingException {
-        return dateMapper.map(DateImproDto.class, this.dateImproDao.findAll());
+        return dateMapper.toDto(DateImproDto.class, this.dateImproDao.findAll());
     }
 
     @RequestMapping("/remerciements")
     public List<RemerciementDto> getAllRemerciements() throws ImproMappingException {
-        return remerciementMapper.map(RemerciementDto.class, this.remerciementDao.findAll());
+        return remerciementMapper.toDto(RemerciementDto.class, this.remerciementDao.findAll());
     }
 
 }

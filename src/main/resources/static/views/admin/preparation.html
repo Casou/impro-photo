@@ -26,9 +26,9 @@
 		<a href="/"><< Retour à l'accueil</a>
 	</div>
 
-	<form action="#" method="post">
+	<form action="#" method="post" onsubmit="return false;">
 		<div class="submitButton">
-			<input class="submitChanges" type="submit" value="Enregistrer les modifications" />
+			<button class="submitChanges">Enregistrer les modifications</button>
 		</div>
 
 		<div id="categories">
@@ -41,7 +41,7 @@
 		</div>
 
 		<div id="remerciements">
-			<h2>Texte de remerciement (<span id="nb_max_chars"></span> caractères max)</h2>
+			<h2>Texte de remerciements (<span id="nb_max_chars"></span> caractères max)</h2>
 			<h3>"Un grand merci : "</h3>
 			<input type="hidden" id="remerciements_id" />
 			<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70">Loading...</textarea>
@@ -56,7 +56,7 @@
 		</div>
 
 		<div class="submitButton">
-			<input class="submitChanges" type="submit" value="Enregistrer les modifications" />
+			<button class="submitChanges">Enregistrer les modifications</button>
 		</div>
 
 	</form>
@@ -105,6 +105,10 @@
 			$('#remerciements_texte').on("keyup", calcRemainingChars);
 
             retrieveAllDatas();
+
+            $('button.submitChanges').click(function() {
+                saveDatas();
+			})
 		});
 
 	</script>

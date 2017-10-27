@@ -1,36 +1,36 @@
----- INSTALLATION (à faire la première fois uniquement) ----
-1. Installer WAMP (dossier tools) dans le répertoire C:
-2. Dézipper l'archive impro-xxx.zip dans C:\wamp\www
+---- INSTALLATION (ï¿½ faire la premiï¿½re fois uniquement) ----
+1. Installer WAMP (dossier tools) dans le rï¿½pertoire C:
+2. Dï¿½zipper l'archive impro-xxx.zip dans C:\wamp\www
 3. Lancer Wamp
 4. Lancer un navigateur et aller sur l'adresse http://localhost/phpmyadmin
-5. Cliquer sur "Nouvelle base de données" (tout en haut à gauche) et créer une base de données nommée "impro"
-6. Cliquer sur le lien "impro" qui vient de se créer
+5. Cliquer sur "Nouvelle base de donnï¿½es" (tout en haut ï¿½ gauche) et crï¿½er une base de donnï¿½es nommï¿½e "impro"
+6. Cliquer sur le lien "impro" qui vient de se crï¿½er
 7. Cliquer sur l'onglet "Importer"
 8. Importer le fichier "impro.sql" qui se situe dans C:\wamp\www\impro
 9. Lancer un navigateur (Firefox ou Chrome) et aller sur l'adresse http://localhost/impro
 
 
----- Préparer une nouvelle impro (à faire A CHAQUE FOIS) ----
-0. Mettre les photos / vidéos dans les différents dossier :
+---- Prï¿½parer une nouvelle impro (ï¿½ faire A CHAQUE FOIS) ----
+0. Mettre les photos / vidï¿½os dans les diffï¿½rents dossier :
 		[+] photos
-		 |- dates 		 ==> Photos pour agrémenter la présentation des dates (8 max)
-		 |- impro 		 ==> Les dossiers des catégories des impro
-		 |- intro 		 ==> Les images à afficher sur l'écran d'accueil du public (photos qui défilent en aléatoire)
+		 |- dates 		 ==> Photos pour agrï¿½menter la prï¿½sentation des dates (8 max)
+		 |- impro 		 ==> Les dossiers des catï¿½gories des impro
+		 |- intro 		 ==> Les images ï¿½ afficher sur l'ï¿½cran d'accueil du public (photos qui dï¿½filent en alï¿½atoire)
 		 |- joueurs 	 ==> Photos des joueurs de l'impro (5 max)
-		 `- videos_intro ==> Les 2 vidéos d'intro (présentateur et joueur) qui portent les noms suivants (tout en minuscules) :
+		 `- videos_intro ==> Les 2 vidï¿½os d'intro (prï¿½sentateur et joueur) qui portent les noms suivants (tout en minuscules) :
 		 		|- joueurs.mp4
 		 		`- presentateur.mp4
-1. Cliquer sur le bouton "Préparation" pour préparer une nouvelle impro
-2. Créer / vérifier les différentes catégories et leur ordre
-		Le champ "Chemin" correspond au répertoire contenant les photos pour cette catégorie dans le dossier C:\wamp\www\impro\photos\impro
+1. Cliquer sur le bouton "Prï¿½paration" pour prï¿½parer une nouvelle impro
+2. Crï¿½er / vï¿½rifier les diffï¿½rentes catï¿½gories et leur ordre
+		Le champ "Chemin" correspond au rï¿½pertoire contenant les photos pour cette catï¿½gorie dans le dossier C:\wamp\www\impro\photos\impro
 		Si le chemin n'est pas correct (faute de frappe...) il apparaitra en rouge au moment de l'enregistrement.
-		NE LAISSER AUCUNE CATEGORIE DONT LE CHEMIN EST EN ROUGE. Cela causerait un crash de l'écran concerné.
-3. Rédiger un texte de remerciement. Si pas de remerciement, laisser le champ vide.
+		NE LAISSER AUCUNE CATEGORIE DONT LE CHEMIN EST EN ROUGE. Cela causerait un crash de l'ï¿½cran concernï¿½.
+3. Rï¿½diger un texte de remerciements. Si pas de remerciements, laisser le champ vide.
 4. Ajouter les prochaines dates. Seules les dates dans le futur sont visibles.
 5. Enregistrer les modifications en cliquant sur le bouton "Enregistrer".
 
 
 ---- Lancement de l'impro ----
-1. Brancher le vidéo-projecteur sur le PC et étendre (et non dupliquer) l'affichage du bureau.
-2. Pour le spectateur, ouvrez un navigateur côté vidéo-projecteur (adresse http://localhost/impro) et cliquer sur "Impro photo".
-3. Pour la régie, appuyez sur la touche "R" sur l'interface spectateur. Cela ouvrira une popup. Déplacer la popup vers le côté PC et la mettre en plein écran.
+1. Brancher le vidï¿½o-projecteur sur le PC et ï¿½tendre (et non dupliquer) l'affichage du bureau.
+2. Pour le spectateur, ouvrez un navigateur cï¿½tï¿½ vidï¿½o-projecteur (adresse http://localhost/impro) et cliquer sur "Impro photo".
+3. Pour la rï¿½gie, appuyez sur la touche "R" sur l'interface spectateur. Cela ouvrira une popup. Dï¿½placer la popup vers le cï¿½tï¿½ PC et la mettre en plein ï¿½cran.

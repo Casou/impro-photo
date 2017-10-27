@@ -18,7 +18,7 @@ if (!isset($_POST['action'])) {
 }
 
 $categories = MetierCategorie::getAllCategorie();
-$remerciement = MetierRemerciements::getRemerciements();
+$remerciements = MetierRemerciements::getRemerciements();
 $dates = MetierDates::getFutureDates();
 ?>
 <!DOCTYPE html>
@@ -86,9 +86,9 @@ $dates = MetierDates::getFutureDates();
 			<?php } ?>
 		</ul>
 		
-		<h2>Texte de remerciement (70 caractères max)</h2>
+		<h2>Texte de remerciements (70 caractères max)</h2>
 		<h3>"Un grand merci : "</h3>
-		<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70"><?= $remerciement != null ? $remerciement[0]->texte : "" ?></textarea>
+		<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70"><?= $remerciements != null ? $remerciements[0]->texte : "" ?></textarea>
 		<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
 
 		<h2>Prochaines dates <button onClick="addDate(); return false;">Ajouter</button></h2>

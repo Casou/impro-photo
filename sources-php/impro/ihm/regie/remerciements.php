@@ -10,7 +10,7 @@ $remerciementDo = MetierRemerciements::getRemerciements();
 ?>
 
 <?php if ($remerciementDo != null) { ?>
-<button id="show_remerciements" onClick="show_remerciements();">Afficher remerciement</button>
+<button id="show_remerciements" onClick="show_remerciements();">Afficher remerciements</button>
 <?php } ?>
 
 <section id="remerciements">

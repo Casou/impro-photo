@@ -6,8 +6,11 @@ function addCategorie(dto) {
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
 
     if (dto.pathInError) {
-        $(`#categories li#${ idCategorie } input.categorie_path`).addClass("error").addClass("help")
-            .prop('title', 'Ce répertoire n\'existe pas : ' + dto.pathFolder);
+        $(`#categories li#${ idCategorie } input.categorie_path`)
+            .addClass("error")
+            .addClass("help")
+            .after('<span class="span-icon icon-warning help" title="Ce répertoire n\'existe pas : ' + dto.pathFolder + '"></span>')
+            ;
     }
 }
 
@@ -62,10 +65,5 @@ $(document).ready(function() {
     $('#nb_max_chars').html(TEXTEAREA_MAX_CHARS);
 });
 function calcRemainingChars() {
-    $('#nb_remaining_chars').html(TEXTEAREA_MAX_CHARS - $('#remerciements_texte').html().length);
+    $('#nb_remaining_chars').html(TEXTEAREA_MAX_CHARS - $('#remerciements_texte').val().length);
 }
-
-
-// $(document).on('focus',"input.date_date", function() {
-//     $(this).datepicker({ dateFormat: 'dd/mm/yy', minDate: 0 });
-// });

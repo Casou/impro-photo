@@ -1,5 +1,7 @@
 package com.bparent.improPhoto.util;
 
+import java.text.SimpleDateFormat;
+
 public interface IConstants {
 
     public static final String PATH_PHOTOS = "photos/impro/";
@@ -9,5 +11,12 @@ public interface IConstants {
 
     public static final String PATH_PHOTOS_JOUEURS = "photos/joueurs/";
     public static final String PATH_PHOTOS_PRESENTATION_DATES = "photos/dates/";
+
+    public static final String DATE_FR_FORMAT = "dd/MM/yyyy";
+    public static final SimpleDateFormat DATE_FR_FORMATTER = new SimpleDateFormat(DATE_FR_FORMAT);
+
+    public interface IFiles {
+        public static final String PHOTOS_IMPRO_FOLDER = "photos/impro/";
+    }
 
 }

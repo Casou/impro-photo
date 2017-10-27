@@ -167,3 +167,17 @@ div#watermark {
 div#watermark img {
 	width : 100%;
 }
+
+
+.help {
+	cursor : help;
+}
+
+span.span-icon {
+	display : inline-block;
+	width : 16px;
+	height : 16px;
+	vertical-align : middle;
+}
+
+span.span-icon.icon-warning { background : url("../images/warning.png") no-repeat center center; }

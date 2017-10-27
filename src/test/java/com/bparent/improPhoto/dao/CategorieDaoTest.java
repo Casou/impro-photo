@@ -24,10 +24,14 @@ public class CategorieDaoTest {
     private CategorieDao categorieDao;
 
     @Test
-    public void shouldFindThreeCategories() {
+    public void shouldFindThreeCategoriesOrdered() {
         List<Categorie> cat = categorieDao.findAll();
         assertNotNull(cat);
         assertEquals(3, cat.size());
+
+        assertEquals("cat2-nom", cat.get(0).getNom());
+        assertEquals("cat3-nom", cat.get(1).getNom());
+        assertEquals("cat1-nom", cat.get(2).getNom());
     }
 
     @Test
@@ -37,5 +41,14 @@ public class CategorieDaoTest {
         assertEquals("cat1-nom", cat.getNom());
     }
 
+
+    @Test
+    public void shouldDeleteAllRecords() {
+        assertEquals(3, categorieDao.findAll().size());
+
+        categorieDao.deleteAll();
+
+        assertEquals(0, categorieDao.findAll().size());
+    }
 
 }

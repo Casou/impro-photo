@@ -1,6 +1,7 @@
 package com.bparent.improPhoto.dao;
 
 import com.bparent.improPhoto.domain.Categorie;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -12,6 +13,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface CategorieDao extends CrudRepository<Categorie, BigInteger> {
 
+    @Query("Select c from Categorie c order by c.ordre")
     List<Categorie> findAll();
 
     // http://localhost:8000/categories/all
@@ -31,5 +33,5 @@ public interface CategorieDao extends CrudRepository<Categorie, BigInteger> {
     Categorie save(Categorie categorie);
     void delete(Categorie categorie);
     void delete(BigInteger id);
-    
+
 }

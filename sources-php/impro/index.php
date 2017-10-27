@@ -9,7 +9,7 @@ include_once $pathToPhpRoot.'metier/metierRemerciements.php';
 include_once $pathToPhpRoot.'metier/metierDates.php';
 
 $categories = MetierCategorie::getAllCategorie();
-$remerciement = MetierRemerciements::getRemerciements();
+$remerciements = MetierRemerciements::getRemerciements();
 $dates = MetierDates::getFutureDates();
 
 
@@ -73,8 +73,8 @@ $dates = MetierDates::getFutureDates();
 				<?php 
 					$status_remerciement = "Aucun";
 					$status_css = "neutre";
-					if (count($remerciement) > 0) {
-						$status_remerciement = 'Rédigé <img src="style/images/info.png" title="'.$remerciement[0]->texte.'" />';
+					if (count($remerciements) > 0) {
+						$status_remerciement = 'Rédigé <img src="style/images/info.png" title="'.$remerciements[0]->texte.'" />';
 						$status_css = "";
 					}
 				?>
