@@ -52,13 +52,6 @@ public class ListController {
         return categorieMapper.toDto(this.categorieDao.findAll());
     }
 
-    @RequestMapping("/categories/types")
-    public List<BasicCodeLabelDto> getAllCategorieTypes() {
-        return Arrays.stream(CategorieTypeEnum.values())
-                .map(type -> new BasicCodeLabelDto(type.getCode(), type.getLabel()))
-                .collect(Collectors.toList());
-    }
-
     @RequestMapping("/dates")
     public List<DateImproDto> getAllDates() throws ImproMappingException {
         return dateMapper.toDto(DateImproDto.class, this.dateImproDao.findAll());

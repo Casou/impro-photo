@@ -29,41 +29,18 @@ function retrieveAllDatas() {
     $('textarea#remerciements_texte').html("");
     $('span.loading').show();
 
-    let categorieTypesPromise = new Promise((resolve, reject) => {
-        retrieveCategorieTypes(resolve);
-    });
+    let allPromises = [];
+    allPromises.push(retrieveCategories());
+    allPromises.push(retrieveRemerciements());
+    allPromises.push(retrieveDates());
 
-    categorieTypesPromise.then(function() {
-        let allPromises = [];
-        allPromises.push(retrieveCategories());
-        allPromises.push(retrieveRemerciements());
-        allPromises.push(retrieveDates());
-
-        Promise.all(allPromises).then(function() {
-            $('input, select, textarea').change(function() {
-                activateButtons();
-            })
-        }, function(err) {
-            console.error(err);
-            alert("Erreur lors du All Promise : " + err);
-        });
-    });
-}
-
-
-
-function retrieveCategorieTypes(callback) {
-    retrieveDatas("/list/categories/types", function(types) {
-        retrieveCategorieTypesCallback(types);
-        callback();
-    });
-}
-
-function retrieveCategorieTypesCallback(types) {
-    $(types).each(function(index, type) {
-        $("#hiddenClones span.type select").append(`<option value="${type.code}">
-            ${type.label}
-        </option>`);
+    Promise.all(allPromises).then(function() {
+        $('input, select, textarea').change(function() {
+            activateButtons();
+        })
+    }, function(err) {
+        console.error(err);
+        alert("Erreur lors du All Promise : " + err);
     });
 }
 

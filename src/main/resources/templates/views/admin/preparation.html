@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>GIT - Impro diapo</title>
-	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet/less" type="text/css" href="css/views/admin/preparation.less" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui/jquery-ui.css"/>
+	<link rel="stylesheet" 		type="text/css" href="/css/style.css" />
+	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.less" />
+	<link rel="stylesheet" 		type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
 
-	<link rel="shortcut icon" HREF="images/Git_logo_rose.png" />
+	<link rel="shortcut icon" HREF="/images/Git_logo_rose.png" />
 
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/common.js"></script>
-	<script type="text/javascript" src="js/jquery-ui.js"></script>
-	<script type="text/javascript" src="js/less.js"></script>
-	<script type="text/javascript" src="js/screens/preparation/preparation.js"></script>
-	<script type="text/javascript" src="js/screens/preparation/preparation.datas.js"></script>
-	<script type="text/javascript" src="js/screens/preparation/preparation.updateLists.js"></script>
+	<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui.js"></script>
+	<script type="text/javascript" src="/js/less.js"></script>
+	<script type="text/javascript" src="/js/screens/preparation/preparation.js"></script>
+	<script type="text/javascript" src="/js/screens/preparation/preparation.datas.js"></script>
+	<script type="text/javascript" src="/js/screens/preparation/preparation.updateLists.js"></script>
 </head>
 <body id="newImpro" class="admin">
 	<h1>Préparation d'une impro</h1>
@@ -75,6 +75,9 @@
 				<span class="type">
 					Type : 
 					<select class="categorie_type" name="categorie_type[]">
+						<option th:each="categorie : ${ categorieTypes }"
+								th:value="${ categorie.code }"
+								th:text="${ categorie.label }">-- Category text --</option>
 					</select>
 				</span>
 				<span class="chemin">
