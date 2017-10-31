@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>GIT - Impro diapo</title>
+    <link rel="stylesheet"      type="text/css" href="/css/style.css" />
+    <link rel="stylesheet/less" type="text/css" href="/css/index.less" />
+
+    <link rel="shortcut icon" HREF="/images/Git_logo_rose.png" />
+
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/less.js"></script>
+    <script type="text/javascript" src="/js/screens/index.js"></script>
+</head>
+<body id="index">
+    <header>
+        <div id="button_regie"><a href="/impro/regie" class="button" title="Lancer l'interface Régie.">Régie</a></div>
+        <img src="images/Git_logo_rose_transparent.png" />
+        <div id="button_spectateur"><a href="/impro/spectateur" class="button" title="Lancer l'interface Spectateur.">Spectateur</a></div>
+    </header>
+
+    <main>
+        <div id="menu">
+            <a href="/preparation" class="button" title="Préparation d'une impro">Préparation</a>
+        </div>
+
+        <div id="check_impro">
+            <div id="general_state"><span class="span-icon icon-general-state"></span> Statut de la préparation</div>
+            <ul>
+                <li id="status_categories_li"><span class="span-icon"></span><span class="check_label">Chemin des catégories : </span><span id="status_categories" class="check_status loading">Loading...</span></li>
+                <li id="status_video_li"><span class="span-icon"></span><span class="check_label">Vidéos de présentation : </span><span id="status_video" class="check_status loading">Loading...</span></li>
+                <li id="status_remerciements_li"><span class="span-icon"></span><span class="check_label">Texte de remerciements : </span><span id="status_remerciements" class="check_status loading">Loading...</span></li>
+                <li id="status_photos_joueurs_li"><span class="span-icon"></span><span class="check_label">Photos des joueurs : </span><span id="status_photos_joueurs" class="check_status loading">Loading...</span></li>
+                <li id="status_photos_dates_li"><span class="span-icon"></span><span class="check_label">Photo de présentation des dates : </span><span id="status_photos_dates" class="check_status loading">Loading...</span></li>
+            </ul>
+        </div>
+    </main>
+
+</body>
+</html>

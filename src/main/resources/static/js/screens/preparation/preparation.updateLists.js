@@ -4,6 +4,7 @@ function addCategorie(dto) {
     $(`#categories li#${ idCategorie } input.categorie_nom`).val(dto.nom);
     $(`#categories li#${ idCategorie } select.categorie_type`).val(dto.type);
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
+    $(`#categories li#${ idCategorie } span.termine`).html(dto.termine ? "TERMINÉ" : "");
 
     if (dto.pathInError) {
         $(`#categories li#${ idCategorie } input.categorie_path`)

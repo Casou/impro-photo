@@ -7,15 +7,16 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>GIT - Impro diapo</title>
 	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet/less" type="text/css" href="css/views/admin/preparation.less">
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui/jquery-ui.css" />
+	<link rel="stylesheet/less" type="text/css" href="css/views/admin/preparation.less" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui/jquery-ui.css"/>
 
-	<link rel="shortcut icon" HREF="images/Git_logo_rose.png">
+	<link rel="shortcut icon" HREF="images/Git_logo_rose.png" />
 
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/less.js"></script>
+	<script type="text/javascript" src="js/screens/preparation/preparation.js"></script>
 	<script type="text/javascript" src="js/screens/preparation/preparation.datas.js"></script>
 	<script type="text/javascript" src="js/screens/preparation/preparation.updateLists.js"></script>
 </head>
@@ -23,7 +24,7 @@
 	<h1>Préparation d'une impro</h1>
 
 	<div id="back">
-		<a href="/"><< Retour à l'accueil</a>
+		<a href="/">Retour à l'accueil</a>
 	</div>
 
 	<form action="#" method="post" onsubmit="return false;">
@@ -44,7 +45,7 @@
 			<h2>Texte de remerciements (<span id="nb_max_chars"></span> caractères max)</h2>
 			<h3>"Un grand merci : "</h3>
 			<input type="hidden" id="remerciements_id" />
-			<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="1" maxlength="70">Loading...</textarea>
+			<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="2" maxlength="70">Loading...</textarea>
 			<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
 		</div>
 
@@ -81,7 +82,9 @@
 					Chemin :
 					</span>
 					<input type="text" class="categorie_path" name="categorie_path[]" value="" />
-				</span> 
+				</span>
+				<span class="termine">
+				</span>
 				
 				<a class="delete" href="#" onClick="removeCategorie($(this).parents('li')); return false;">
 					[X]
@@ -97,21 +100,6 @@
 			</li>
 		</ul>
 	</div>
-	
-
-	<script>
-		$(document).ready(function() {
-			calcRemainingChars();
-			$('#remerciements_texte').on("keyup", calcRemainingChars);
-
-            retrieveAllDatas();
-
-            $('button.submitChanges').click(function() {
-                saveDatas();
-			})
-		});
-
-	</script>
 	
 </body>
 </html>

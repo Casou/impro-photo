@@ -5,7 +5,7 @@
 
 	<groupId>com.bparent</groupId>
 	<artifactId>improPhoto</artifactId>
-	<version>3.0.4-SNAPSHOT</version>
+	<version>3.0.5-ALPHA-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>improPhoto</name>
@@ -51,6 +51,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
 		<dependency>
