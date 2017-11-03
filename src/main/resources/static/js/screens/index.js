@@ -8,15 +8,15 @@ $(document).ready(function() {
 //            data: JSON.stringify(inputDto),
         contentType: 'application/json'
     })
-        .done(function (statusDto) {
-            updateStatut(statusDto);
-        })
-        .fail(function (resultat, statut, erreur) {
-            console.log(resultat, statut, erreur);
-            alert("Erreur lors de la récuparation du statut de la préparation : " + erreur);
-        })
-        .always(function () {
-        });
+    .done(function (statusDto) {
+        updateStatut(statusDto);
+    })
+    .fail(function (resultat, statut, erreur) {
+        console.log(resultat, statut, erreur);
+        alert("Erreur lors de la récuparation du statut de la préparation : " + erreur);
+    })
+    .always(function () {
+    });
 });
 
 

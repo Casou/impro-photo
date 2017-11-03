@@ -1,0 +1,82 @@
+#salle_attente {
+    header img {
+        position : absolute;
+        width : 600px;
+        left : 50%;
+        margin : 20px 0 0 -300px;
+        z-index : 9999;
+    }
+
+
+    main {
+        a {
+            float : left;
+            width : 30%;
+            margin : 500px 10%
+        }
+
+        button {
+            position : absolute;
+            top : 60%;
+            height : 75px;
+
+            left : 50%;
+            width : 400px;
+            margin-left : -200px;
+            font-size : 36px;
+
+            border-radius : 10px;
+            z-index : 999;
+
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff84c3+0,ff0084+100 */
+            background: #ff84c3; /* Old browsers */
+            background: -moz-linear-gradient(top,  #ff84c3 0%, #ff0084 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff84c3), color-stop(100%,#ff0084)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  #ff84c3 0%,#ff0084 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  #ff84c3 0%,#ff0084 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  #ff84c3 0%,#ff0084 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  #ff84c3 0%,#ff0084 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff84c3', endColorstr='#ff0084',GradientType=0 ); /* IE6-9 */
+
+            border : 3px outset #ff84c3;
+
+            color : white;
+            text-shadow: 2px 2px 0 #444;
+        }
+    }
+
+    #options {
+        position : absolute;
+        right : 10px;
+        top : 30%;
+        z-index : 999;
+
+        button {
+            font-size : 24px;
+        }
+    }
+
+
+    #photosFlottantes {
+        div {
+            position : absolute;
+            top : 100%;
+
+            display: none;
+            z-index : 10;
+        }
+
+        img {
+            border : 8px solid #DDD;
+        }
+    }
+
+}
+
+#disconnected {
+    position : absolute;
+    right : 10px;
+    bottom : 10px;
+    opacity : 0.5;
+    display : none;
+}

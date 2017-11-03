@@ -158,6 +158,7 @@ function saveDatas() {
                 console.error(response.message);
                 message += "\n\nException : " + response.message;
             } catch(e) {
+                console.error(">> Exception", e);
                 message += "\n\n(Impossible de formatter le message d'erreur)";
             }
         }

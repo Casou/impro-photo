@@ -175,3 +175,7 @@ span.span-icon {
 }
 
 span.span-icon.icon-warning { background : url("../images/warning.png") no-repeat center center; }
+
+div.content_hidden {
+	display : none;
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+    <title>GIT - Impro diapo - Salle d'attente</title>
+
+</head>
+<body>
+
+    <div id="salle_attente" class="content_hidden" th:fragment="salle_attente">
+        <header>
+            <img src="/images/Git_logo_large_transparent.png" />
+        </header>
+
+        <main style="display : none">
+            <button>Impro photo</button>
+        </main>
+
+        <div id="photosFlottantes">
+        </div>
+
+        <div id="disconnected"><img src="/images/disconnect.png" /></div>
+
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/salle_attente/salle_attente.js'"></script>
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/salle_attente/salle_attente.animation.js'"></script>
+    </div>
+</body>
+</html>

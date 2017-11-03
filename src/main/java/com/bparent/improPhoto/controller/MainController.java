@@ -2,11 +2,15 @@ package com.bparent.improPhoto.controller;
 
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
+import com.bparent.improPhoto.util.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -26,15 +30,15 @@ public class MainController {
     }
 
     @RequestMapping("/impro/regie")
-    public String regie(Model model) {
+    public String regie(Model model) throws IOException {
         model.addAttribute("side", "regie");
-        return "views/impro/impro";
+        return "views/impro/index";
     }
 
     @RequestMapping("/impro/spectateur")
-    public String spectateur(Model model) {
+    public String spectateur(Model model) throws IOException {
         model.addAttribute("side", "spectateur");
-        return "views/impro/impro";
+        return "views/impro/index";
     }
 
 }

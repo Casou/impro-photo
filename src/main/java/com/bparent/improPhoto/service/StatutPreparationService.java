@@ -25,8 +25,6 @@ public class StatutPreparationService {
     @Autowired
     private RemerciementDao remerciementDao;
 
-    private static final List<String> PICTURE_EXTENSION_ACCEPTED = Arrays.asList(".jpg", ".jpeg", ".png", ".bmp", ".gif");
-
     public StatutPreparationDto getStatutPreparation() {
         StatutPreparationDto dto = new StatutPreparationDto();
         dto.setCategories(checkCategories());
@@ -71,7 +69,7 @@ public class StatutPreparationService {
 
     private Integer getNbPhotosFolder(String folder) {
         return new File(folder)
-                .listFiles((dir, name) -> PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
+                .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
                 .length;
     }
 

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+    <title>GIT - Impro diapo</title>
+    <link rel="stylesheet"      type="text/css" href="/css/style.css" />
+    <link rel="stylesheet/less" type="text/css" href="/css/views/impro/salle_attente.less" />
+
+    <link rel="shortcut icon" HREF="images/Git_logo_rose.png" />
+
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+    <script type="text/javascript" src="/js/less.js"></script>
+    <script type="text/javascript" src="/js/screens/iscreen.js"></script>
+
+    <script type="text/javascript">
+        let STATUS = {
+            ecran : null,
+            idEcran : null,
+            typeEcran : null,
+            photosChoisies : null,
+            integralite : null,
+            photoCourante : null,
+            statutDiapo : null,
+            blockMasques : null
+        };
+        const SCREENS = [];
+    </script>
+
+</head>
+<body>
+    <div id="content">
+        <div></div>
+    </div>
+
+    <div th:replace="views/impro/templates/salle_attente :: salle_attente"><h1 class="error">Salle attente</h1></div>
+
+    <script>
+        $(document).ready(function() {
+            SCREENS["SALLE_ATTENTE"] = new SalleAttenteScreen("Salle d'attente");
+
+            retrieveStatusImpro().then((etatImproDto) => init(etatImproDto));
+        });
+
+        function retrieveStatusImpro() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/etatImpro',
+                    type: 'GET',
+                    encoding: "UTF-8",
+                    dataType: 'json',
+                    contentType: 'application/json'
+                })
+                .done(function (etatImproDto) {
+                    resolve(etatImproDto);
+                })
+                .fail(function (resultat, statut, erreur) {
+                    handleAjaxError(resultat, statut, erreur);
+                    reject();
+                })
+                .always(function () {
+                });
+            });
+        }
+        function init(etatImproDto) {
+            STATUS = etatImproDto;
+            SCREENS[STATUS.ecran].init(STATUS);
+        }
+    </script>
+</body>
+</html>
