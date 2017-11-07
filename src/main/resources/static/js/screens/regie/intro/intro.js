@@ -1,7 +1,6 @@
 class Intro extends IScreen {
     constructor(nom, nextScreen) {
         super(nom, nextScreen);
-
     }
 
     init(status) {

@@ -9,3 +9,4 @@ impro-photo/target
 impro-photo/improPhoto.iml
 impro-photo/.git
 impro-photo/git_bash_impro.lnk
+impro-photo/src/main/resources/static/images/*.psd

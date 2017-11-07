@@ -41,4 +41,12 @@ public class MainController {
         return "views/impro/index";
     }
 
+
+
+
+    @RequestMapping("/ws")
+    public String testWS() {
+        return "testWS";
+    }
+
 }

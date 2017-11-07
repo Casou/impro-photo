@@ -19,11 +19,12 @@
             position : absolute;
             top : 60%;
             height : 75px;
-
             left : 50%;
             width : 400px;
             margin-left : -200px;
             font-size : 36px;
+
+            cursor : pointer;
 
             border-radius : 10px;
             z-index : 999;
@@ -42,7 +43,20 @@
 
             color : white;
             text-shadow: 2px 2px 0 #444;
+
+            &[disabled] {
+                cursor : default;
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100;Grey+Flat */
+                background: #eeeeee; /* Old browsers */
+                background: -moz-linear-gradient(top,  #eeeeee 0%, #eeeeee 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,  #eeeeee 0%,#eeeeee 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,  #eeeeee 0%,#eeeeee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+                color : grey;
+            }
+
         }
+
     }
 
     #options {

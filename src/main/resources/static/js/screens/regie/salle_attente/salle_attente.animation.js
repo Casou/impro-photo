@@ -1,0 +1,1 @@
+// Pas d'animation en Régie

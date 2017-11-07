@@ -8,14 +8,22 @@
 
     <title>GIT - Impro diapo</title>
     <link rel="stylesheet"      type="text/css" href="/css/style.css" />
+    <link rel="stylesheet"      type="text/css" href="/css/font/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet/less" type="text/css" href="/css/controlPanel.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/salle_attente.less" />
 
-    <link rel="shortcut icon" HREF="images/Git_logo_rose.png" />
+    <link rel="shortcut icon" HREF="/images/git_logo_rose.png" />
 
     <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript" src="/js/less.js"></script>
     <script type="text/javascript" src="/js/screens/iscreen.js"></script>
+
+    <!--<script src="/webjars/jquery/jquery.min.js"></script>-->
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/js/websocket.js"></script>
 
     <script type="text/javascript">
         let STATUS = {
@@ -29,6 +37,8 @@
             blockMasques : null
         };
         const SCREENS = [];
+
+        const WEBSOCKET_CLIENT = new WebsocketClient();
     </script>
 
 </head>
@@ -38,10 +48,14 @@
     </div>
 
     <div th:replace="views/impro/templates/salle_attente :: salle_attente"><h1 class="error">Salle attente</h1></div>
+    <div th:replace="views/impro/templates/intro :: intro"><h1 class="error">Intro</h1></div>
+
+    <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/common.js'"></script>
 
     <script>
         $(document).ready(function() {
-            SCREENS["SALLE_ATTENTE"] = new SalleAttenteScreen("Salle d'attente");
+            SCREENS["SALLE_ATTENTE"] = new SalleAttenteScreen("Salle d'attente", "INTRO");
+            SCREENS["INTRO"] = new Intro("Intro", "INTRO");
 
             retrieveStatusImpro().then((etatImproDto) => init(etatImproDto));
         });
@@ -66,10 +80,12 @@
                 });
             });
         }
+
         function init(etatImproDto) {
             STATUS = etatImproDto;
             SCREENS[STATUS.ecran].init(STATUS);
         }
     </script>
+
 </body>
 </html>

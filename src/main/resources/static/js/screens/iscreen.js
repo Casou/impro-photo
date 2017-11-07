@@ -1,9 +1,20 @@
 class IScreen {
-    constructor(nom) {
+    constructor(nom, nextScreen) {
         this.nom = nom;
+        this.nextScreen = nextScreen;
+
+        this.subscriptions();
     }
 
     init(status) {
-        alert(`Screen ${ this.nom } not defined`);
+        alert(`Init screen not defined for : ${ this.nom }`);
+    }
+
+    goToNextScreen() {
+        alert(`Go to next screen not defined for : ${ this.nom }`);
+    }
+
+    subscriptions() {
+
     }
 }
