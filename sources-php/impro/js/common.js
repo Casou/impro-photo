@@ -30,7 +30,7 @@ $.ajaxSetup({
 });
 
 function handleAjaxError(resultat, statut, erreur) {
-	var errorMessage = erreur;
+	// let errorMessage = erreur;
 
     console.log(resultat);
     console.log(erreur);
@@ -43,7 +43,7 @@ function handleAjaxError(resultat, statut, erreur) {
 }
 
 function newReturnObject() {
-    var returnObject = new Object();
+    let returnObject = new Object();
     returnObject.status = "KO";
     returnObject.message = "notInitialized";
 

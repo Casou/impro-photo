@@ -15,7 +15,7 @@ public class CategorieMapper extends BasicMapper<CategorieDto, Categorie> {
 
     public CategorieDto toDto(Categorie entity) throws ImproMappingException {
         CategorieDto categorieDto = super.toDto(CategorieDto.class, entity);
-        categorieDto.setPathInError(!new File(IConstants.IFiles.PHOTOS_IMPRO_FOLDER + categorieDto.getPathFolder()).exists());
+        categorieDto.setPathInError(!new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder()).exists());
         return categorieDto;
     }
 

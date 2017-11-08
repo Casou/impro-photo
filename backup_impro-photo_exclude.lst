@@ -1,8 +1,10 @@
-impro-photo/photos/dates/*
-impro-photo/photos/impro/*
-impro-photo/photos/intro/*
-impro-photo/photos/joueurs/*
-impro-photo/photos/videos_intro/*
+impro-photo/medias/photos/dates/*
+impro-photo/medias/photos/impro/*
+impro-photo/medias/photos/intro/*
+impro-photo/medias/photos/joueurs/*
+impro-photo/medias/videos/intro/*
+impro-photo/medias/audios/jingles/*
+impro-photo/medias/audios/playlist/*
 impro-photo/.mvn
 impro-photo/.idea
 impro-photo/target

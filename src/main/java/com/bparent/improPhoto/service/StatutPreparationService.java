@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 @Service
 public class StatutPreparationService {
@@ -28,8 +25,8 @@ public class StatutPreparationService {
     public StatutPreparationDto getStatutPreparation() {
         StatutPreparationDto dto = new StatutPreparationDto();
         dto.setCategories(checkCategories());
-        dto.setVideoPresentationJoueurs(checkVideo(IConstants.PATH_VIDEOS_INTRO_JOUEURS));
-        dto.setVideoPresentationPresentateur(checkVideo(IConstants.PATH_VIDEOS_INTRO_PRESENTATEUR));
+        dto.setVideoPresentationJoueurs(checkVideo(IConstants.IPath.IVideo.VIDEO_INTRO_JOUEURS));
+        dto.setVideoPresentationPresentateur(checkVideo(IConstants.IPath.IVideo.VIDEO_INTRO_PRESENTATEUR));
         dto.setPhotosJoueurs(getNbPhotosJoueurs());
         dto.setRemerciements(getRemerciements());
         dto.setPhotosPresentationDates(getNbPhotosPresentationDates());
@@ -40,7 +37,7 @@ public class StatutPreparationService {
         int nbCategories = 0;
         boolean categorieOk = true;
         for (Categorie cat : categorieDao.findAll()) {
-            File folder = new File(IConstants.PATH_PHOTOS + cat.getPathFolder());
+            File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + cat.getPathFolder());
             if (!folder.exists() || !folder.isDirectory()) {
                 categorieOk = false;
                 break;
@@ -55,7 +52,7 @@ public class StatutPreparationService {
     }
 
     private Boolean checkVideo(String pathVideosIntro) {
-        File folder = new File(IConstants.PATH_PHOTOS + pathVideosIntro);
+        File folder = new File(pathVideosIntro);
         return folder.exists() && folder.isFile();
     }
 
@@ -74,11 +71,11 @@ public class StatutPreparationService {
     }
 
     private Integer getNbPhotosJoueurs() {
-        return getNbPhotosFolder(IConstants.PATH_PHOTOS_JOUEURS);
+        return getNbPhotosFolder(IConstants.IPath.IPhoto.PHOTOS_JOUEURS);
     }
 
     private Integer getNbPhotosPresentationDates() {
-        return getNbPhotosFolder(IConstants.PATH_PHOTOS_PRESENTATION_DATES);
+        return getNbPhotosFolder(IConstants.IPath.IPhoto.PHOTOS_PRESENTATION_DATES);
     }
 
 }
