@@ -24,6 +24,10 @@
         <div id="photosFlottantes">
         </div>
 
+        <div id="options">
+            <button id="handleAnimation" onClick="SCREENS['SALLE_ATTENTE'].toggleAnimation();">Stop animation</button>
+        </div>
+
         <div id="disconnected"><img src="/images/disconnect.png" /></div>
 
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/salle_attente/salle_attente.js'"></script>

@@ -10,7 +10,7 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/handler/photos/**").addResourceLocations("file:" + IConstants.IPath.IPhoto.PHOTOS);
+        registry.addResourceHandler("/handler/"+ IConstants.IPath.IPhoto.PHOTOS + "**").addResourceLocations("file:" + IConstants.IPath.IPhoto.PHOTOS);
         registry.addResourceHandler("/handler/playlist/**").addResourceLocations("file:" + IConstants.IPath.IAudio.AUDIOS_PLAYLIST);
         registry.addResourceHandler("/handler/jingles/**").addResourceLocations("file:" + IConstants.IPath.IAudio.AUDIOS_JINGLES);
 

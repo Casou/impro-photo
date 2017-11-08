@@ -20,47 +20,19 @@ class SalleAttenteScreen extends IScreen {
     subscriptions() {
         super.subscriptions();
         WEBSOCKET_CLIENT.subscribe("/topic/salle_attente/launchImpro", () => this.launchImpro());
+        WEBSOCKET_CLIENT.subscribe("/topic/salle_attente/toggleAnimation", (response) => this.toggleAnimation(response));
     }
-
 
     launchImpro() {
         this.goToNextScreen();
+    }
 
-        /*
-        let returnObject = newReturnObject();
-        let contentToInsert = null;
-
-        $.ajax({
-            type: 'POST',
-            url: 'intro.php',
-            dataType : 'html',
-            async : false,
-            success: function(data, textStatus, jqXHR) {
-                // clearInterval(CLEAR_IMAGE_INTERVAL);
-                // isAnimationActive = false;
-                contentToInsert = data;
-
-                returnObject.status = "OK";
-                returnObject.message = "";
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                // alert("Une erreur est survenue : \n" + jqXHR.responseText);
-                console.log(jqXHR);
-                returnObject.status = "KO";
-                returnObject.message = jqXHR.responseText;
-            }
-        });
-
-        // $('section').addClass('animate_intro');
-        $('section').fadeOut(ANIMATION_FADE_OUT);
-
-        setTimeout(function() {
-            stopAnimation();
-            $('#content').html(contentToInsert);
-            $('#currentScreen').val("INTRO");
-        }, ANIMATION_FADE_OUT + 500);
-
-        return returnObject;
-        */
+    toggleAnimation(responseJson) {
+        let response = JSON.parse(responseJson.body);
+        if (response.message === "false") {
+            this.animation.stopAnimation();
+        } else {
+            this.animation.startAnimation();
+        }
     }
 }

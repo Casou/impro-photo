@@ -2,6 +2,7 @@
 class SalleAttenteScreen extends IScreen {
     constructor(nom, nextScreen) {
         super(nom, nextScreen);
+        this.animationStarted = true;
     }
 
     init(status) {
@@ -29,6 +30,19 @@ class SalleAttenteScreen extends IScreen {
     sendLaunchImpro() {
         $('#salle_attente main button').attr("disabled", true);
         WEBSOCKET_CLIENT.sendMessage("/app/action/launchImpro", {});
+    }
+
+    toggleAnimation() {
+        this.animationStarted = !this.animationStarted;
+        if (!this.animationStarted) {
+            $('#options button#handleAnimation').html("Start animation");
+        } else {
+            $('#options button#handleAnimation').html("Stop animation");
+        }
+
+        WEBSOCKET_CLIENT.sendMessage("/app/action/toggleAnimation", {
+            action : this.animationStarted
+        });
     }
 
 }
