@@ -6,14 +6,18 @@ import com.bparent.improPhoto.domain.EtatImpro;
 import com.bparent.improPhoto.dto.EtatImproDto;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EtatImproServiceTest {
@@ -51,6 +55,34 @@ public class EtatImproServiceTest {
         assertEquals(Integer.valueOf(4), statut.getPhotoCourante());
         assertEquals(Arrays.asList(4, 5, 6), statut.getPhotosChoisies());
         assertEquals("statut_diapo1", statut.getStatutDiapo());
+    }
+
+    @Test
+    public void shouldResetImproWithDefaultValues() {
+        ArgumentCaptor<EtatImpro> etatImproCaptor = ArgumentCaptor.forClass(EtatImpro.class);
+        this.etatImproService.resetImpro();
+
+        verify(this.statutDao, times(8)).save(etatImproCaptor.capture());
+        List<EtatImpro> allEntities = etatImproCaptor.getAllValues();
+        int i = 0;
+        assertEquals("ecran", allEntities.get(i++).getChamp());
+        assertEquals("id_ecran", allEntities.get(i++).getChamp());
+        assertEquals("type_ecran", allEntities.get(i++).getChamp());
+        assertEquals("block_masques", allEntities.get(i++).getChamp());
+        assertEquals("integralite", allEntities.get(i++).getChamp());
+        assertEquals("photo_courante", allEntities.get(i++).getChamp());
+        assertEquals("photos_choisies", allEntities.get(i++).getChamp());
+        assertEquals("statut_diapo", allEntities.get(i++).getChamp());
+
+        i = 0;
+        assertEquals("SALLE_ATTENTE", allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
     }
 
 }

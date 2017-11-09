@@ -25,3 +25,7 @@ jQuery.fn.rotate = function(degrees) {
         'transform' : 'rotate('+ degrees +'deg)'});
     return $(this);
 };
+
+function refresh() {
+    location.reload();
+}

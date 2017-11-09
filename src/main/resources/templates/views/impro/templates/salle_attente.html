@@ -12,7 +12,6 @@
 <body>
 
     <div id="salle_attente" class="content_hidden" th:fragment="salle_attente">
-
         <header>
             <img src="/images/git_logo_large_transparent.png" />
         </header>
@@ -32,6 +31,9 @@
 
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/salle_attente/salle_attente.js'"></script>
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/salle_attente/salle_attente.animation.js'"></script>
+        <script type="text/javascript">
+            SCREENS["SALLE_ATTENTE"] = new SalleAttenteScreen("Salle d'attente", "INTRO");
+        </script>
     </div>
 </body>
 </html>

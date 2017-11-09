@@ -7,8 +7,8 @@ let IS_PLAYING = false;
 $(document).ready(function () {
 
     $("body").append(`
-    <div id="controlPanelTab" class="collapsed metal-bg" onClick="$('#controlPanelTab, #controlPanel').toggleClass('collapsed');">Panneau de contrôle</div>
-    <div id="controlPanel" class="collapsed metal-bg">
+    <div id="controlPanelTab" class="not-collapsed metal-bg" onClick="$('#controlPanelTab, #controlPanel').toggleClass('collapsed');">Panneau de contrôle</div>
+    <div id="controlPanel" class="not-collapsed metal-bg">
         <h1>Panneau de contrôle</h1>
         <div id="playlist">
             <h2>Playlist</h2>
@@ -33,6 +33,10 @@ $(document).ready(function () {
                 <li>Loading...</li>            
             </ul>
             <audio id="jingle" preload="true"></audio>
+        </div>
+        <div id="controlActionButton">
+            <button id="refresh" class="metal radial" onClick="refreshImpro();"><img src="/images/refresh.png" /></button>
+            <button id="restart" class="metal radial" onClick="restartImpro();"><img src="/images/restart.png" /></button>
         </div>
     </div>
     `);
@@ -244,4 +248,26 @@ function stopJingle() {
     $('button.jingle span').removeClass("fa-stop").addClass("fa-play");
     $("#jingles audio#jingle")[0].pause();
     $("#jingles audio#jingle")[0].currentTime = 0;
+}
+
+
+
+
+
+
+
+/* ***********************************
+ *************  ACTIONS  *************
+ *********************************** */
+
+WEBSOCKET_CLIENT.subscribe("/topic/general/refresh", () => refresh());
+function restartImpro() {
+    if (confirm("Voulez-vous redémarrer l'improvisation ? Cela remettra tous les statuts à zéro.")) {
+        WEBSOCKET_CLIENT.sendMessage("/app/action/resetImpro", {});
+    }
+}
+function refreshImpro() {
+    if (confirm("Voulez-vous rafraichir l'affichage ?")) {
+        WEBSOCKET_CLIENT.sendMessage("/app/action/refresh", {});
+    }
 }

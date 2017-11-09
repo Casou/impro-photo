@@ -1,0 +1,1 @@
+WEBSOCKET_CLIENT.subscribe("/topic/general/refresh", () => refresh());

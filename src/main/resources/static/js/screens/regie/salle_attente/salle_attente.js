@@ -29,7 +29,9 @@ class SalleAttenteScreen extends IScreen {
 
     sendLaunchImpro() {
         $('#salle_attente main button').attr("disabled", true);
-        WEBSOCKET_CLIENT.sendMessage("/app/action/launchImpro", {});
+        WEBSOCKET_CLIENT.sendMessage("/app/action/launchImpro", {
+            newScreen : this.nextScreen
+        });
     }
 
     toggleAnimation() {

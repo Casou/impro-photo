@@ -54,9 +54,6 @@
 
     <script>
         $(document).ready(function() {
-            SCREENS["SALLE_ATTENTE"] = new SalleAttenteScreen("Salle d'attente", "INTRO");
-            SCREENS["INTRO"] = new Intro("Intro", "INTRO");
-
             retrieveStatusImpro().then((etatImproDto) => init(etatImproDto));
         });
 

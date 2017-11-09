@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainAjaxController {
 
     @Autowired
-    private EtatImproService statutService;
+    private EtatImproService etatImproService;
 
     @Autowired
     private StatutPreparationService statutPreparationService;
@@ -26,7 +26,7 @@ public class MainAjaxController {
 
     @RequestMapping(value = "/etatImpro", method = RequestMethod.GET)
     public EtatImproDto getEtatImpro() {
-        return statutService.getStatut();
+        return etatImproService.getStatut();
     }
 
 }

@@ -38,7 +38,22 @@ public interface IConstants {
             public static final String VIDEO_INTRO_JOUEURS = VIDEO_INTRO + "joueurs.mp4";
             public static final String VIDEO_INTRO_PRESENTATEUR = VIDEO_INTRO + "presentateur.mp4";
         }
+    }
 
+    public interface IEtatImproField {
+        public static final String ECRAN = "ecran";
+        public static final String ID_ECRAN = "id_ecran";
+        public static final String TYPE_ECRAN = "type_ecran";
+        public static final String BLOCK_MASQUES = "block_masques";
+        public static final String INTEGRALITE = "integralite";
+        public static final String PHOTO_COURANTE = "photo_courante";
+        public static final String PHOTOS_CHOISIES = "photos_choisies";
+        public static final String STATUT_DIAPO = "statut_diapo";
+    }
+
+
+    public interface IImpro {
+        public static final String FIRST_SCREEN = "SALLE_ATTENTE";
     }
 
 }
