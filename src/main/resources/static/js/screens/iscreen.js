@@ -1,7 +1,8 @@
 class IScreen {
-    constructor(nom, nextScreen) {
+    constructor(nom, nextScreen, wsClient) {
         this.nom = nom;
         this.nextScreen = nextScreen;
+        this.wsClient = wsClient;
 
         this.subscriptions();
     }

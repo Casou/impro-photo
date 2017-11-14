@@ -1,0 +1,78 @@
+#intro {
+    position: absolute;
+    height: 100%;
+    width : 100%;
+
+    div.video {
+        position : absolute;
+        height : 100%;
+        text-align: center;
+    }
+}
+
+.regie {
+    #intro {
+        h1 {
+            margin-top : 0;
+        }
+
+        div.video#divpresentateur { left : 5px; }
+        div.video#divjoueurs { right : 2%; }
+        div.video {
+            position: absolute;
+            top : 50%;
+            height: 390px;
+            margin-top : -195px;
+            width: 48%;
+
+            div.videoPanel {
+
+                video {
+                    display: inline-block;
+                    top: 0;
+                    transform: none;
+                    height : 280px;
+                    border : 1px dotted grey;
+                }
+
+                div.videoControls {
+                    margin-top : 10px;
+
+                    div.progress {
+                        display: inline-block;
+
+                        height: 8px;
+                        width : 60%;
+                        margin-left : 15px;
+
+                        background: black;
+                        border-radius : 0;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+.spectateur {
+    #intro {
+        h1, div.videoControls {
+            display: none;
+        }
+
+        #videoWrapper, div.video, div.videoPanel {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        video {
+            position: absolute;
+            top: 50%;
+            left: 2%;
+            max-height: 96%;
+            max-width: 96%;
+            transform: translateY(-50%);
+        }
+    }
+}

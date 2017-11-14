@@ -28,7 +28,7 @@ $dates = MetierDates::getFutureDates();
 </head>
 <body id="index">
 	<header>
-		<img src="style/images/git_logo_rose.png" />
+		<img src="style/images/logo/git_logo_rose.png" />
 	</header>
 	
 	<main>

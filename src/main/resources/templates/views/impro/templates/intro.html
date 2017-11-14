@@ -12,11 +12,50 @@
 <body>
 
     <div id="intro" class="content_hidden" th:fragment="intro">
-        <h1>Intro</h1>
+        <div id="videoWrapper">
+            <div id="divpresentateur" class="video">
+                <h1>Présentateur</h1>
+                <div class="videoPanel">
+                    <video id="videopresentateur">
+                        <source src="/handler/videos/intro/presentateur.mp4" type="video/mp4" />
+                    </video>
+                    <div class="videoControls">
+                        <button class="play" onClick="intro.videoHandler.playVideo('presentateur');"><span class="fa fa-play" aria-hidden="true"></span></button>
+                        <button class="stop" onClick="intro.videoHandler.stopVideo('presentateur');"><span class="fa fa-stop" aria-hidden="true"></span></button>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="divjoueurs" class="video">
+                <h1>Joueurs</h1>
+                <div class="videoPanel">
+                    <video id="videojoueurs">
+                        <source src="/handler/videos/intro/joueurs.mp4" type="video/mp4" />
+                    </video>
+                    <div class="videoControls">
+                        <button class="play" onClick="intro.videoHandler.playVideo('joueurs');"><span class="fa fa-play" aria-hidden="true"></span></button>
+                        <button class="stop" onClick="intro.videoHandler.stopVideo('joueurs');"><span class="fa fa-stop" aria-hidden="true"></span></button>
+                        <div class="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divAction">
+            <button onClick="intro.sendGoToNextScreen();">&gt;&gt; Catégories</button>
+        </div>
 
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/intro/intro.js'"></script>
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/intro/intro.videos.js'"></script>
         <script type="text/javascript">
-            SCREENS["INTRO"] = new Intro("Intro", "INTRO");
+            let intro = new Intro("INTRO", null, WEBSOCKET_CLIENT);
+            SCREENS["INTRO"] = intro;
+
+            $('#intro video').on("timeupdate", function() { intro.videoHandler.onTimeUpdate(this); });
+
+            $(".progress").progressbar({
+                value: 0
+            });
         </script>
     </div>
 </body>

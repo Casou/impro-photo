@@ -1,6 +1,8 @@
 package com.bparent.improPhoto.service;
 
+import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dao.EtatImproDao;
+import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.EtatImpro;
 import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.util.IConstants;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,6 +18,10 @@ public class EtatImproService {
 
     @Autowired
     private EtatImproDao etatImproDao;
+
+    @Autowired
+    private CategorieDao categorieDao;
+
 
     public EtatImproDto getStatut() {
         EtatImproDto etatImpro = new EtatImproDto();
@@ -81,5 +88,9 @@ public class EtatImproService {
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTO_COURANTE, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTOS_CHOISIES, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.STATUT_DIAPO, null));
+
+        List<Categorie> allCategories = categorieDao.findAll();
+        allCategories.forEach(categorie -> categorie.setTermine(false));
+        categorieDao.save(allCategories);
     }
 }

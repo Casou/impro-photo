@@ -1,0 +1,14 @@
+package com.bparent.improPhoto.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+public class CategorieListDto {
+
+    private List<CategorieDto> categoryList;
+
+}

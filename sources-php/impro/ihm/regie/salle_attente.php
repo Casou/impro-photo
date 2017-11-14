@@ -7,7 +7,7 @@ include_once $pathToPhpRoot.'constantsPrivate.php';
 ?>
 <section id="salle_attente">
 	<header>
-		<img src="<?= APPLICATION_ABSOLUTE_URL ?>style/images/git_logo_large.png" />
+		<img src="<?= APPLICATION_ABSOLUTE_URL ?>style/images/logo/git_logo_large.png" />
 	</header>
 	
 	<main>

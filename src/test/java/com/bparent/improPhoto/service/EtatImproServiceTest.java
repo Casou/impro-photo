@@ -1,9 +1,11 @@
 package com.bparent.improPhoto.service;
 
+import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dao.EtatImproDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.EtatImpro;
 import com.bparent.improPhoto.dto.EtatImproDto;
+import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -11,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,10 +31,17 @@ public class EtatImproServiceTest {
     @Mock
     private EtatImproDao statutDao;
 
+    @Mock
+    private CategorieDao categorieDao;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
         when(this.statutDao.findAll()).thenReturn(() -> new ArrayList<EtatImpro>().iterator());
+        when(this.categorieDao.findAll()).thenReturn(Arrays.asList(
+                new Categorie(BigInteger.valueOf(1), "nom1", CategorieTypeEnum.PHOTO, "pathFolder1", true, 1),
+                new Categorie(BigInteger.valueOf(2), "nom2", CategorieTypeEnum.PHOTO, "pathFolder2", false, 2)
+        ));
     }
 
     @Test
@@ -83,6 +93,18 @@ public class EtatImproServiceTest {
         assertNull(allEntities.get(i++).getValeur());
         assertNull(allEntities.get(i++).getValeur());
         assertNull(allEntities.get(i++).getValeur());
+    }
+
+    @Test
+    public void shouldResetCategorieTermine() {
+        ArgumentCaptor<List> categoriesCaptor = ArgumentCaptor.forClass(List.class);
+
+        this.etatImproService.resetImpro();
+
+        verify(this.categorieDao).save(categoriesCaptor.capture());
+        List<Categorie> allCategories = categoriesCaptor.getValue();
+        assertFalse(allCategories.get(0).getTermine());
+        assertFalse(allCategories.get(1).getTermine());
     }
 
 }

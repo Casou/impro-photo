@@ -1,7 +1,7 @@
 
 class SalleAttenteScreen extends IScreen {
-    constructor(nom, nextScreen) {
-        super(nom, nextScreen);
+    constructor(nom, nextScreen, wsClient) {
+        super(nom, nextScreen, wsClient);
         this.animationStarted = true;
     }
 
@@ -14,13 +14,13 @@ class SalleAttenteScreen extends IScreen {
 
     goToNextScreen(newStatus) {
         $('#salle_attente').fadeOut(5000, (function() {
-            SCREENS[this.nextScreen].init(newStatus);
+            this.nextScreen.init(newStatus);
         }).bind(this));
     }
 
     subscriptions() {
         super.subscriptions();
-        WEBSOCKET_CLIENT.subscribe("/topic/salle_attente/launchImpro", () => this.launchImpro());
+        this.wsClient.subscribe("/topic/salle_attente/launchImpro", () => this.launchImpro());
     }
 
     launchImpro() {
@@ -29,8 +29,8 @@ class SalleAttenteScreen extends IScreen {
 
     sendLaunchImpro() {
         $('#salle_attente main button').attr("disabled", true);
-        WEBSOCKET_CLIENT.sendMessage("/app/action/launchImpro", {
-            newScreen : this.nextScreen
+        this.wsClient.sendMessage("/app/action/launchImpro", {
+            newScreen : this.nextScreen.nom
         });
     }
 
@@ -42,7 +42,7 @@ class SalleAttenteScreen extends IScreen {
             $('#options button#handleAnimation').html("Stop animation");
         }
 
-        WEBSOCKET_CLIENT.sendMessage("/app/action/toggleAnimation", {
+        this.wsClient.sendMessage("/app/action/toggleAnimation", {
             action : this.animationStarted
         });
     }

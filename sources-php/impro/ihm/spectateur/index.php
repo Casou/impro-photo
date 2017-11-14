@@ -37,7 +37,7 @@ include_once $pathToPhpRoot.'constantsPrivate.php';
 	<div id="debug"></div>
 
 	<div id="watermark">
-		<img src="<?= APPLICATION_ABSOLUTE_URL ?>style/images/git_logo_gris.png" />
+		<img src="<?= APPLICATION_ABSOLUTE_URL ?>style/images/logo/git_logo_gris.png" />
 	</div>
 
 

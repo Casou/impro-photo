@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
 import com.bparent.improPhoto.exception.ImproControllerException;
 import com.bparent.improPhoto.exception.ImproServiceException;
+import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.service.PreparationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +21,10 @@ public class PreparationAjaxController {
     @Autowired
     private PreparationService preparationService;
 
+    @Autowired
+    private EtatImproService etatImproService;
+
+
     @PostMapping(value = "/preparation", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> savePreparation(@RequestBody PreparationForm form) throws ImproControllerException {
 
@@ -28,6 +33,8 @@ public class PreparationAjaxController {
         } catch (ImproServiceException e) {
             throw new ImproControllerException("Error while saving preparation impro", e);
         }
+
+        etatImproService.resetImpro();
 
         return new SuccessResponse("ok");
     }

@@ -12,6 +12,7 @@ import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.mapper.BasicMapper;
 import com.bparent.improPhoto.mapper.CategorieMapper;
 import com.bparent.improPhoto.mapper.DateImproMapper;
+import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 public class ListController {
 
     @Autowired
-    private CategorieDao categorieDao;
+    private CategorieService categorieService;
 
     @Autowired
     private DateImproDao dateImproDao;
@@ -37,9 +38,6 @@ public class ListController {
     private RemerciementDao remerciementDao;
 
 
-
-    @Autowired
-    private CategorieMapper categorieMapper;
 
     @Autowired
     private DateImproMapper dateMapper;
@@ -51,7 +49,7 @@ public class ListController {
 
     @RequestMapping("/categories")
     public List<CategorieDto> getAllCategories() throws ImproMappingException {
-        return categorieMapper.toDto(this.categorieDao.findAll());
+        return this.categorieService.findAll();
     }
 
     @RequestMapping("/dates")

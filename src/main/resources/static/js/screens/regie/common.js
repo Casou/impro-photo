@@ -7,8 +7,8 @@ let IS_PLAYING = false;
 $(document).ready(function () {
 
     $("body").append(`
-    <div id="controlPanelTab" class="not-collapsed metal-bg" onClick="$('#controlPanelTab, #controlPanel').toggleClass('collapsed');">Panneau de contrôle</div>
-    <div id="controlPanel" class="not-collapsed metal-bg">
+    <div id="controlPanelTab" class="collapsed metal-bg" onClick="$('#controlPanelTab, #controlPanel').toggleClass('collapsed');">Panneau de contrôle</div>
+    <div id="controlPanel" class="collapsed metal-bg">
         <h1>Panneau de contrôle</h1>
         <div id="playlist">
             <h2>Playlist</h2>
@@ -262,12 +262,12 @@ function stopJingle() {
 
 WEBSOCKET_CLIENT.subscribe("/topic/general/refresh", () => refresh());
 function restartImpro() {
-    if (confirm("Voulez-vous redémarrer l'improvisation ? Cela remettra tous les statuts à zéro.")) {
+    if (confirm("Voulez-vous redémarrer l'improvisation ? Cela remettra tous les statuts à zéro et rafraichira la régie ET le spectateur.")) {
         WEBSOCKET_CLIENT.sendMessage("/app/action/resetImpro", {});
     }
 }
 function refreshImpro() {
-    if (confirm("Voulez-vous rafraichir l'affichage ?")) {
+    if (confirm("Voulez-vous rafraichir l'affichage de la régie ET du spectateur ?")) {
         WEBSOCKET_CLIENT.sendMessage("/app/action/refresh", {});
     }
 }

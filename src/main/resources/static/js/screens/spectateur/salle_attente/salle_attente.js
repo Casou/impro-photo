@@ -1,8 +1,7 @@
-const ANIMATION_FADE_OUT = 4000;
 
 class SalleAttenteScreen extends IScreen {
-    constructor(nom, nextScreen) {
-        super(nom, nextScreen);
+    constructor(nom, nextScreen, wsClient) {
+        super(nom, nextScreen, wsClient);
 
         this.animation = new SalleAttenteAnimation();
     }
@@ -13,14 +12,14 @@ class SalleAttenteScreen extends IScreen {
 
     goToNextScreen(newStatus) {
         $('#salle_attente').fadeOut(5000, (function() {
-            SCREENS[this.nextScreen].init(newStatus);
+            this.nextScreen.init(newStatus);
         }).bind(this));
     }
 
     subscriptions() {
         super.subscriptions();
-        WEBSOCKET_CLIENT.subscribe("/topic/salle_attente/launchImpro", () => this.launchImpro());
-        WEBSOCKET_CLIENT.subscribe("/topic/salle_attente/toggleAnimation", (response) => this.toggleAnimation(response));
+        this.wsClient.subscribe("/topic/salle_attente/launchImpro", () => this.launchImpro());
+        this.wsClient.subscribe("/topic/salle_attente/toggleAnimation", (response) => this.toggleAnimation(response));
     }
 
     launchImpro() {

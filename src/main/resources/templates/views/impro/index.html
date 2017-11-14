@@ -8,11 +8,14 @@
 
     <title>GIT - Impro diapo</title>
     <link rel="stylesheet"      type="text/css" href="/css/style.css" />
+    <link rel="stylesheet"      type="text/css" href="/css/jquery-ui/jquery-ui.css" />
     <link rel="stylesheet"      type="text/css" href="/css/font/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet/less" type="text/css" href="/css/controlPanel.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/salle_attente.less" />
+    <link rel="stylesheet/less" type="text/css" href="/css/views/impro/intro.less" />
+    <link rel="stylesheet/less" type="text/css" href="/css/views/impro/categories.less" />
 
-    <link rel="shortcut icon" HREF="/images/git_logo_rose.png" />
+    <link rel="shortcut icon" HREF="/images/logo/logo_photo.ico" />
 
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/jquery-ui.js"></script>
@@ -49,13 +52,21 @@
 
     <div th:replace="views/impro/templates/salle_attente :: salle_attente"><h1 class="error">Salle attente</h1></div>
     <div th:replace="views/impro/templates/intro :: intro"><h1 class="error">Intro</h1></div>
+    <div th:replace="views/impro/templates/categories :: categories"><h1 class="error">Categories</h1></div>
 
     <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/common.js'"></script>
 
     <script>
         $(document).ready(function() {
+            linkNextScreens();
             retrieveStatusImpro().then((etatImproDto) => init(etatImproDto));
         });
+
+        function linkNextScreens() {
+            SCREENS["SALLE_ATTENTE"].nextScreen = SCREENS["INTRO"];
+            SCREENS["INTRO"].nextScreen = SCREENS["CATEGORIES"];
+            SCREENS["CATEGORIES"].nextScreen = null;
+        }
 
         function retrieveStatusImpro() {
             return new Promise((resolve, reject) => {
@@ -80,6 +91,7 @@
 
         function init(etatImproDto) {
             STATUS = etatImproDto;
+            console.log(STATUS);
             SCREENS[STATUS.ecran].init(STATUS);
         }
     </script>
