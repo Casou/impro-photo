@@ -5,7 +5,7 @@ class Intro extends IScreen {
     }
 
     init(status) {
-        $("#intro").fadeIn(5000);
+        $("#intro").fadeIn(ANIMATION_FADE_DURATION);
     }
 
     sendGoToNextScreen() {
@@ -16,7 +16,7 @@ class Intro extends IScreen {
 
     goToNextScreen(responseJson) {
         let categoryList = JSON.parse(responseJson.body).categoryList;
-        $('#intro').fadeOut(5000, (function() {
+        $('#intro').fadeOut(ANIMATION_FADE_DURATION, (function() {
             this.nextScreen.init(null, categoryList);
         }).bind(this));
     }

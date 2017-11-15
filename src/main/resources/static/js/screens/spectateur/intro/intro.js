@@ -5,13 +5,13 @@ class Intro extends IScreen {
     }
 
     init(status) {
-        $("#intro").fadeIn(5000);
+        $("#intro").fadeIn(ANIMATION_FADE_DURATION);
         $("html").addClass("black");
     }
 
     goToNextScreen(responseJson) {
         let categoryList = JSON.parse(responseJson.body).categoryList;
-        $('#intro').fadeOut(5000, (function() {
+        $('#intro').fadeOut(ANIMATION_FADE_DURATION, (function() {
             $("html").removeClass("black");
             this.nextScreen.init(null, categoryList);
         }).bind(this));

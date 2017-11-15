@@ -1,10 +1,12 @@
 class Categories extends IScreen {
     constructor(nom, nextScreen, wsClient) {
         super(nom, nextScreen, wsClient);
+
+        this.categories = [];
     }
 
     init(status, categoryList) {
-        $("#categories").fadeIn(5000);
+        $("#categories").fadeIn(ANIMATION_FADE_DURATION);
         if (categoryList != undefined) {
             this.renderCategoryList(categoryList);
         } else {
@@ -40,18 +42,36 @@ class Categories extends IScreen {
     }
 
     renderCategoryList(categoryList) {
+        this.categories = [];
         let html = "";
-        $(categoryList).each(function(index, category) {
+        categoryList.forEach(function(category, index) {
             let cssClass = category.termine ? "termine" : "";
+            // animated flipInY
             html += `
-            <li>
+            <li id="categorie_${index}" index="${index}" class="transparent" style="animation-delay : ${ 3 + (index / 10) }s;">
                 <a href="#" class="${ cssClass }" onClick="launchCategorie(${ category.id }); return false;">
                     ${ category.nom }
                 </a>            
             </li>
             `;
-        });
+            this.categories.push(`categorie_${index}`);
+        }.bind(this));
         $("ul#categoryList").html(html);
+    }
+
+    showNextCategory() {
+        let nextCategory = $(".transparent").first();
+        if (nextCategory != null && nextCategory.length > 0) {
+            $(nextCategory).removeClass("transparent");
+        }
+        this.wsClient.sendMessage("/app/action/showNextCategory", { });
+    }
+
+    showAllCategories() {
+        $("li.transparent").each(function(index, li) {
+            setTimeout(() => { $(li).removeClass("transparent"); }, index * 0.2 * 1000);
+        });
+        this.wsClient.sendMessage("/app/action/showAllCategories", { });
     }
 
 }

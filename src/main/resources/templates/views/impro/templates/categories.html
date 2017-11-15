@@ -13,10 +13,14 @@
     <div id="categories" class="content_hidden" th:fragment="categories">
         <h1>Catégories</h1>
 
-        <div id="showOneCategories" class="button" onClick="afficheNext();">Afficher 1 catégorie</div>
-        <div id="showCategories" class="button" onClick="afficheListe();">Afficher les catégories</div>
+        <div id="displayButtons">
+            <button id="showOneCategory" class="small" onClick="categories.showNextCategory();">Afficher 1 catégorie</button>
+            <button id="showCategories" class="small" onClick="categories.showAllCategories();">Afficher les catégories</button>
+        </div>
 
-        <div id="retourIntro" class="button nextScreen" onClick="goRemerciements();">Remerciements >></div>
+        <div class="divAction">
+            <button onClick="categories.goToNextScreen();">&gt;&gt; Remerciements</button>
+        </div>
 
         <ul id="categoryList">
         </ul>
@@ -27,6 +31,14 @@
         <script type="text/javascript">
             let categories = new Categories("CATEGORIES", null, WEBSOCKET_CLIENT);
             SCREENS["CATEGORIES"] = categories;
+
+            function afficheNextCategorie() {
+
+            }
+
+            function afficheListeCategories() {
+
+            }
 
         </script>
     </div>

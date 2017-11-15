@@ -1,11 +1,8 @@
 package com.bparent.improPhoto.controller.websocket;
 
-import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.dto.CategorieListDto;
-import com.bparent.improPhoto.dto.json.ActionDto;
 import com.bparent.improPhoto.dto.json.MessageJson;
-import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.NewScreenDto;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.service.CategorieService;
