@@ -88,7 +88,6 @@ function getAllSongs() {
             url: '/list/playlistSongs',
             dataType: 'json',
             encoding: "UTF-8",
-            dataType: 'json',
             contentType: 'application/json'
         })
             .done(function (allSongs) {
@@ -199,7 +198,6 @@ function getAllJingles() {
             url: '/list/jingles',
             dataType: 'json',
             encoding: "UTF-8",
-            dataType: 'json',
             contentType: 'application/json'
         })
             .done(function (allSongs) {

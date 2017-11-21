@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div id="categories" class="content_hidden" th:fragment="categories">
+    <div id="categorie_list" class="content_hidden" th:fragment="categorie_list">
         <h1>Catégories</h1>
 
         <div id="displayButtons">
@@ -19,27 +19,18 @@
         </div>
 
         <div class="divAction">
-            <button onClick="categories.goToNextScreen();">&gt;&gt; Remerciements</button>
+            <button onClick="categorie_list.goToNextScreen();">&gt;&gt; Remerciements</button>
         </div>
 
         <ul id="categoryList">
         </ul>
 
 
-        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categories/categories.js'"></script>
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie_list/categorie_list.js'"></script>
 
         <script type="text/javascript">
-            let categories = new Categories("CATEGORIES", null, WEBSOCKET_CLIENT);
+            let categories = new CategorieList("CATEGORIES", null, WEBSOCKET_CLIENT);
             SCREENS["CATEGORIES"] = categories;
-
-            function afficheNextCategorie() {
-
-            }
-
-            function afficheListeCategories() {
-
-            }
-
         </script>
     </div>
 

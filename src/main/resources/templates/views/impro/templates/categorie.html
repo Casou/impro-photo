@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+    <title>GIT - Impro diapo - Categorie</title>
+</head>
+<body>
+
+    <div id="categorie" class="content_hidden" th:fragment="categorie">
+
+        <div id="category_selected" class="animated">
+            <h1 class="title animated" style="text-align: left; margin-left: 10px;">Catégorie</h1>
+            <div id="separator_category_selected_line1" class="separator_line hline"></div>
+            <div id="separator_category_selected_line2" class="separator_line hline"></div>
+            <div id="separator_category_selected_line3" class="separator_line vline"></div>
+            <div id="category_selected_name" class="animated"></div>
+        </div>
+
+        <div id="categorie_title">
+        </div>
+        <div id="div_images">
+        </div>
+
+        <div id="divCategoryActions">
+            <button id="validateSelection">Valider sélection</button>
+            <button id="selectAll">Sélectionner tout</button>
+            <button id="photoSound">Son photo</button>
+
+            <audio id="photoSoundAudio"></audio>
+        </div>
+
+        <div class="divAction">
+            <button onClick="categorie.goToNextScreen();">&gt;&gt; Liste des catégories</button>
+        </div>
+
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie/categorie.js'"></script>
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie/categorie.animation.js'"></script>
+        <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie/categorie.animation.normal.js'"></script>
+
+        <script type="text/javascript">
+            let categorie = new Categorie("CATEGORY", null, WEBSOCKET_CLIENT);
+            SCREENS["CATEGORY"] = categorie;
+
+            function toggleCategorie() {
+                if ($("#category_selected").hasClass("fadeInRight")) {
+                    $("#category_selected").addClass("fadeOutRight").removeClass("fadeInRight");
+                    $("#category_selected h1, #category_selected #category_selected_name").removeClass("bounceInRight");
+                } else {
+                    $("#category_selected").addClass("fadeInRight").removeClass("fadeOutRight");
+                    $("#category_selected h1, #category_selected #category_selected_name").addClass("bounceInRight");
+                }
+            }
+        </script>
+    </div>
+
+</body>
+</html>

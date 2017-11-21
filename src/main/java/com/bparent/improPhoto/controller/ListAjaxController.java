@@ -1,6 +1,5 @@
 package com.bparent.improPhoto.controller;
 
-import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dao.DateImproDao;
 import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Remerciement;
@@ -10,7 +9,6 @@ import com.bparent.improPhoto.dto.RemerciementDto;
 import com.bparent.improPhoto.dto.SongDto;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.mapper.BasicMapper;
-import com.bparent.improPhoto.mapper.CategorieMapper;
 import com.bparent.improPhoto.mapper.DateImproMapper;
 import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/list")
-public class ListController {
+public class ListAjaxController {
 
     @Autowired
     private CategorieService categorieService;

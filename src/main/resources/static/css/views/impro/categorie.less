@@ -1,0 +1,142 @@
+#category_selected {
+    position : absolute;
+    top : 20px;
+    right: 0;
+    width: 300px;
+    height : 100px;
+    color: rgba(2, 255, 255, 0.8);
+    opacity : 0;
+    animation-fill-mode: forwards;
+
+    h1 {
+        margin : 0;
+        padding : 0;
+        font-size : 30px;
+        -webkit-animation-delay: 0.5s; /* Safari 4.0 - 8.0 */
+        animation-delay: 0.5s;
+        text-shadow: none;
+    }
+
+    #category_selected_name {
+        color : white;
+        margin-left : 15px;
+        margin-top : -60px;
+        font-size : 30px;
+        -webkit-animation-delay: 1s; /* Safari 4.0 - 8.0 */
+        animation-delay: 1s;
+    }
+
+
+    .separator_line  {
+        position : relative;
+        border : 1px solid #e564c2;
+        background-color : #e564c2;
+
+    }
+
+    #separator_category_selected_line1 {
+        height : 2px;
+        width: 350px;
+        margin-left : -50px;
+    }
+
+    #separator_category_selected_line2 {
+        height : 2px;
+        width: 320px;
+        margin-left : -20px;
+        margin-top: 7px;
+    }
+
+    #separator_category_selected_line3 {
+        height : 120px;
+        width: 2px;
+        margin-left : 0px;
+        margin-top: -50px;
+    }
+
+}
+
+
+div#categorie_title {
+    h1 {
+        margin-top : 60px;
+        text-align : center;
+    }
+}
+
+
+
+div#div_images {
+    text-align: center;
+    position : absolute;
+
+    div.imageWrapper {
+        position : absolute;
+
+        div.pictureOverview {
+            position: absolute;
+            margin : 20px;
+            height: 100px;
+            width: 100px;
+            vertical-align: middle;
+
+            border-radius : 2px;
+
+            img {
+                display : inline-block;
+                max-width: 100px;
+                max-height: 100px;
+                width: 100%;
+                border-radius : 5px;
+            }
+        }
+
+        &.selected {
+            div.pictureNumber {
+                -webkit-transition : box-shadow 0.5s linear, color 0.5s linear;
+                transition : box-shadow 0.5s linear, color 0.5s linear;
+
+                box-shadow: 0 0 10px #999, 0 0 20px #999, 0 0 30px #999;
+                color: #fe42cc;
+            }
+        }
+
+        div.pictureNumber {
+            position : absolute;
+            opacity : 1;
+
+            width : 100px;
+            line-height : 100px;
+            height : 100px;
+            margin : 20px;
+            font-size: 60px;
+
+            border-radius : 2px;
+
+            text-align : center;
+            color : black;
+            cursor : pointer;
+            border : 2px outset #d4d4d4;
+
+
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b4b4b4+0,d4d4d4+24,e0e0e0+52,cacaca+79,b4b4b4+100 */
+            background: rgb(180,180,180); /* Old browsers */
+            background: -moz-linear-gradient(left,  rgba(180,180,180,1) 0%, rgba(212,212,212,1) 24%, rgba(224,224,224,1) 52%, rgba(202,202,202,1) 79%, rgba(180,180,180,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(180,180,180,1)), color-stop(24%,rgba(212,212,212,1)), color-stop(52%,rgba(224,224,224,1)), color-stop(79%,rgba(202,202,202,1)), color-stop(100%,rgba(180,180,180,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(left,  rgba(180,180,180,1) 0%,rgba(212,212,212,1) 24%,rgba(224,224,224,1) 52%,rgba(202,202,202,1) 79%,rgba(180,180,180,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(left,  rgba(180,180,180,1) 0%,rgba(212,212,212,1) 24%,rgba(224,224,224,1) 52%,rgba(202,202,202,1) 79%,rgba(180,180,180,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(left,  rgba(180,180,180,1) 0%,rgba(212,212,212,1) 24%,rgba(224,224,224,1) 52%,rgba(202,202,202,1) 79%,rgba(180,180,180,1) 100%); /* IE10+ */
+            background: linear-gradient(to right,  rgba(180,180,180,1) 0%,rgba(212,212,212,1) 24%,rgba(224,224,224,1) 52%,rgba(202,202,202,1) 79%,rgba(180,180,180,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4b4b4', endColorstr='#b4b4b4',GradientType=1 ); /* IE6-9 */
+
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+
+            -webkit-transition : opacity 0.2s linear;
+            transition : opacity 0.2s linear;
+            &:hover {
+                opacity : 0.5;
+            }
+        }
+    }
+}
+

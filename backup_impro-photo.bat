@@ -10,7 +10,7 @@ set /p version="Entrer la version pour l'archive %folder% : "
 
 :InputSnapshot
 set isSnapshot=
-set /p isSnapshot="Version SNAPSHOT ? [y/n] : "
+set /p isSnapshot="Version SNAPSHOT ? [y/n] => No = repackage : "
 IF /I NOT "%isSnapshot%" == "n" (
 	set version=%version%-SNAPSHOT
 )

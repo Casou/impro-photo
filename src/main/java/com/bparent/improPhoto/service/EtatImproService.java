@@ -9,6 +9,8 @@ import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,14 +38,14 @@ public class EtatImproService {
             case IConstants.IEtatImproField.ECRAN :
                 etatImproDto.setEcran(etat.getValeur());
                 break;
-            case IConstants.IEtatImproField.ID_ECRAN :
-                etatImproDto.setIdEcran(etat.getValeur() == null ? null : Integer.valueOf(etat.getValeur()));
+            case IConstants.IEtatImproField.ID_CATEGORIE:
+                etatImproDto.setIdCategorie(etat.getValeur() == null ? null : Integer.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.TYPE_ECRAN :
                 etatImproDto.setTypeEcran(etat.getValeur());
                 break;
             case IConstants.IEtatImproField.BLOCK_MASQUES :
-                etatImproDto.setBlockMasques(etat.getValeur() == null ? null :
+                etatImproDto.setBlockMasques(etat.getValeur() == null ? new ArrayList<>() :
                         Arrays.stream(etat.getValeur().split(","))
                             .map(blockId -> Integer.valueOf(blockId))
                             .collect(Collectors.toList()));
@@ -55,9 +57,9 @@ public class EtatImproService {
                 etatImproDto.setPhotoCourante(etat.getValeur() == null ? null : Integer.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.PHOTOS_CHOISIES :
-                etatImproDto.setPhotosChoisies(etat.getValeur() == null ? null :
+                etatImproDto.setPhotosChoisies(etat.getValeur() == null ? new ArrayList<>() :
                         Arrays.stream(etat.getValeur().split(","))
-                            .map(blockId -> Integer.valueOf(blockId))
+                            .map(blockId -> BigInteger.valueOf(Integer.valueOf(blockId)))
                             .collect(Collectors.toList()));
                 break;
             case IConstants.IEtatImproField.STATUT_DIAPO :
@@ -79,9 +81,16 @@ public class EtatImproService {
         etatImproDao.save(field);
     }
 
+    public void updateStatus(String fieldId, List<BigInteger> values) {
+        this.updateStatus(fieldId,
+                values.stream()
+                        .map(BigInteger::toString)
+                        .collect(Collectors.joining(",")));
+    }
+
     public void resetImpro() {
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.ECRAN, IConstants.IImpro.FIRST_SCREEN));
-        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.ID_ECRAN, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.ID_CATEGORIE, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.TYPE_ECRAN, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.BLOCK_MASQUES, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.INTEGRALITE, null));

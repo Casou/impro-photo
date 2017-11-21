@@ -52,7 +52,7 @@ public class PreparationService {
             categories.forEach(cat -> cat.setTermine(false));
             categorieDao.save(categorieMapper.toEntity(categories));
         } catch (ImproMappingException e) {
-            throw new ImproServiceException("Error while saving categories", e);
+            throw new ImproServiceException("Error while saving categorie_list", e);
         }
 
         remerciementDao.deleteByIdNotIn(Arrays.asList(remerciement.getId()));

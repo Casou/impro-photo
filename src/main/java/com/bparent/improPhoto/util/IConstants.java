@@ -9,6 +9,7 @@ public interface IConstants {
     public static final String DATE_FR_FORMAT = "dd/MM/yyyy";
     public static final SimpleDateFormat DATE_FR_FORMATTER = new SimpleDateFormat(DATE_FR_FORMAT);
 
+    public static final Long LIMIT_PICTURES = 20L;
     public static final List<String> PICTURE_EXTENSION_ACCEPTED = Arrays.asList("jpg", "jpeg", "png", "bmp", "gif");
     public static final List<String> AUDIO_EXTENSION_ACCEPTED = Arrays.asList("mp3", "wmv");
 
@@ -42,7 +43,7 @@ public interface IConstants {
 
     public interface IEtatImproField {
         public static final String ECRAN = "ecran";
-        public static final String ID_ECRAN = "id_ecran";
+        public static final String ID_CATEGORIE = "id_categorie";
         public static final String TYPE_ECRAN = "type_ecran";
         public static final String BLOCK_MASQUES = "block_masques";
         public static final String INTEGRALITE = "integralite";

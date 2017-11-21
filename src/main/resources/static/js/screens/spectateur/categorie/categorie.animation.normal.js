@@ -1,0 +1,4 @@
+class CategorieAnimationNormal extends AbstractCategorieAnimation {
+
+
+}

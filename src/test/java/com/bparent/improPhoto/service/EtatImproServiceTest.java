@@ -48,7 +48,7 @@ public class EtatImproServiceTest {
     public void shouldGetFilledDto() {
         when(this.statutDao.findAll()).thenReturn(() -> Arrays.asList(
                 new EtatImpro("ecran", "ecran1"),
-                new EtatImpro("id_ecran", "1"),
+                new EtatImpro("id_categorie", "1"),
                 new EtatImpro("type_ecran", "type_ecran1"),
                 new EtatImpro("block_masques", "1,2,3"),
                 new EtatImpro("integralite", "0"),
@@ -58,12 +58,12 @@ public class EtatImproServiceTest {
         ).iterator());
         EtatImproDto statut = this.etatImproService.getStatut();
         assertEquals("ecran1", statut.getEcran());
-        assertEquals(Integer.valueOf(1), statut.getIdEcran());
+        assertEquals(Integer.valueOf(1), statut.getIdCategorie());
         assertEquals("type_ecran1", statut.getTypeEcran());
-        assertEquals(Arrays.asList(1, 2, 3), statut.getBlockMasques());
+        assertArrayEquals(Arrays.asList(1, 2, 3).toArray(), statut.getBlockMasques().toArray());
         assertFalse(statut.getIntegralite());
         assertEquals(Integer.valueOf(4), statut.getPhotoCourante());
-        assertEquals(Arrays.asList(4, 5, 6), statut.getPhotosChoisies());
+        assertArrayEquals(Arrays.asList(BigInteger.valueOf(4), BigInteger.valueOf(5), BigInteger.valueOf(6)).toArray(), statut.getPhotosChoisies().toArray());
         assertEquals("statut_diapo1", statut.getStatutDiapo());
     }
 
@@ -76,7 +76,7 @@ public class EtatImproServiceTest {
         List<EtatImpro> allEntities = etatImproCaptor.getAllValues();
         int i = 0;
         assertEquals("ecran", allEntities.get(i++).getChamp());
-        assertEquals("id_ecran", allEntities.get(i++).getChamp());
+        assertEquals("id_categorie", allEntities.get(i++).getChamp());
         assertEquals("type_ecran", allEntities.get(i++).getChamp());
         assertEquals("block_masques", allEntities.get(i++).getChamp());
         assertEquals("integralite", allEntities.get(i++).getChamp());

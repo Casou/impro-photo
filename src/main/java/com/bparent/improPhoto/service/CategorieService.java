@@ -7,6 +7,7 @@ import com.bparent.improPhoto.mapper.CategorieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -22,4 +23,11 @@ public class CategorieService {
         return categorieMapper.toDto(categorieDao.findAll());
     }
 
+    public CategorieDto findById(BigInteger id) throws ImproMappingException {
+        return categorieMapper.toDto(this.categorieDao.findById(id));
+    }
+
+    public void save(CategorieDto dto) throws ImproMappingException {
+        this.categorieDao.save(categorieMapper.toEntity(dto));
+    }
 }
