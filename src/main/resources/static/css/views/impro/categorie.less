@@ -140,3 +140,56 @@ div#div_images {
     }
 }
 
+div#divCategoryActions {
+    position : absolute;
+    left : 5px;
+    top : 0;
+    height : 100%;
+    width : 150px;
+    vertical-align : middle;
+    z-index : 99999;
+
+    div#actionButtons {
+        display: inline-block;
+        height : 250px;
+        width : 100%;
+        text-align: center;
+
+        position: relative;
+        top: 20%;
+
+        button {
+            display: inline-block;
+            height : 35px;
+            width : 100%;
+            margin-bottom : 20px;
+            font-size: 18px;
+            line-height: 15px;
+            border-radius : 5px;
+
+            &#validateSelection { opacity : 0.5; }
+            &#cancelSelect { opacity : 0; }
+            &#backToBlack {
+                font-size : 25px;
+                line-height : 25px;
+                height : 65px;
+            }
+            &#photoSound {
+                width: 65px;
+                height: 65px;
+                text-align: center;
+                border-radius: 65px;
+
+                img {
+                    width : 90%;
+                }
+            }
+        }
+    }
+}
+
+.spectateur {
+    div#divCategoryActions {
+        display : none;
+    }
+}

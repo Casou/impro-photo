@@ -60,7 +60,7 @@ function retrieveCategoriesCallback(categorieDtos) {
     $(categorieDtos).each(function(index, categorie) {
         addCategorie(categorie);
     });
-    $('#categorie_list span.loading').hide();
+    $('#categories span.loading').hide();
     $("ul#categoriesList").sortable();
 }
 
@@ -171,7 +171,7 @@ function saveDatas() {
 }
 
 function buildForm() {
-    let categories = $.map($('#categorie_list li'), function(categorie, index) {
+    let categories = $.map($('#categories li'), function(categorie, index) {
         return {
             id : $(categorie).find("input.categorie_id").val(),
             nom : $(categorie).find("input.categorie_nom").val(),

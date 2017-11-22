@@ -18,14 +18,14 @@ function addCategorie(dto) {
 function newCategorie(id) {
     let newId = 'cat_' + ((id == undefined) ? generateRandom(7) : id);
     $('#categoriesList').append($('#hiddenClones #cat_clone').first().clone().attr('id', newId));
-    $('#categorie_list li').last().find('input').val('');
-    $('#categorie_list li').last().find('select').val('PHOTO');
-    $('#categorie_list li').last().find('.id_tech').html(id);
+    $('#categories li').last().find('input').val('');
+    $('#categories li').last().find('select').val('PHOTO');
+    $('#categories li').last().find('.id_tech').html(id);
     return newId;
 }
 
 function removeCategorie(li) {
-    if ($('#categorie_list li').size() == 1) {
+    if ($('#categories li').size() == 1) {
         alert('Vous ne pouvez pas supprimer toutes les catégories.');
         return;
     }

@@ -6,6 +6,7 @@ import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.EtatImpro;
 import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.util.IConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,25 +40,25 @@ public class EtatImproService {
                 etatImproDto.setEcran(etat.getValeur());
                 break;
             case IConstants.IEtatImproField.ID_CATEGORIE:
-                etatImproDto.setIdCategorie(etat.getValeur() == null ? null : Integer.valueOf(etat.getValeur()));
+                etatImproDto.setIdCategorie(StringUtils.isEmpty(etat.getValeur()) ? null : Integer.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.TYPE_ECRAN :
                 etatImproDto.setTypeEcran(etat.getValeur());
                 break;
             case IConstants.IEtatImproField.BLOCK_MASQUES :
-                etatImproDto.setBlockMasques(etat.getValeur() == null ? new ArrayList<>() :
+                etatImproDto.setBlockMasques(StringUtils.isEmpty(etat.getValeur()) ? new ArrayList<>() :
                         Arrays.stream(etat.getValeur().split(","))
                             .map(blockId -> Integer.valueOf(blockId))
                             .collect(Collectors.toList()));
                 break;
             case IConstants.IEtatImproField.INTEGRALITE :
-                etatImproDto.setIntegralite(etat.getValeur() == null ? null : Boolean.valueOf(etat.getValeur()));
+                etatImproDto.setIntegralite(StringUtils.isEmpty(etat.getValeur()) ? null : Boolean.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.PHOTO_COURANTE :
-                etatImproDto.setPhotoCourante(etat.getValeur() == null ? null : Integer.valueOf(etat.getValeur()));
+                etatImproDto.setPhotoCourante(StringUtils.isEmpty(etat.getValeur()) ? null : Integer.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.PHOTOS_CHOISIES :
-                etatImproDto.setPhotosChoisies(etat.getValeur() == null ? new ArrayList<>() :
+                etatImproDto.setPhotosChoisies(StringUtils.isEmpty(etat.getValeur()) ? new ArrayList<>() :
                         Arrays.stream(etat.getValeur().split(","))
                             .map(blockId -> BigInteger.valueOf(Integer.valueOf(blockId)))
                             .collect(Collectors.toList()));

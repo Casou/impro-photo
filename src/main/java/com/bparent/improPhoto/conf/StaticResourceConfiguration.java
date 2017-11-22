@@ -14,6 +14,7 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/handler/playlist/**").addResourceLocations("file:" + IConstants.IPath.IAudio.AUDIOS_PLAYLIST);
         registry.addResourceHandler("/handler/jingles/**").addResourceLocations("file:" + IConstants.IPath.IAudio.AUDIOS_JINGLES);
         registry.addResourceHandler("/handler/videos/intro/**").addResourceLocations("file:" + IConstants.IPath.IVideo.VIDEO_INTRO);
+        registry.addResourceHandler("/handler/audios/ressources/**").addResourceLocations("file:" + IConstants.IPath.IAudio.AUDIOS_RESSOURCES);
 
         super.addResourceHandlers(registry);
     }

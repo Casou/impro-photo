@@ -19,6 +19,10 @@ IF /I NOT "%isSnapshot%" == "n" (
 IF NOT "%version%" == "" (
     call mvn versions:set -DnewVersion=%version%
 
+    IF /I "%isSnapshot%" == "n" (
+    	call mvn package
+    )
+
 	set version=%version_separator%%version%
 	goto ZipFile
 )

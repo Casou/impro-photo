@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.controller.websocket;
 
+import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.dto.CategorieDto;
 import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.service.EtatImproService;
@@ -38,6 +39,21 @@ public class CategoryWSController {
         etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, statut.getPhotosChoisies());
 
         return categorieDto;
+    }
+
+    @MessageMapping("/action/category/validateSelection")
+    @SendTo("/topic/category/validateSelection")
+    public BasicCodeLabelDto validateSelection() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, IConstants.IEtatImproField.IStatutDiapo.LAUNCHED);
+        return new BasicCodeLabelDto("message", "ok");
+    }
+
+    @MessageMapping("/action/category/cancelSelection")
+    @SendTo("/topic/category/cancelSelection")
+    public BasicCodeLabelDto cancelSelection() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
+        return new BasicCodeLabelDto("message", "ok");
     }
 
 }

@@ -12,6 +12,7 @@
     <link rel="stylesheet"      type="text/css" href="/css/jquery-ui/jquery-ui.css" />
     <link rel="stylesheet"      type="text/css" href="/css/font/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet/less" type="text/css" href="/css/controlPanel.less" />
+    <link rel="stylesheet/less" type="text/css" href="/css/views/impro/common.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/salle_attente.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/intro.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/categorie_list.less" />
@@ -59,6 +60,10 @@
     <div th:replace="views/impro/templates/categorie :: categorie"><h1 class="error">Categorie</h1></div>
 
     <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/common.js'"></script>
+
+    <div id="watermark">
+        <img src="/images/logo/git_logo_gris.png" />
+    </div>
 
     <script>
         $(document).ready(function() {

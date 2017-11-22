@@ -19,7 +19,13 @@ class Categorie extends IScreen {
             this.loadCategorie();
             this.showCategoriePopin();
         } else {
-            this.retrieveCategorie(status);
+            this.retrieveCategorie(status)
+                .then(() => {
+                    this.selectPictures(status.photosChoisies);
+                    if (status.photosChoisies.length > 0 && status.statutDiapo == "launched") {
+                        this.animation.validateSelection();
+                    }
+                });
         }
     }
 
@@ -31,26 +37,29 @@ class Categorie extends IScreen {
     }
 
     retrieveCategorie(status) {
-        $.ajax({
-            url: '/categories/search/by-id?id=' + status.idCategorie,
-            type: 'GET',
-            encoding: "UTF-8",
-            dataType: 'json',
-            contentType: 'application/json',
-            context: this
-        })
-        .done(function (category) {
-            this.categorie = category;
-            let loadCategoriesPromise = this.loadCategorie();
-            this.showCategoriePopin();
-
-            loadCategoriesPromise.then(() => this.selectPictures(status.photosChoisies));
-        })
-        .fail(function (resultat, statut, erreur) {
-            console.log(resultat, statut, erreur);
-            alert("Erreur lors de la récuparation de la catégorie : " + id);
-        })
-        .always(function () {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: '/categories/search/by-id?id=' + status.idCategorie,
+                type: 'GET',
+                encoding: "UTF-8",
+                dataType: 'json',
+                contentType: 'application/json',
+                context: this
+            })
+            .done(function (category) {
+                this.categorie = category;
+                this.loadCategorie().then(() => {
+                    resolve();
+                });
+                this.showCategoriePopin();
+            })
+            .fail(function (resultat, statut, erreur) {
+                console.log(resultat, statut, erreur);
+                alert("Erreur lors de la récuparation de la catégorie : " + id);
+                reject(erreur);
+            })
+            .always(function () {
+            });
         });
     }
 
@@ -101,4 +110,10 @@ class Categorie extends IScreen {
         }.bind(this));
     }
 
+    validateSelection() {
+        this.wsClient.sendMessage("/app/action/category/validateSelection", {});
+    }
+    cancelSelection() {
+        this.wsClient.sendMessage("/app/action/category/cancelSelection", {});
+    }
 }

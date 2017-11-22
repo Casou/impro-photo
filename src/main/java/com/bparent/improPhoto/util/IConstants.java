@@ -30,6 +30,7 @@ public interface IConstants {
 
             public static final String AUDIOS_PLAYLIST = AUDIOS + "playlist/";
             public static final String AUDIOS_JINGLES = AUDIOS + "jingles/";
+            public static final String AUDIOS_RESSOURCES = AUDIOS + "ressources/";
         }
 
         public interface IVideo {
@@ -50,6 +51,10 @@ public interface IConstants {
         public static final String PHOTO_COURANTE = "photo_courante";
         public static final String PHOTOS_CHOISIES = "photos_choisies";
         public static final String STATUT_DIAPO = "statut_diapo";
+
+        public interface IStatutDiapo {
+            public static final String LAUNCHED = "launched";
+        }
     }
 
 

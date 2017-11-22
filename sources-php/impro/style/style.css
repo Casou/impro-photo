@@ -153,17 +153,4 @@ a.button:hover, div.button:hover {
 	color : #666666;
 }
 
-
-div#watermark {
-	position : absolute;
-	bottom : 0;
-	left : 0;
-	width : 200px;
-	height : 200px;
-	opacity : 0.6;
-	z-index : -1;
-}
-
-div#watermark img {
-	width : 100%;
-}
+²

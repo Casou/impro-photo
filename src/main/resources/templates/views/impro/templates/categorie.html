@@ -26,11 +26,18 @@
         </div>
 
         <div id="divCategoryActions">
-            <button id="validateSelection">Valider sélection</button>
-            <button id="selectAll">Sélectionner tout</button>
-            <button id="photoSound">Son photo</button>
+            <div id="actionButtons">
+                <button id="validateSelection" onClick="categorie.validateSelection();">Valider sélection</button>
+                <button id="selectAll">Sélectionner tout</button>
+                <button id="cancelSelect" onClick="categorie.cancelSelection();">Annuler la sélection</button>
+                <button id="backToBlack">Retour au noir</button>
+                <button id="photoSound" title="Son photo"><img src="/images/appareil_photo.png" /></button>
+            </div>
 
-            <audio id="photoSoundAudio"></audio>
+            <audio id="photoSoundAudio">
+                <source src="/handler/audios/ressources/appareil_photo_long.ogg" type="audio/ogg" />
+                <source src="/handler/audios/ressources/appareil_photo_long.mp3" type="audio/mpeg" />
+            </audio>
         </div>
 
         <div class="divAction">
@@ -42,6 +49,9 @@
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie/categorie.animation.normal.js'"></script>
 
         <script type="text/javascript">
+            const CATEGORY_ANIMATION_OPACITY_DURATION = 2000;
+            const CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION = 1500;
+
             let categorie = new Categorie("CATEGORY", null, WEBSOCKET_CLIENT);
             SCREENS["CATEGORY"] = categorie;
 
