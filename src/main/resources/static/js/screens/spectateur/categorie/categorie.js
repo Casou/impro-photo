@@ -34,10 +34,14 @@ class Categorie extends IScreen {
     }
 
     goToNextScreen() {
+        $('#categorie').fadeOut(ANIMATION_FADE_DURATION, function() {
+            this.nextScreen.init(null);
+        }.bind(this));
     }
 
     subscriptions() {
         super.subscriptions();
+        this.wsClient.subscribe("/topic/category/returnToList", () => this.goToNextScreen());
     }
 
     retrieveCategorie(status, noDelay) {

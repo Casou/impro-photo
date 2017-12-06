@@ -82,4 +82,15 @@ public class CategoryWSController {
         return new BasicCodeLabelDto("message", "ok");
     }
 
+    @MessageMapping("/action/category/returnToList")
+    @SendTo("/topic/category/returnToList")
+    public BasicCodeLabelDto returnToList() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.ECRAN, "CATEGORIES");
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
+        return new BasicCodeLabelDto("message", "ok");
+    }
+
 }

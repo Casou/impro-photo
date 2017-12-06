@@ -20,8 +20,6 @@
             <div id="category_selected_name" class="animated"></div>
         </div>
 
-        <h1>TODO : Vérifier les différents init de status (select all, retour au noir, etc.)</h1>
-
         <div id="categorie_title">
         </div>
         <div id="div_images">
@@ -50,7 +48,7 @@
         </div>
 
         <div class="divAction">
-            <button onClick="categorie.goToNextScreen();">&gt;&gt; Liste des catégories</button>
+            <button onClick="categorie.returnToCategorieList();">&gt;&gt; Liste des catégories</button>
         </div>
 
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/categorie/categorie.js'"></script>
@@ -61,7 +59,7 @@
             const CATEGORY_ANIMATION_OPACITY_DURATION = 2000;
             const CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION = 1500;
 
-            let categorie = new Categorie("CATEGORY", null, WEBSOCKET_CLIENT);
+            const categorie = new Categorie("CATEGORY", null, WEBSOCKET_CLIENT);
             SCREENS["CATEGORY"] = categorie;
 
             function toggleCategorie() {

@@ -48,7 +48,7 @@
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/intro/intro.js'"></script>
         <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/intro/intro.videos.js'"></script>
         <script type="text/javascript">
-            let intro = new Intro("INTRO", null, WEBSOCKET_CLIENT);
+            const intro = new Intro("INTRO", null, WEBSOCKET_CLIENT);
             SCREENS["INTRO"] = intro;
 
             $('#intro video').on("timeupdate", function() { intro.videoHandler.onTimeUpdate(this); });
