@@ -3,6 +3,7 @@ package com.bparent.improPhoto.controller.websocket;
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.dto.CategorieDto;
 import com.bparent.improPhoto.dto.EtatImproDto;
+import com.bparent.improPhoto.dto.json.PictureDto;
 import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +22,25 @@ public class CategoryWSController {
 
     @MessageMapping("/action/category/selectPicture")
     @SendTo("/topic/category/selectPicture")
-    public CategorieDto selectPicture(CategorieDto categorieDto) {
+    public PictureDto selectPicture(PictureDto pictureDto) {
         EtatImproDto statut = etatImproService.getStatut();
-        statut.getPhotosChoisies().add(categorieDto.getId());
+        statut.getPhotosChoisies().add(pictureDto.getId());
         etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, statut.getPhotosChoisies());
+        etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, (String) null);
 
-        return categorieDto;
+        return pictureDto;
     }
 
     @MessageMapping("/action/category/unselectPicture")
     @SendTo("/topic/category/unselectPicture")
-    public CategorieDto unselectPicture(CategorieDto categorieDto) {
+    public PictureDto unselectPicture(PictureDto pictureDto) {
         EtatImproDto statut = etatImproService.getStatut();
         statut.setPhotosChoisies(statut.getPhotosChoisies().stream()
-            .filter(id -> id != categorieDto.getId())
+            .filter(id -> id != pictureDto.getId())
             .collect(Collectors.toList()));
         etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, statut.getPhotosChoisies());
 
-        return categorieDto;
+        return pictureDto;
     }
 
     @MessageMapping("/action/category/validateSelection")
@@ -52,7 +54,31 @@ public class CategoryWSController {
     @SendTo("/topic/category/cancelSelection")
     public BasicCodeLabelDto cancelSelection() {
         etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, String.valueOf(false));
         etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
+        return new BasicCodeLabelDto("message", "ok");
+    }
+
+    @MessageMapping("/action/category/selectAll")
+    @SendTo("/topic/category/selectAll")
+    public BasicCodeLabelDto selectAll() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, String.valueOf(true));
+        etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
+        return new BasicCodeLabelDto("message", "ok");
+    }
+
+    @MessageMapping("/action/category/showPicture")
+    @SendTo("/topic/category/showPicture")
+    public PictureDto showPicture(PictureDto pictureDto) {
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, pictureDto.getId().toString());
+        return pictureDto;
+    }
+
+    @MessageMapping("/action/category/backToBlack")
+    @SendTo("/topic/category/backToBlack")
+    public BasicCodeLabelDto backToBlack() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
         return new BasicCodeLabelDto("message", "ok");
     }
 

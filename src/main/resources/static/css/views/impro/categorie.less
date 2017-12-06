@@ -140,12 +140,13 @@ div#div_images {
     }
 }
 
+@actionDivWidth : 150;
 div#divCategoryActions {
     position : absolute;
     left : 5px;
     top : 0;
     height : 100%;
-    width : 150px;
+    width : unit(@actionDivWidth, px);
     vertical-align : middle;
     z-index : 99999;
 
@@ -191,5 +192,73 @@ div#divCategoryActions {
 .spectateur {
     div#divCategoryActions {
         display : none;
+    }
+}
+
+@importAllTargetImage : 200;
+div#div_selectAllTarget {
+    position : absolute;
+    top : 60%;
+    right : unit((@importAllTargetImage * -1), px);
+    height :  unit(@importAllTargetImage, px);
+    width : unit(@importAllTargetImage, px);
+
+    img {
+        width : 100%;
+        height : 100%;
+    }
+}
+
+div#div_one_image {
+    position : absolute;
+    top : 10%;
+    width : 75%;
+    left : 50%;
+    margin-left : -40%;
+    text-align : center;
+    z-index : 99999;
+    //height : 86%;
+    //line-height : 86%;
+
+    display : none;
+    //opacity : 0;
+    border : 2px solid green;
+
+    img {
+        max-width : 100%;
+        max-height : 100%;
+        vertical-align: middle;
+        border: 15px solid white;
+        box-sizing: border-box;
+        box-shadow: 10px 10px 15px #222;
+    }
+}
+
+.regie {
+    div#div_one_image {
+        width : 65%;
+        top : 20%;
+        height : 70%;
+        left : 50%;
+        margin-left : -30%;
+        border : 2px solid green;
+    }
+}
+
+div#div_one_image_small {
+    position : absolute;
+    left : 10px;
+    bottom : 50px;
+    width : unit(@actionDivWidth, px);
+    height : unit(@actionDivWidth * 2 / 3, px);
+    text-align : center;
+    border : 2px solid green;
+    background-color: black;
+    display : none;
+
+    img {
+        max-width : 100%;
+        max-height : 100%;
+        vertical-align: middle;
     }
 }

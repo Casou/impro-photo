@@ -8,7 +8,7 @@ import java.util.*;
 
 public class NetworkUtils {
 
-    private static final String FILL_CHAR = "#";
+    private static final String FILL_CHAR = "§";
     private static final String EMPTY_CHAR = " ";
 
     public static String getIpString(String port) {

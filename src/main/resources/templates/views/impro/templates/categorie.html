@@ -20,18 +20,27 @@
             <div id="category_selected_name" class="animated"></div>
         </div>
 
+        <h1>TODO : Vérifier les différents init de status (select all, retour au noir, etc.)</h1>
+
         <div id="categorie_title">
         </div>
         <div id="div_images">
+        </div>
+        <div id="div_one_image">
+        </div>
+        <div id="div_one_image_small">
+        </div>
+        <div id="div_selectAllTarget">
+            <img src="/images/git_logo_rose_transparent_sans_texte.png" />
         </div>
 
         <div id="divCategoryActions">
             <div id="actionButtons">
                 <button id="validateSelection" onClick="categorie.validateSelection();">Valider sélection</button>
-                <button id="selectAll">Sélectionner tout</button>
+                <button id="selectAll" onClick="categorie.selectAll();">Sélectionner tout</button>
                 <button id="cancelSelect" onClick="categorie.cancelSelection();">Annuler la sélection</button>
-                <button id="backToBlack">Retour au noir</button>
-                <button id="photoSound" title="Son photo"><img src="/images/appareil_photo.png" /></button>
+                <button id="backToBlack" onClick="categorie.backToBlack();">Retour au noir</button>
+                <button id="photoSound" title="Son photo" onClick="document.getElementById('photoSoundAudio').play();"><img src="/images/appareil_photo.png" /></button>
             </div>
 
             <audio id="photoSoundAudio">

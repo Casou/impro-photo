@@ -91,7 +91,6 @@ function getAllSongs() {
             contentType: 'application/json'
         })
             .done(function (allSongs) {
-                console.log("allSongs", allSongs);
                 resolve(allSongs);
             })
             .fail(function (resultat, statut, erreur) {
@@ -201,7 +200,6 @@ function getAllJingles() {
             contentType: 'application/json'
         })
             .done(function (allSongs) {
-                console.log("allSongs", allSongs);
                 resolve(allSongs);
             })
             .fail(function (resultat, statut, erreur) {

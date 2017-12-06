@@ -16,11 +16,18 @@ class Categorie extends IScreen {
             this.loadCategorie();
             this.showCategoriePopin();
         } else {
-            this.retrieveCategorie(status)
+            this.retrieveCategorie(status, true)
                 .then(() => {
-                    this.selectPictures(status.photosChoisies);
-                    if (status.photosChoisies.length > 0 && status.statutDiapo == "launched") {
-                        this.animation.validateSelection();
+                    if (status.integralite) {
+                        this.animation.selectAll(false);
+                    } else {
+                        this.selectPictures(status.photosChoisies);
+                        if (status.photosChoisies.length > 0 && status.statutDiapo == "launched") {
+                            this.animation.validateSelection(false);
+                        }
+                    }
+                    if (status.photoCourante != null) {
+                        this.animation.showPicture(status.photoCourante);
                     }
                 });
         }
@@ -33,7 +40,7 @@ class Categorie extends IScreen {
         super.subscriptions();
     }
 
-    retrieveCategorie(status) {
+    retrieveCategorie(status, noDelay) {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: '/categories/search/by-id?id=' + status.idCategorie,
@@ -45,7 +52,7 @@ class Categorie extends IScreen {
             })
             .done(function (category) {
                 this.categorie = category;
-                this.loadCategorie().then(() => {
+                this.loadCategorie(noDelay).then(() => {
                     resolve();
                 });
                 this.showCategoriePopin();
@@ -64,7 +71,7 @@ class Categorie extends IScreen {
         toggleCategorie();
     }
 
-    loadCategorie() {
+    loadCategorie(noDelay) {
         if (this.categorie.type == "PHOTO") {
             this.animation = new CategorieAnimationNormal(this.wsClient);
         }
@@ -72,7 +79,7 @@ class Categorie extends IScreen {
         let promise = new Promise((resolve, reject) => {
             this.retrieveCategoriePictures(this.categorie.pathFolder, resolve, reject);
         });
-        promise.then(() => this.animation.showPictures());
+        promise.then(() => this.animation.showPictures(noDelay));
         return promise;
     }
 
@@ -89,7 +96,6 @@ class Categorie extends IScreen {
         })
         .done(function (picturePaths) {
             this.animation.setPictures(picturePaths);
-            this.animation.showPictures();
             resolve();
         })
         .fail(function (resultat, statut, erreur) {
@@ -102,7 +108,6 @@ class Categorie extends IScreen {
     }
 
     selectPictures(pictureList) {
-        console.log("selectPictures", pictureList);
         pictureList.forEach(function(pictureId) {
             this.animation.selectPicture(pictureId);
         }.bind(this));

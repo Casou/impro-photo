@@ -52,7 +52,7 @@ public class EtatImproService {
                             .collect(Collectors.toList()));
                 break;
             case IConstants.IEtatImproField.INTEGRALITE :
-                etatImproDto.setIntegralite(StringUtils.isEmpty(etat.getValeur()) ? null : Boolean.valueOf(etat.getValeur()));
+                etatImproDto.setIntegralite(StringUtils.isEmpty(etat.getValeur()) ? false : Boolean.valueOf(etat.getValeur()));
                 break;
             case IConstants.IEtatImproField.PHOTO_COURANTE :
                 etatImproDto.setPhotoCourante(StringUtils.isEmpty(etat.getValeur()) ? null : Integer.valueOf(etat.getValeur()));

@@ -21,9 +21,16 @@ class Categorie extends IScreen {
         } else {
             this.retrieveCategorie(status)
                 .then(() => {
-                    this.selectPictures(status.photosChoisies);
-                    if (status.photosChoisies.length > 0 && status.statutDiapo == "launched") {
-                        this.animation.validateSelection();
+                    if (status.integralite) {
+                        this.animation.selectAll(false);
+                    } else {
+                        this.selectPictures(status.photosChoisies);
+                        if (status.photosChoisies.length > 0 && status.statutDiapo == "launched") {
+                            this.animation.validateSelection();
+                        }
+                    }
+                    if (status.photoCourante != null) {
+                        this.animation.showPicture(status.photoCourante);
                     }
                 });
         }
@@ -116,4 +123,12 @@ class Categorie extends IScreen {
     cancelSelection() {
         this.wsClient.sendMessage("/app/action/category/cancelSelection", {});
     }
+    selectAll() {
+        this.wsClient.sendMessage("/app/action/category/selectAll", {});
+    }
+
+    backToBlack() {
+        this.wsClient.sendMessage("/app/action/category/backToBlack", {});
+    }
+
 }
