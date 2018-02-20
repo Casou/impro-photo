@@ -45,7 +45,7 @@ class Categorie extends IScreen {
     }
 
     retrieveCategorie(status, noDelay) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             $.ajax({
                 url: '/categories/search/by-id?id=' + status.idCategorie,
                 type: 'GET',
@@ -72,11 +72,11 @@ class Categorie extends IScreen {
 
     showCategoriePopin() {
         $('#category_selected_name').html(this.categorie.nom);
-        toggleCategorie();
+        showCategorieSelectedPopin(true);
     }
 
     loadCategorie(noDelay) {
-        if (this.categorie.type == "PHOTO") {
+        if (this.categorie.type == "PHOTO" || this.categorie.type == "TRIPTYQUE") {
             this.animation = new CategorieAnimationNormal(this.wsClient);
         }
 

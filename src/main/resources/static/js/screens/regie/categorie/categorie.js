@@ -80,12 +80,14 @@ class Categorie extends IScreen {
 
     showCategoriePopin() {
         $('#category_selected_name').html(this.categorie.nom);
-        toggleCategorie();
+        showCategorieSelectedPopin(true);
     }
 
     loadCategorie() {
         if (this.categorie.type == "PHOTO") {
             this.animation = new CategorieAnimationNormal(this.wsClient);
+        } else if (this.categorie.type == "TRIPTYQUE") {
+            this.animation = new CategorieAnimationTriptyque(this.wsClient);
         }
 
         let promise = new Promise((resolve, reject) => {

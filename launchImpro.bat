@@ -1,6 +1,8 @@
 @echo off
 MODE CON COLS=999 LINES=999
 
+.\jvm\x64\bin\java --version
+
 rem ---------------------------------------------
 rem ---------------------------------------------
 rem GET LAST JAR
@@ -16,5 +18,5 @@ echo Launch JAR : %lastJar%
 rem ---------------------------------------------
 rem ---------------------------------------------
 
-java -Xdebug -jar target\%lastJar%
+rem .\jvm\x64\bin\java -Xdebug -jar target\%lastJar%
 pause

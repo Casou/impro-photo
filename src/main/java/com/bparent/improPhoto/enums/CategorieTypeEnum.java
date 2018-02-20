@@ -9,7 +9,7 @@ public enum CategorieTypeEnum {
 
     PHOTO("PHOTO", "Affichage normal"),
     POLAROID("POLAROID", "Affichage polaroïd"),
-    TRYPTIQUE("TRYPTIQUE", "Affichage tryptique");
+    TRIPTYQUE("TRIPTYQUE", "Affichage triptyque");
 
     private String code;
     private String label;

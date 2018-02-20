@@ -266,6 +266,8 @@ class AbstractCategorieAnimation {
     }
 
     showPicture(id) {
+        $('div.imageWrapper').removeClass("selected");
+        $("#picture_" + id).addClass('selected');
         let index = id - 1;
         if ($('div#div_one_image img').length > 0) {
             $('div#div_one_image img').fadeOut(500, () => {

@@ -29,3 +29,13 @@ jQuery.fn.rotate = function(degrees) {
 function refresh() {
     location.reload();
 }
+
+function showCategorieSelectedPopin(forceShow) {
+    if ($("#category_selected").hasClass("fadeInRight") && !forceShow) {
+        $("#category_selected").addClass("fadeOutRight").removeClass("fadeInRight");
+        $("#category_selected h1, #category_selected #category_selected_name").removeClass("bounceInRight");
+    } else {
+        $("#category_selected").addClass("fadeInRight").removeClass("fadeOutRight");
+        $("#category_selected h1, #category_selected #category_selected_name").addClass("bounceInRight");
+    }
+}

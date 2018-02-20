@@ -25,6 +25,7 @@ nbdist/
 
 .mvn/
 datas
+datas/*
 *.db
 photos/
 sources-php

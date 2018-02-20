@@ -115,12 +115,8 @@ class AbstractCategorieAnimation {
         this.selectionValidated = true;
         $('div#div_one_image').html("").fadeIn(500);
 
-        const opacityPromise = new Promise((resolve, reject) => {
-            $('div.imageWrapper:not(.selected)').animate({ 'opacity' : 0 }, CATEGORY_ANIMATION_OPACITY_DURATION, () => {
-                $('div.imageWrapper:not(.selected)').hide();
-                resolve();
-            });
-        });
+        $('div.imageWrapper:not(.selected)').css({ 'opacity' : 0 });
+        $('div.imageWrapper:not(.selected)').hide();
 
         const sectionHeight = $(window).height() - CATEGORIE_HEADER_HEIGHT;
         const leftPosition = $(window).width()
@@ -130,18 +126,16 @@ class AbstractCategorieAnimation {
         const oneElementHeight = (sectionHeight / this.selectedIndex.length) - 20;
         const divImagesTop = $("div#div_images").offset().top;
 
-        opacityPromise.then(() => {
-            this.selectedIndex.forEach((idPicture, idx) => {
-                $('#picture_' + idPicture).removeClass('selected');
+        this.selectedIndex.forEach((idPicture, idx) => {
+            $('#picture_' + idPicture).removeClass('selected');
 
-                let topPosition = CATEGORIE_HEADER_HEIGHT
-                    + oneElementHeight * idx
-                    + ((oneElementHeight - $('#picture_' + idPicture + ' .pictureOverview').height()) / 2);
-                topPosition -= divImagesTop;
-                $('#picture_' + idPicture).animate({
-                    'top' : topPosition + "px",
-                    'left' : leftPosition + 'px',
-                }, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION);
+            let topPosition = CATEGORIE_HEADER_HEIGHT
+                + oneElementHeight * idx
+                + ((oneElementHeight - $('#picture_' + idPicture + ' .pictureOverview').height()) / 2);
+            topPosition -= divImagesTop;
+            $('#picture_' + idPicture).css({
+                'top' : topPosition + "px",
+                'left' : leftPosition + 'px',
             });
         });
     }
@@ -157,16 +151,13 @@ class AbstractCategorieAnimation {
             const picture = $('#picture_' + idPicture);
             $(picture).removeClass('selected');
 
-            $(picture).animate({
+            $(picture).css({
                 'top' : picture.attr("originalTop") + "px",
                 'left' : picture.attr("originalLeft") + 'px',
-            }, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION);
+            });
         });
-
-        setTimeout(() => {
-            $('div.imageWrapper').show().animate({ 'opacity' : 1 }, CATEGORY_ANIMATION_OPACITY_DURATION);
-        }, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION);
-
+  
+        $('div.imageWrapper').show().css({ 'opacity' : 1 });
         this.selectedIndex = [];
     }
 
@@ -193,6 +184,8 @@ class AbstractCategorieAnimation {
     }
 
     showPicture(id) {
+        $('div.imageWrapper').removeClass("selected");
+        $("#picture_" + id).addClass('selected');
         const index = id - 1;
         const isAllSelected = this.selectedIndex.length === this.pictures.length;
         const divSelector = isAllSelected ? 'div#div_one_image_small' : 'div#div_one_image';
