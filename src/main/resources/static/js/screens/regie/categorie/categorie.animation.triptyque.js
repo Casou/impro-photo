@@ -10,8 +10,8 @@ class CategorieAnimationTriptyque extends AbstractCategorieAnimation {
     }
     
     validateSelection() {
-        $('#validateSelection, #selectAll').css("opacity", "0");
-        $('#cancelSelect').css("opacity", "1");
+        $('#validateSelection, #selectAll').css("opacity", "0").attr("disabled", true);
+        $('#cancelSelect').css("opacity", "1").attr("disabled", false);
         this.selectionValidated = true;
         $('div#div_one_image').html("").fadeIn(500);
         

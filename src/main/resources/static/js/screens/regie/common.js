@@ -127,7 +127,6 @@ function loadRandom() {
     let randomIndex = parseInt(Math.random() * PLAYLIST_REMAINING_SONGS.length);
     let song = PLAYLIST_REMAINING_SONGS[randomIndex];
     if (song == undefined) {
-        console.log(randomIndex, PLAYLIST_REMAINING_SONGS.length, PLAYLIST_REMAINING_SONGS);
         loadRandom();
         return;
     }

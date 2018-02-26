@@ -60,7 +60,7 @@ public class EtatImproServiceTest {
         assertEquals("ecran1", statut.getEcran());
         assertEquals(Integer.valueOf(1), statut.getIdCategorie());
         assertEquals("type_ecran1", statut.getTypeEcran());
-        assertArrayEquals(Arrays.asList(1, 2, 3).toArray(), statut.getBlockMasques().toArray());
+        assertArrayEquals(Arrays.asList(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3)).toArray(), statut.getBlockMasques().toArray());
         assertFalse(statut.getIntegralite());
         assertEquals(Integer.valueOf(4), statut.getPhotoCourante());
         assertArrayEquals(Arrays.asList(BigInteger.valueOf(4), BigInteger.valueOf(5), BigInteger.valueOf(6)).toArray(), statut.getPhotosChoisies().toArray());

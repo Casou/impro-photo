@@ -15,6 +15,7 @@ class WebsocketClient {
         let socket = new SockJS(url);
 
         this.stompClient = Stomp.over(socket);
+        // this.stompClient.debug = null
         this.stompClient.connect({}, (frame) => this.connectCallback(frame), (error) => this.error_callback(error));
         let that = this;
         socket.onclose = function() {

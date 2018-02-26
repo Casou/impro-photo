@@ -11,7 +11,7 @@ const CATEGORIE_SELECTED_ZONE_PADDING_RIGHT = 35;
 
 class AbstractCategorieAnimation {
 
-    constructor(wsClient) {
+    constructor() {
         $('#categorie div#div_images')
             .css("width", CATEGORIE_ALL_PICTURES_WIDTH)
             .css("height", CATEGORIE_ALL_PICTURES_HEIGHT);
@@ -24,15 +24,6 @@ class AbstractCategorieAnimation {
         this.selectedIndex = [];
         this.selectAllImageOrder = [];
         this.animationAllComplexe = true;
-
-        this.wsClient = wsClient;
-        this.wsClient.subscribe("/topic/category/selectPicture", (response) => this.selectPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/unselectPicture", (response) => this.unselectPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/validateSelection", () => this.validateSelection());
-        this.wsClient.subscribe("/topic/category/cancelSelection", () => this.cancelSelection());
-        this.wsClient.subscribe("/topic/category/selectAll", () => this.selectAll());
-        this.wsClient.subscribe("/topic/category/showPicture", (response) => this.showPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/backToBlack", () => this.backToBlack());
     }
 
     setPictures(pictures) {
@@ -55,7 +46,7 @@ class AbstractCategorieAnimation {
         const divLeft = ($(window).width() - CATEGORIE_ALL_PICTURES_WIDTH) / 2;
         const divTop = CATEGORIE_PADDING_TOP + (($(window).height() - CATEGORIE_ALL_PICTURES_HEIGHT) / 2);
 
-        $('#categorie div#div_images').css("left", divLeft).css("top", divTop);
+        $('#categorie div#div_images').css("left", divLeft).css("top", divTop).show();
 
         const animation = CATEGORIE_ANIMATIONS[parseInt(Math.random() * CATEGORIE_ANIMATIONS.length)];
 
@@ -79,7 +70,6 @@ class AbstractCategorieAnimation {
 
         $('#categorie div#div_images').html(html);
         $('#categorie div#div_images .pictureNumber').each((index, pictureNumber) => {
-            console.log($(pictureNumber).css("width"), $(pictureNumber).height());
             $(pictureNumber).attr("originalWidth", $(pictureNumber).width() + "px")
                 .attr("originalHeight", $(pictureNumber).height() + "px")
                 .attr("originalFontSize", $(pictureNumber).css("font-size"))
@@ -128,7 +118,7 @@ class AbstractCategorieAnimation {
         
         $('div#div_one_image').html("").fadeIn(500);
 
-        let opacityPromise = new Promise((resolve, reject) => {
+        let opacityPromise = new Promise((resolve) => {
             $('div.imageWrapper:not(.selected) .pictureNumber').animate({ 'opacity' : 0 }, CATEGORY_ANIMATION_OPACITY_DURATION, () => resolve());
         });
 
@@ -153,6 +143,20 @@ class AbstractCategorieAnimation {
         return topPosition;
     }
 
+    returnToList() {
+        this.selectedIndex.forEach((idPicture) => {
+            let picture = $('#picture_' + idPicture);
+            $(picture).removeClass('selected');
+        
+            $(picture).css({
+                'top' : picture.attr("originalTop") + "px",
+                'left' : picture.attr("originalLeft") + 'px',
+            });
+        });
+        this.selectedIndex = [];
+        $('div#div_one_image').fadeOut(CATEGORY_ANIMATION_OPACITY_DURATION, () => $('div#div_one_image').html(""));
+    }
+    
     cancelSelection() {
         const isAllSelected = this.selectedIndex.length === this.pictures.length;
 
@@ -178,11 +182,21 @@ class AbstractCategorieAnimation {
                     'left' : picture.attr("originalLeft") + 'px',
                 }, delay);
             });
+        } else {
+            this.selectedIndex.forEach((idPicture) => {
+                let picture = $('#picture_' + idPicture);
+                $(picture).removeClass('selected');
+        
+                $(picture).css({
+                    'top' : picture.attr("originalTop") + "px",
+                    'left' : picture.attr("originalLeft") + 'px',
+                });
+            });
         }
 
-
         setTimeout(() => {
-            $('div.imageWrapper').show().find('.pictureNumber').show().animate({ 'opacity' : 1 }, CATEGORY_ANIMATION_OPACITY_DURATION);
+            $('div.imageWrapper').show().animate({ 'opacity' : 1 }, CATEGORY_ANIMATION_OPACITY_DURATION);
+            $('div.imageWrapper .pictureNumber').show().animate({ 'opacity' : 1 }, CATEGORY_ANIMATION_OPACITY_DURATION);
         }, delay);
 
         this.selectedIndex = [];
@@ -215,7 +229,7 @@ class AbstractCategorieAnimation {
     }
 
     selectAllAnimationComplexe() {
-        const promiseLogo = new Promise((resolve, reject) => {
+        const promiseLogo = new Promise((resolve) => {
             $('div#div_selectAllTarget')
                 .delay(CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION)
                 .animate({'right': '-45px'}, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION, () => resolve())
@@ -229,7 +243,7 @@ class AbstractCategorieAnimation {
         promiseLogo.then(() => {
             $(this.selectAllImageOrder).each(function(index, imageIndex) {
                 setTimeout(() => {
-                    this.sendPictureToSelectAll(imageIndex, topValue);
+                    this.movePictureNumberToSelectAllTarget(imageIndex, topValue);
                 }, index * 200);
             }.bind(this));
             setTimeout(() => {
@@ -242,7 +256,7 @@ class AbstractCategorieAnimation {
         });
     }
 
-    sendPictureToSelectAll(imageIndex, topValue) {
+    movePictureNumberToSelectAllTarget(imageIndex, topValue) {
         const leftValue = $(window).width();
         $('div.imageWrapper#picture_' + imageIndex)
             .delay(500)

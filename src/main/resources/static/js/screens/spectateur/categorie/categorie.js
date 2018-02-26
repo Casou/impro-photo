@@ -6,12 +6,22 @@ class Categorie extends IScreen {
         this.categorie = null;
         this.pictures = [];
         this.animation = null;
+    
+        this.wsClient.subscribe("/topic/category/selectPicture", (response) => this.animation.selectPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/unselectPicture", (response) => this.animation.unselectPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/validateSelection", () => this.animation.validateSelection());
+        this.wsClient.subscribe("/topic/category/cancelSelection", () => this.animation.cancelSelection());
+        this.wsClient.subscribe("/topic/category/selectAll", () => this.animation.selectAll());
+        this.wsClient.subscribe("/topic/category/showPicture", (response) => this.animation.showPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/backToBlack", () => this.animation.backToBlack());
+        
+        this.wsClient.subscribe("/topic/polaroid/hideMask", (response) => this.animation.hideMask(JSON.parse(response.body).id));
     }
 
     init(status, categorie) {
         $('#categorie').fadeIn(ANIMATION_FADE_DURATION);
 
-        if (categorie != undefined) {
+        if (categorie !== undefined) {
             this.categorie = categorie;
             this.loadCategorie();
             this.showCategoriePopin();
@@ -29,11 +39,15 @@ class Categorie extends IScreen {
                     if (status.photoCourante != null) {
                         this.animation.showPicture(status.photoCourante);
                     }
+                    if (status.blockMasques && status.blockMasques.length > 0) {
+                        status.blockMasques.forEach((maskId) => this.animation.hideMask(maskId));
+                    }
                 });
         }
     }
 
     goToNextScreen() {
+        this.animation.returnToList();
         $('#categorie').fadeOut(ANIMATION_FADE_DURATION, function() {
             this.nextScreen.init(null);
         }.bind(this));
@@ -76,7 +90,9 @@ class Categorie extends IScreen {
     }
 
     loadCategorie(noDelay) {
-        if (this.categorie.type == "PHOTO" || this.categorie.type == "TRIPTYQUE") {
+        if (this.categorie.type === "POLAROID") {
+            this.animation = new CategorieAnimationPolaroid(this.wsClient);
+        } else {
             this.animation = new CategorieAnimationNormal(this.wsClient);
         }
 

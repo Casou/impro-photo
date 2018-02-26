@@ -21,15 +21,9 @@ class AbstractCategorieAnimation {
         this.selectionValidated = false;
 
         $("#categorie_title").html("<h1>Choisir 1 à 5 photos</h1>")
+        $("#backToBlack").css("opacity", 1);
 
         this.wsClient = wsClient;
-        this.wsClient.subscribe("/topic/category/selectPicture", (response) => this.selectPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/unselectPicture", (response) => this.unselectPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/validateSelection", () => this.validateSelection());
-        this.wsClient.subscribe("/topic/category/cancelSelection", () => this.cancelSelection());
-        this.wsClient.subscribe("/topic/category/selectAll", () => this.selectAll());
-        this.wsClient.subscribe("/topic/category/showPicture", (response) => this.showPicture(JSON.parse(response.body).id));
-        this.wsClient.subscribe("/topic/category/backToBlack", () => this.backToBlack());
     }
 
     getMaxPictures() {
@@ -99,35 +93,36 @@ class AbstractCategorieAnimation {
     selectPicture(idPicture) {
         $("#picture_" + idPicture).addClass('selected');
         this.selectedIndex.push(idPicture);
-        $("#validateSelection").css("opacity", 1);
+        $("#validateSelection").css("opacity", 1).attr("disabled", false);
     }
 
     unselectPicture(idPicture) {
         $("#picture_" + idPicture).removeClass('selected');
         const indexArray = $.inArray(idPicture, this.selectedIndex);
         this.selectedIndex.splice(indexArray, 1);
-        $("#validateSelection").css("opacity", (this.selectedIndex.length == 0) ? 0.5 : 1);
+        $("#validateSelection").css("opacity", (this.selectedIndex.length == 0) ? 0.5 : 1)
+            .attr("disabled", (this.selectedIndex.length == 0));
     }
 
     validateSelection() {
-        $('#validateSelection, #selectAll').css("opacity", "0");
-        $('#cancelSelect').css("opacity", "1");
+        $('#validateSelection, #selectAll').css("opacity", "0").attr("disabled", true);
+        $('#cancelSelect').css("opacity", "1").attr("disabled", false);
         this.selectionValidated = true;
         $('div#div_one_image').html("").fadeIn(500);
 
-        $('div.imageWrapper:not(.selected)').css({ 'opacity' : 0 });
         $('div.imageWrapper:not(.selected)').hide();
-
+        
         const sectionHeight = $(window).height() - CATEGORIE_HEADER_HEIGHT;
+        const pictureWidth = $('#picture_1 div.pictureNumber').width();
         const leftPosition = $(window).width()
             - $("#div_images").offset().left
-            - $('#picture_1 div.pictureNumber').width()
+            - pictureWidth
             - CATEGORIE_SELECTED_ZONE_PADDING_RIGHT;
         const oneElementHeight = (sectionHeight / this.selectedIndex.length) - 20;
         const divImagesTop = $("div#div_images").offset().top;
 
         this.selectedIndex.forEach((idPicture, idx) => {
-            $('#picture_' + idPicture).removeClass('selected');
+            $('#picture_' + idPicture).show().removeClass('selected');
 
             let topPosition = CATEGORIE_HEADER_HEIGHT
                 + oneElementHeight * idx
@@ -141,9 +136,9 @@ class AbstractCategorieAnimation {
     }
 
     cancelSelection() {
-        $('#validateSelection').css("opacity", "0.5");
-        $('#selectAll').css("opacity", "1");
-        $('#cancelSelect').css("opacity", "0");
+        $('#validateSelection').css("opacity", "0.5").attr("disabled", true);
+        $('#selectAll').css("opacity", "1").attr("disabled", false);
+        $('#cancelSelect').css("opacity", "0").attr("disabled", true);
         this.selectionValidated = false;
         $('div#div_one_image, div#div_one_image_small').fadeOut(500);
 
@@ -162,8 +157,8 @@ class AbstractCategorieAnimation {
     }
 
     selectAll(animation) {
-        $('#validateSelection, #selectAll').css("opacity", "0");
-        $('#cancelSelect').css("opacity", "1");
+        $('#validateSelection, #selectAll').css("opacity", "0").attr("disabled", true);
+        $('#cancelSelect').css("opacity", "1").attr("disabled", false);
         this.selectionValidated = true;
         this.selectedIndex = Object.keys(this.pictures).map(id => parseInt(id) + 1);
 

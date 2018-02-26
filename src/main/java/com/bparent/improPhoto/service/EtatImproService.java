@@ -48,7 +48,7 @@ public class EtatImproService {
             case IConstants.IEtatImproField.BLOCK_MASQUES :
                 etatImproDto.setBlockMasques(StringUtils.isEmpty(etat.getValeur()) ? new ArrayList<>() :
                         Arrays.stream(etat.getValeur().split(","))
-                            .map(blockId -> Integer.valueOf(blockId))
+                            .map(blockId -> BigInteger.valueOf(Integer.valueOf(blockId)))
                             .collect(Collectors.toList()));
                 break;
             case IConstants.IEtatImproField.INTEGRALITE :

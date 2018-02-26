@@ -9,6 +9,16 @@ class Categorie extends IScreen {
 
         $("#category_selected").removeClass("animated");
         $("#category_selected .animated").removeClass("animated");
+    
+        this.wsClient.subscribe("/topic/category/selectPicture", (response) => this.animation.selectPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/unselectPicture", (response) => this.animation.unselectPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/validateSelection", () => this.animation.validateSelection());
+        this.wsClient.subscribe("/topic/category/cancelSelection", () => this.animation.cancelSelection());
+        this.wsClient.subscribe("/topic/category/selectAll", () => this.animation.selectAll());
+        this.wsClient.subscribe("/topic/category/showPicture", (response) => this.animation.showPicture(JSON.parse(response.body).id));
+        this.wsClient.subscribe("/topic/category/backToBlack", () => this.animation.backToBlack());
+    
+        this.wsClient.subscribe("/topic/polaroid/hideMask", (response) => this.animation.hideMask(JSON.parse(response.body).id));
     }
 
     init(status, categorie) {
@@ -32,11 +42,15 @@ class Categorie extends IScreen {
                     if (status.photoCourante != null) {
                         this.animation.showPicture(status.photoCourante);
                     }
+                    if (status.blockMasques && status.blockMasques.length > 0) {
+                        status.blockMasques.forEach((maskId) => this.animation.hideMask(maskId));
+                    }
                 });
         }
     }
     
     returnToCategorieList() {
+        this.animation.cancelSelection();
         this.wsClient.sendMessage("/app/action/category/returnToList", {});
     }
 
@@ -84,10 +98,12 @@ class Categorie extends IScreen {
     }
 
     loadCategorie() {
-        if (this.categorie.type == "PHOTO") {
-            this.animation = new CategorieAnimationNormal(this.wsClient);
-        } else if (this.categorie.type == "TRIPTYQUE") {
+        if (this.categorie.type === "POLAROID") {
+            this.animation = new CategorieAnimationPolaroid(this.wsClient);
+        } else if (this.categorie.type === "TRIPTYQUE") {
             this.animation = new CategorieAnimationTriptyque(this.wsClient);
+        } else {
+            this.animation = new CategorieAnimationNormal(this.wsClient);
         }
 
         let promise = new Promise((resolve, reject) => {

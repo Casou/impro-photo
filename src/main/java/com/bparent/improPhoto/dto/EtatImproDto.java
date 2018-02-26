@@ -18,6 +18,6 @@ public class EtatImproDto {
     private Boolean integralite = false;
     private Integer photoCourante = -1;
     private String statutDiapo;
-    private List<Integer> blockMasques = new ArrayList<>();
+    private List<BigInteger> blockMasques = new ArrayList<>();
 
 }

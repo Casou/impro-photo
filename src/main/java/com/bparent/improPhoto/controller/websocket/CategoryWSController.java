@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Controller
@@ -47,22 +48,27 @@ public class CategoryWSController {
     @SendTo("/topic/category/validateSelection")
     public BasicCodeLabelDto validateSelection() {
         etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, IConstants.IEtatImproField.IStatutDiapo.LAUNCHED);
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.BLOCK_MASQUES, new ArrayList<>());
         return new BasicCodeLabelDto("message", "ok");
     }
 
     @MessageMapping("/action/category/cancelSelection")
     @SendTo("/topic/category/cancelSelection")
     public BasicCodeLabelDto cancelSelection() {
-        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, new ArrayList<>());
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
         etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, String.valueOf(false));
         etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.BLOCK_MASQUES, new ArrayList<>());
         return new BasicCodeLabelDto("message", "ok");
     }
 
     @MessageMapping("/action/category/selectAll")
     @SendTo("/topic/category/selectAll")
     public BasicCodeLabelDto selectAll() {
-        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, new ArrayList<>());
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
         etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, String.valueOf(true));
         etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
         return new BasicCodeLabelDto("message", "ok");
@@ -86,10 +92,11 @@ public class CategoryWSController {
     @SendTo("/topic/category/returnToList")
     public BasicCodeLabelDto returnToList() {
         etatImproService.updateStatus(IConstants.IEtatImproField.ECRAN, "CATEGORIES");
-        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTOS_CHOISIES, new ArrayList<>());
+        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
         etatImproService.updateStatus(IConstants.IEtatImproField.INTEGRALITE, (String) null);
         etatImproService.updateStatus(IConstants.IEtatImproField.STATUT_DIAPO, (String) null);
-        etatImproService.updateStatus(IConstants.IEtatImproField.PHOTO_COURANTE, (String) null);
+        etatImproService.updateStatus(IConstants.IEtatImproField.BLOCK_MASQUES, new ArrayList<>());
         return new BasicCodeLabelDto("message", "ok");
     }
 

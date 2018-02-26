@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
+
 @Controller
 public class CategoryListWSController {
 
@@ -38,6 +40,7 @@ public class CategoryListWSController {
     public CategorieDto launchCategorie(CategorieDto categorie) throws ImproMappingException {
         etatImproService.updateStatus(IConstants.IEtatImproField.ECRAN, "CATEGORY");
         etatImproService.updateStatus(IConstants.IEtatImproField.ID_CATEGORIE, categorie.getId() + "");
+        etatImproService.updateStatus(IConstants.IEtatImproField.BLOCK_MASQUES, new ArrayList<>());
 
         CategorieDto dto = categorieService.findById(categorie.getId());
         dto.setTermine(true);
