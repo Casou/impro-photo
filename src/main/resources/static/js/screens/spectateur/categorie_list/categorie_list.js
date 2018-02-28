@@ -1,6 +1,7 @@
 class CategorieList extends IScreen {
     constructor(nom, nextScreen, wsClient) {
         super(nom, nextScreen, wsClient);
+        this.categoryScreen = null;
     }
 
     init(status, categoryList) {
@@ -17,12 +18,18 @@ class CategorieList extends IScreen {
             this.nextScreen.init(null, categorie);
         }.bind(this));
     }
+    
+    launchCategorieScreen(categorie) {
+        $('#categorie_list').fadeOut(ANIMATION_FADE_DURATION, function() {
+            this.nextScreen.init(null, categorie);
+        }.bind(this));
+    }
 
     subscriptions() {
         super.subscriptions();
         this.wsClient.subscribe("/topic/category_list/showNextCategory", () => this.showNextCategory());
         this.wsClient.subscribe("/topic/category_list/showAllCategories", () => this.showAllCategories());
-        this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.goToNextScreen(JSON.parse(response.body)));
+        this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.launchCategorieScreen(JSON.parse(response.body)));
     }
 
     retrieveCategoryList() {

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+    <title>GIT - Impro diapo - Remerciements</title>
+</head>
+<body>
+
+<div id="remerciements" class="content_hidden" th:fragment="remerciements">
+    <h1>Remerciements</h1>
+
+    <div id="div_joueurs">
+        <ul>
+        </ul>
+    </div>
+
+    <div id="remerciement_text">
+        <h2>Un grand merci :</h2>
+        <p></p>
+    </div>
+
+    <div class="divAction">
+        <button onClick="remerciements.sendGoToNextScreen();">&gt;&gt; Dates</button>
+    </div>
+
+    <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/remerciements/remerciements.js'"></script>
+
+    <script type="text/javascript">
+        const remerciements = new Remerciements("REMERCIEMENTS", null, WEBSOCKET_CLIENT);
+        SCREENS["REMERCIEMENTS"] = remerciements;
+    </script>
+</div>
+
+</body>
+</html>

@@ -11,6 +11,11 @@ public class NetworkUtils {
     private static final String FILL_CHAR = "§";
     private static final String EMPTY_CHAR = " ";
 
+    public static String getFormattedIpString(String port) {
+        final String ip = NetworkUtils.getIpString(port);
+        return ip == null ? null : formatAsciiArt(ip);
+    }
+
     public static String getIpString(String port) {
         String ip;
         try {
@@ -23,7 +28,7 @@ public class NetworkUtils {
         if (ip.length() <= 16) {
             String fullIp = ip;
             fullIp += (port == null) ? "" : ":" + port;
-            return formatAsciiArt(fullIp);
+            return fullIp;
         }
 
         return ip;

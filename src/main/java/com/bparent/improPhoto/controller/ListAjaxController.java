@@ -66,8 +66,7 @@ public class ListAjaxController {
                 new File(IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION)
                         .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
                 )
-                .map(file -> file.getPath()) // ==> /photos
-                .map(filePath -> FileUtils.formatPathWithCharacter("/handler/" + filePath, "/"))
+                .map(FileUtils::getFrontFilePath) // => /photos
                 .collect(Collectors.toList());
     }
 

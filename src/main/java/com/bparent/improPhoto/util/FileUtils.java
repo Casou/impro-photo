@@ -32,11 +32,11 @@ public class FileUtils {
         return Files.walk(Paths.get(folder))
                 .filter(Files::isRegularFile)
                 .map(pathObject -> pathObject.toFile().getPath())
-//                .filter(path -> excludeFolders.stream()
-//                        .filter(excluded -> !path.contains(excluded + File.separator))
-//                        .findAny()
-//                        .isPresent())
                 .collect(Collectors.toList());
+    }
+
+    public static String getFrontFilePath(File file) {
+        return FileUtils.formatPathWithCharacter("/handler/" + file.getPath(), "/");
     }
 
 }

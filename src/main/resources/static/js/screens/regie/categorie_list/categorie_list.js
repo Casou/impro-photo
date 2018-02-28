@@ -3,6 +3,7 @@ class CategorieList extends IScreen {
         super(nom, nextScreen, wsClient);
 
         this.categories = [];
+        this.categoryScreen = null;
     }
 
     init(status, categoryList) {
@@ -13,16 +14,29 @@ class CategorieList extends IScreen {
             this.retrieveCategoryList();
         }
     }
+    
+    sendGoToNextScreen() {
+        this.wsClient.sendMessage("/app/action/goRemerciements", {
+            newScreen : this.nextScreen.nom
+        });
+    }
 
-    goToNextScreen(categorie) {
+    goToNextScreen(newStatus) {
+        $('#categorie_list').fadeOut(ANIMATION_FADE_DURATION, (function() {
+            this.nextScreen.init(newStatus);
+        }).bind(this));
+    }
+    
+    launchCategorieScreen(categorie) {
         $('#categorie_list').fadeOut(ANIMATION_FADE_DURATION, function() {
-            this.nextScreen.init(null, categorie);
+            this.categoryScreen.init(null, categorie);
         }.bind(this));
     }
 
     subscriptions() {
         super.subscriptions();
-        this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.goToNextScreen(JSON.parse(response.body)));
+        this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.launchCategorieScreen(JSON.parse(response.body)));
+        this.wsClient.subscribe("/topic/category_list/goRemerciements", (response) => this.goToNextScreen(JSON.parse(response.body)));
     }
 
     retrieveCategoryList() {

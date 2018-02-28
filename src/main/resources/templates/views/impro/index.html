@@ -17,6 +17,7 @@
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/intro.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/categorie_list.less" />
     <link rel="stylesheet/less" type="text/css" href="/css/views/impro/categorie.less" />
+    <link rel="stylesheet/less" type="text/css" href="/css/views/impro/remerciements.less" />
 
     <link rel="shortcut icon" HREF="/images/logo/logo_photo.ico" />
 
@@ -58,6 +59,7 @@
     <div th:replace="views/impro/templates/intro :: intro"><h1 class="error">Intro</h1></div>
     <div th:replace="views/impro/templates/categorie_list :: categorie_list"><h1 class="error">Categories</h1></div>
     <div th:replace="views/impro/templates/categorie :: categorie"><h1 class="error">Categorie</h1></div>
+    <div th:replace="views/impro/templates/remerciements :: remerciements"><h1 class="error">Remerciements</h1></div>
 
     <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/common.js'"></script>
 
@@ -74,8 +76,10 @@
         function linkNextScreens() {
             SCREENS["SALLE_ATTENTE"].nextScreen = SCREENS["INTRO"];
             SCREENS["INTRO"].nextScreen = SCREENS["CATEGORIES"];
-            SCREENS["CATEGORIES"].nextScreen = SCREENS["CATEGORY"];
+            SCREENS["CATEGORIES"].nextScreen = SCREENS["REMERCIEMENTS"];
+            SCREENS["CATEGORIES"].categoryScreen = SCREENS["CATEGORY"];
             SCREENS["CATEGORY"].nextScreen = SCREENS["CATEGORIES"];
+            SCREENS["REMERCIEMENTS"].nextScreen = SCREENS["SALLE_ATTENTE"];
         }
 
         function retrieveStatusImpro() {

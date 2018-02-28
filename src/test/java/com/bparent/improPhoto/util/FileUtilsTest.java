@@ -37,4 +37,9 @@ public class FileUtilsTest {
         assertEquals(FileUtils.formatPathToSystemDefault("src/test/resources/schema.sql"), testResourcesFiles.get(1));
     }
 
+    @Test
+    public void getFrontFilePath_shouldReturnStringWithHandle() {
+        assertEquals("/handler/file.txt", FileUtils.getFrontFilePath(new File("file.txt")));
+    }
+
 }

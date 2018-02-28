@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StatutPreparationService {
@@ -56,7 +59,7 @@ public class StatutPreparationService {
         return folder.exists() && folder.isFile();
     }
 
-    private String getRemerciements() {
+    public String getRemerciements() {
         Iterator<Remerciement> iterator = remerciementDao.findAll().iterator();
         if (!iterator.hasNext()) {
             return null;
@@ -64,10 +67,19 @@ public class StatutPreparationService {
         return iterator.next().getTexte();
     }
 
+    private List<File> getListPhotosFolder(String folder) {
+        return Arrays.asList(new File(folder)
+                .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase()))));
+    }
+
     private Integer getNbPhotosFolder(String folder) {
-        return new File(folder)
-                .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
-                .length;
+        return this.getListPhotosFolder(folder).size();
+    }
+
+    public List<String> getPathPhotosJoueurs() {
+        return this.getListPhotosFolder(IConstants.IPath.IPhoto.PHOTOS_JOUEURS).stream()
+                .map(FileUtils::getFrontFilePath)
+                .collect(Collectors.toList());
     }
 
     private Integer getNbPhotosJoueurs() {

@@ -21,8 +21,7 @@ public class CategorieAjaxController {
                 new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + pathFolder)
                         .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
                 )
-                .map(file -> file.getPath()) // ==> /photos
-                .map(filePath -> FileUtils.formatPathWithCharacter("/handler/" + filePath, "/"))
+                .map(FileUtils::getFrontFilePath) // ==> /photos
                 .limit(IConstants.LIMIT_PICTURES)
                 .collect(Collectors.toList());
     }

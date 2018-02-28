@@ -2,6 +2,7 @@ package com.bparent.improPhoto.controller.websocket;
 
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.dto.CategorieDto;
+import com.bparent.improPhoto.dto.json.NewScreenDto;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.service.EtatImproService;
@@ -48,6 +49,13 @@ public class CategoryListWSController {
 
         etatImproService.updateStatus(IConstants.IEtatImproField.TYPE_ECRAN, dto.getType().getCode());
         return dto;
+    }
+
+    @MessageMapping("/action/goRemerciements")
+    @SendTo("/topic/category_list/goRemerciements")
+    public BasicCodeLabelDto goRemerciements(NewScreenDto newScreen) {
+        etatImproService.updateStatus(IConstants.IEtatImproField.ECRAN, newScreen.getNewScreen());
+        return new BasicCodeLabelDto("message", "ok");
     }
 
 }
