@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+    <title>GIT - Impro diapo - Remerciements</title>
+</head>
+<body>
+
+<div id="dates" class="content_hidden" th:fragment="dates">
+    <h1>Dates</h1>
+
+    <div id="div_dates">
+    </div>
+
+    <div class="divAction">
+        <button onClick="dates.sendGoToNextScreen();">&gt;&gt; Retour intro</button>
+    </div>
+
+    <div id="img_impros">
+    </div>
+
+    <script type="text/javascript" th:src="'/js/screens/' + ${side} + '/dates/dates.js'"></script>
+
+    <script type="text/javascript">
+        const dates = new Dates("DATES", null, WEBSOCKET_CLIENT);
+        SCREENS["DATES"] = dates;
+    </script>
+</div>
+
+</body>
+</html>

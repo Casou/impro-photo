@@ -30,6 +30,7 @@ class CategorieList extends IScreen {
         this.wsClient.subscribe("/topic/category_list/showNextCategory", () => this.showNextCategory());
         this.wsClient.subscribe("/topic/category_list/showAllCategories", () => this.showAllCategories());
         this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.launchCategorieScreen(JSON.parse(response.body)));
+        this.wsClient.subscribe("/topic/category_list/goRemerciements", (response) => this.goToNextScreen(JSON.parse(response.body)));
     }
 
     retrieveCategoryList() {

@@ -4,14 +4,14 @@ class Remerciements extends IScreen {
         super(nom, nextScreen, wsClient);
     }
 
-    init(status, categoryList) {
+    init(status,) {
         $("#remerciements").fadeIn(ANIMATION_FADE_DURATION);
         this.retrieveAndAddRemerciements();
     }
 
-    goToNextScreen(categorie) {
+    goToNextScreen() {
         $('#remerciements').fadeOut(ANIMATION_FADE_DURATION, function() {
-            this.nextScreen.init(null, categorie);
+            this.nextScreen.init(null);
         }.bind(this));
     }
 

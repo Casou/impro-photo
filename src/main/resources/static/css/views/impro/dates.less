@@ -1,0 +1,145 @@
+#dates {
+    h1 {
+        text-align : center;
+    }
+
+    div#div_dates {
+        margin-left : 10%;
+        position : absolute;
+        z-index : 1000;
+    }
+
+    div.date {
+
+        label {
+            font-size : 40px;
+            display: inline-block;
+            height: 120px;
+            line-height: 120px;
+            vertical-align: middle;
+        }
+
+        figure {
+            display: inline-block;
+            vertical-align: middle;
+
+            margin: 30px 15px;
+
+            width: 128px;
+            height: 120px;
+
+            background-color: #ffffff;
+            border-radius: 10px;
+
+            position: relative;
+
+            &:before {
+                content: '';
+                display: block;
+
+                width: 128px;
+                height: 79px;
+
+                border-radius: 10px 10px 0 0;
+
+                background-image: -webkit-linear-gradient(white 0%, #edeeef 100%);
+                background-image: -moz-linear-gradient(white 0%, #edeeef 100%);
+                background-image: -o-linear-gradient(white 0%, #edeeef 100%);
+                background-image: linear-gradient(white 0%, #edeeef 100%);
+
+            }
+
+            header {
+                width: 128px;
+                height: 40px;
+
+                position: absolute;
+                top: -1px;
+
+                background-color: #fa459e;
+                border-radius: 10px 10px 0 0;
+                border-bottom: 3px solid #e5e5e5;
+
+                font: bold 15px/27px Arial, Helvetica, Geneva, sans-serif;
+                letter-spacing: 0.5px;
+                color: #fff;
+                font-size : 20px;
+                line-height : 40px;
+
+                text-align: center;
+
+                text-shadow : 1px 1px 0 black;
+            }
+
+            section {
+                display : inline-block;
+                width: 128px;
+                height: 90px;
+
+                position: absolute;
+                top: 40px;
+                left: 0;
+
+                font: bold 55px/75px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+                letter-spacing: -2px;
+                color: #404040;
+
+                text-align: center;
+
+                z-index: 10;
+
+                &:before {
+                    content: '';
+                    display: block;
+
+                    position: absolute;
+                    top: 33px;
+
+                    width: 3px;
+                    height: 10px;
+
+                    background-image: -webkit-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: -moz-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: -o-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                }
+
+                &:after {
+                    content: '';
+                    display: block;
+
+                    position: absolute;
+                    top: 33px;
+                    right: 0;
+
+                    width: 3px;
+                    height: 10px;
+
+                    background-image: -webkit-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: -moz-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: -o-linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                    background-image: linear-gradient(#b5bdc5 0%, #e5e5e5 100%);
+                }
+
+            }
+        }
+    }
+
+
+    #img_impros {
+        opacity : 0.6;
+        z-index : 10;
+
+        img {
+            position : absolute;
+            right : -25px;
+            max-height: 200px;
+            border : 4px solid white;
+        }
+    }
+
+    .divAction {
+        z-index : 1000;
+    }
+
+}

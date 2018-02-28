@@ -4,7 +4,7 @@ class Remerciements extends IScreen {
         super(nom, nextScreen, wsClient);
     }
 
-    init(status, categoryList) {
+    init(status) {
         $("#remerciements").fadeIn(ANIMATION_FADE_DURATION);
         this.retrieveAndAddRemerciements();
     }

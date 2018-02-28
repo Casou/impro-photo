@@ -39,3 +39,7 @@ function showCategorieSelectedPopin(forceShow) {
         $("#category_selected h1, #category_selected #category_selected_name").addClass("bounceInRight");
     }
 }
+
+function getMonthName(monthNumber) {
+    return MONTH_NAMES_FULL[monthNumber];
+}

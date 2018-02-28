@@ -61,17 +61,26 @@ public class ListAjaxController {
     }
 
     @RequestMapping("/allPhotos")
-    public List<String> getAllPhotos() throws ImproMappingException {
+    public List<String> getAllPhotos() {
+        return listPhotos(IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION);
+    }
+
+    @RequestMapping("/photosDates")
+    public List<String> getPhotosDates() {
+        return listPhotos(IConstants.IPath.IPhoto.PHOTOS_PRESENTATION_DATES);
+    }
+
+    private List<String> listPhotos(String photosIntroduction) {
         return Arrays.stream(
-                new File(IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION)
+                new File(photosIntroduction)
                         .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
-                )
+        )
                 .map(FileUtils::getFrontFilePath) // => /photos
                 .collect(Collectors.toList());
     }
 
     @RequestMapping("/playlistSongs")
-    public List<SongDto> getAllPlaylistSongs() throws ImproMappingException {
+    public List<SongDto> getAllPlaylistSongs() {
         return Arrays.stream(
                 new File(IConstants.IPath.IAudio.AUDIOS_PLAYLIST)
                         .listFiles((dir, name) -> IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
@@ -83,7 +92,7 @@ public class ListAjaxController {
 
 
     @RequestMapping("/jingles")
-    public List<SongDto> getAllJingles() throws ImproMappingException {
+    public List<SongDto> getAllJingles() {
         return Arrays.stream(
                 new File(IConstants.IPath.IAudio.AUDIOS_JINGLES)
                         .listFiles((dir, name) -> IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
@@ -92,6 +101,5 @@ public class ListAjaxController {
                 .map(fileName -> new SongDto(fileName, FileUtils.formatPathWithCharacter("/handler/jingles/" + fileName, "/")))
                 .collect(Collectors.toList());
     }
-
 
 }
