@@ -15,6 +15,7 @@ class SalleAttenteScreen extends IScreen {
     goToNextScreen(newStatus) {
         $('#salle_attente').fadeOut(ANIMATION_FADE_DURATION, (function() {
             this.nextScreen.init(newStatus);
+            $('#salle_attente main button').attr("disabled", false);
         }).bind(this));
     }
 

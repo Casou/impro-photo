@@ -21,7 +21,7 @@ class CategorieList extends IScreen {
     
     launchCategorieScreen(categorie) {
         $('#categorie_list').fadeOut(ANIMATION_FADE_DURATION, function() {
-            this.nextScreen.init(null, categorie);
+            this.categoryScreen.init(null, categorie);
         }.bind(this));
     }
 
