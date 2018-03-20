@@ -42,12 +42,16 @@
             integralite : null,
             photoCourante : null,
             statutDiapo : null,
-            blockMasques : null
+            blockMasques : null,
+            currentSong : null,
+            isPlaylistPlaying : null,
+            playlistVolume : null
         };
         const SCREENS = [];
 
         const WEBSOCKET_CLIENT = new WebsocketClient();
         const ANIMATION_FADE_DURATION = 2000;
+
     </script>
 
 </head>
@@ -111,6 +115,7 @@
             STATUS = etatImproDto;
             console.log(STATUS);
             SCREENS[STATUS.ecran].init(STATUS);
+            initPlayer();
         }
     </script>
 

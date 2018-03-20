@@ -51,9 +51,17 @@ public interface IConstants {
         public static final String PHOTO_COURANTE = "photo_courante";
         public static final String PHOTOS_CHOISIES = "photos_choisies";
         public static final String STATUT_DIAPO = "statut_diapo";
+        public static final String CURRENT_SONG_NAME = "current_song_name";
+        public static final String PLAYLIST_STATUS = "playlist_status";
+        public static final String PLAYLIST_VOLUME = "playlist_volume";
 
         public interface IStatutDiapo {
             public static final String LAUNCHED = "launched";
+        }
+
+        public interface IStatutPlaylist {
+            public static final String PLAYING = "playing";
+            public static final String PAUSED = "paused";
         }
     }
 

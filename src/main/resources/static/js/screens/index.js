@@ -22,8 +22,6 @@ $(document).ready(function() {
 
 
 function updateStatut(statusDto) {
-    console.log(statusDto);
-
     let allStatus = [];
     allStatus.push(updateStatutCategories(statusDto));
     allStatus.push(updateStatutVideo(statusDto));

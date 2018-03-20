@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @Controller
 public class CategoryWSController {
 
-
     @Autowired
     private EtatImproService etatImproService;
 

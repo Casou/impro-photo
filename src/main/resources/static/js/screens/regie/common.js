@@ -1,6 +1,4 @@
 let VOLUME_PLAYLIST = 10;
-let PLAYLIST_SONGS = [];
-let PLAYLIST_REMAINING_SONGS = [];
 let CURRENT_SONG;
 let IS_PLAYING = false;
 
@@ -16,7 +14,7 @@ $(document).ready(function () {
                 Loading...
             </div>
             <button id="togglePlaylist" class="metal radial" onClick="togglePlaylist();"><span class="fa fa-play" aria-hidden="true"></span></button>
-            <button class="metal radial" onClick="loadRandom();"><span class="fa fa-step-forward" aria-hidden="true"></span></button>
+            <button class="metal radial" onClick="nextSong();"><span class="fa fa-step-forward" aria-hidden="true"></span></button>
             <div id="volume">
                 <span id="volume_value">${ VOLUME_PLAYLIST }</span>
                 <div id="volume_buttons">
@@ -24,15 +22,12 @@ $(document).ready(function () {
                     <button class="metal radial mini" onClick="minusVolume();"><span class="fa fa-minus" aria-hidden="true"></span></button>
                 </div>
             </div>
-            
-            <audio id="playlist" preload="true"></audio>
         </div>
         <div id="jingles">
             <h2>Jingles</h2>
             <ul>
                 <li>Loading...</li>            
             </ul>
-            <audio id="jingle" preload="true"></audio>
         </div>
         <div id="controlActionButton">
             <button id="refresh" class="metal radial" onClick="refreshImpro();"><img src="/images/refresh.png" /></button>
@@ -40,11 +35,17 @@ $(document).ready(function () {
         </div>
     </div>
     `);
-
-    initPlaylist();
+    
     initJingles();
 });
 
+function initPlayer() {
+    IS_PLAYING = STATUS.isPlaylistPlaying;
+    CURRENT_SONG = STATUS.currentSong;
+    VOLUME_PLAYLIST = STATUS.playlistVolume;
+    updatePlaylistScreen();
+    updateVolume();
+}
 
 /* ************************************
  *************  PLAYLIST  *************
@@ -52,65 +53,32 @@ $(document).ready(function () {
 
 function plusVolume() {
     if (VOLUME_PLAYLIST < 10) {
-        VOLUME_PLAYLIST++;
-        $("#volume_value").html(VOLUME_PLAYLIST);
-        updateVolume();
+        sendUpdateVolume(VOLUME_PLAYLIST + 1);
+        $("#volume_buttons button").attr("disabled", true);
     }
 }
 
 function minusVolume() {
     if (VOLUME_PLAYLIST > 0) {
-        VOLUME_PLAYLIST--;
-        $("#volume_value").html(VOLUME_PLAYLIST);
-        updateVolume();
+        sendUpdateVolume(VOLUME_PLAYLIST - 1);
+        $("#volume_buttons button").attr("disabled", true);
     }
 }
 
-function updateVolume() {
-    $("#playlist audio#playlist").prop("volume", VOLUME_PLAYLIST / 10);
+function sendUpdateVolume(volumeToSet) {
+    WEBSOCKET_CLIENT.sendMessage("/app/action/setVolume", { volume : volumeToSet });
 }
 
-
-
-function initPlaylist() {
-    let allSongsPromise = getAllSongs()
-    allSongsPromise.then((allSongs) => {
-        fillAudio(allSongs);
-        updateVolume();
-        $('#playlist audio#playlist').on("ended", loadRandom);
-    });
-}
-
-function getAllSongs() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            type: 'GET',
-            url: '/list/playlistSongs',
-            dataType: 'json',
-            encoding: "UTF-8",
-            contentType: 'application/json'
-        })
-            .done(function (allSongs) {
-                resolve(allSongs);
-            })
-            .fail(function (resultat, statut, erreur) {
-                handleAjaxError(resultat, statut, erreur);
-                reject();
-            })
-            .always(function () {
-            });
-    });
-}
-
-function fillAudio(allSongs) {
-    if (allSongs.length === 0) {
-        throw new RangeError("Songs are empty");
+WEBSOCKET_CLIENT.subscribe("/topic/general/setVolume", (responseJson) => updateVolume(JSON.parse(responseJson.body)));
+function updateVolume(volumeDto) {
+    if (volumeDto) {
+        VOLUME_PLAYLIST = volumeDto.volume;
     }
-
-    PLAYLIST_SONGS = allSongs;
-    PLAYLIST_REMAINING_SONGS = PLAYLIST_SONGS.slice(0);
-    loadRandom();
+    $("#volume_value").html(VOLUME_PLAYLIST);
+    $("#volume_buttons button").attr("disabled", false);
+    // $("#playlist audio#playlist").prop("volume", VOLUME_PLAYLIST / 10);
 }
+
 
 function getStatusChar() {
     if (IS_PLAYING) {
@@ -119,58 +87,48 @@ function getStatusChar() {
     return "❚❚";
 }
 
-function loadRandom() {
-    if (PLAYLIST_REMAINING_SONGS.length == 0) {
-        PLAYLIST_REMAINING_SONGS = PLAYLIST_SONGS.slice(0);
-    }
-
-    let randomIndex = parseInt(Math.random() * PLAYLIST_REMAINING_SONGS.length);
-    let song = PLAYLIST_REMAINING_SONGS[randomIndex];
-    if (song == undefined) {
-        loadRandom();
-        return;
-    }
-    loadSong(song);
-    PLAYLIST_REMAINING_SONGS.splice(randomIndex, 1);
-
-    if (IS_PLAYING) {
-        playPlaylist();
-    }
-}
-
-function loadSong(song) {
-    CURRENT_SONG = song;
-    updatePlaylistScreen();
-    $("#playlist audio#playlist").attr("src", song.path);
-}
-
 function updatePlaylistScreen() {
-    $("#playlist_screen").html(getStatusChar() + " " + CURRENT_SONG.nom);
+    if (CURRENT_SONG) {
+        $("#playlist_screen").html(getStatusChar() + " " + CURRENT_SONG.nom);
+    }
+    if (IS_PLAYING) {
+        $('#togglePlaylist span').removeClass("fa-play").addClass("fa-pause");
+    } else {
+        $('#togglePlaylist span').removeClass("fa-pause").addClass("fa-play");
+    }
 }
 
 function togglePlaylist() {
     if (IS_PLAYING) {
-        pausePlaylist();
+        WEBSOCKET_CLIENT.sendMessage("/app/action/pausePlaylist", {});
     } else {
-        playPlaylist();
+        WEBSOCKET_CLIENT.sendMessage("/app/action/playPlaylist", {});
     }
 }
 
-function playPlaylist() {
-    stopJingle();
-    $("#playlist audio#playlist")[0].play();
+function nextSong() {
+    WEBSOCKET_CLIENT.sendMessage("/app/action/nextSong", {});
+}
+
+WEBSOCKET_CLIENT.subscribe("/topic/general/playlistPlaying", (responseJson) => playPlaylist(JSON.parse(responseJson.body)));
+function playPlaylist(songDto) {
+    CURRENT_SONG = songDto;
     IS_PLAYING = true;
     updatePlaylistScreen();
-    $('#togglePlaylist span').removeClass("fa-play").addClass("fa-pause");
+    $('button.jingle span').removeClass("fa-stop").addClass("fa-play");
 }
 
+WEBSOCKET_CLIENT.subscribe("/topic/general/playlistPaused", () => pausePlaylist());
 function pausePlaylist() {
-    $("#playlist audio#playlist")[0].pause();
     IS_PLAYING = false;
     updatePlaylistScreen();
-    $('#togglePlaylist span').removeClass("fa-pause").addClass("fa-play");
 }
 
+WEBSOCKET_CLIENT.subscribe("/topic/general/updateSong", (responseJson) => updateSong(JSON.parse(responseJson.body)));
+function updateSong(songDto) {
+    CURRENT_SONG = songDto;
+    updatePlaylistScreen();
+}
 
 
 
@@ -181,11 +139,10 @@ function pausePlaylist() {
  *********************************** */
 
 function initJingles() {
-    let allJinglesPromise = getAllJingles()
+    const allJinglesPromise = getAllJingles();
     allJinglesPromise.then((allJingles) => {
         fillJingleList(allJingles);
     });
-    $('#jingles audio#jingle').on("ended", stopJingle);
 }
 
 
@@ -213,7 +170,7 @@ function getAllJingles() {
 function fillJingleList(allJingles) {
     $('#jingles ul').html("");
     $(allJingles).each((index, jingle) => {
-        let html = `<li>
+        const html = `<li>
             <button class="metal radial mini jingle" onClick="toggleJingle('${ jingle.path }', this);"><span class="fa fa-play" aria-hidden="true"></span></button>
             ${ jingle.nom }
         </li>`;
@@ -222,9 +179,9 @@ function fillJingleList(allJingles) {
 }
 
 function toggleJingle(path, button) {
-    pausePlaylist();
-    let span = $(button).find('span');
-    let isCurrentlyPlaying = span.hasClass("fa-stop");
+    // pausePlaylist();
+    const span = $(button).find('span');
+    const isCurrentlyPlaying = span.hasClass("fa-stop");
     if (isCurrentlyPlaying) {
         stopJingle();
     } else {
@@ -233,16 +190,20 @@ function toggleJingle(path, button) {
 }
 
 function playJingle(path, span) {
+    WEBSOCKET_CLIENT.sendMessage("/app/action/playJingle", { path : path });
+    
     $('button.jingle span').removeClass("fa-stop").addClass("fa-play");
     $(span).removeClass("fa-play").addClass("fa-stop");
-    $("#jingles audio#jingle").attr("src", path);
-    $("#jingles audio#jingle")[0].play();
 }
 
 function stopJingle() {
     $('button.jingle span').removeClass("fa-stop").addClass("fa-play");
-    $("#jingles audio#jingle")[0].pause();
-    $("#jingles audio#jingle")[0].currentTime = 0;
+    WEBSOCKET_CLIENT.sendMessage("/app/action/stopJingle", {});
+}
+
+WEBSOCKET_CLIENT.subscribe("/topic/general/jingleStopped", () => jingleStopped());
+function jingleStopped() {
+    $('button.jingle span').removeClass("fa-stop").addClass("fa-play");
 }
 
 

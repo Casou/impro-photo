@@ -5,15 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class SongDto {
+public class JingleDto {
 
     private String nom;
     private String path;
 
-    public SongDto(String nom) {
+    public JingleDto(String nom) {
         this.nom = nom;
-        this.path = FileUtils.formatPathWithCharacter("/handler/playlist/" + this.nom, "/");
+        this.path = FileUtils.formatPathWithCharacter("/handler/jingles/" + nom, "/");
     }
 
 }

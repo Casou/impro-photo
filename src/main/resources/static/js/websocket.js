@@ -4,6 +4,7 @@ class WebsocketClient {
         this.stompClient = null;
 
         this.isConnected = false;
+        this.waitingrequests = [];
         this.connect();
 
         this.allSubscriptions = [];
@@ -15,7 +16,7 @@ class WebsocketClient {
         let socket = new SockJS(url);
 
         this.stompClient = Stomp.over(socket);
-        // this.stompClient.debug = null
+        this.stompClient.debug = null
         this.stompClient.connect({}, (frame) => this.connectCallback(frame), (error) => this.error_callback(error));
         let that = this;
         socket.onclose = function() {
@@ -33,6 +34,12 @@ class WebsocketClient {
             console.log("SUBSCRIBE", subscription);
             this.stompClient.subscribe(subscription.url, (response) => subscription.callback(response));
         });
+    
+        this.waitingrequests.forEach(request => {
+            this.stompClient.send(request.url, {}, JSON.stringify(request.datas));
+        });
+        this.waitingrequests = [];
+        
         // stompClient.subscribe('/topic/greetings', function (greeting) {
         //     console.log("response", greeting);
         //     showGreeting(JSON.parse(greeting.body).label);
@@ -55,6 +62,10 @@ class WebsocketClient {
     };
 
     sendMessage(url, datas) {
+        if (!this.isConnected) {
+            this.waitingrequests.push({ url : url, datas : datas });
+            return;
+        }
         this.stompClient.send(url, {}, JSON.stringify(datas));
     };
 

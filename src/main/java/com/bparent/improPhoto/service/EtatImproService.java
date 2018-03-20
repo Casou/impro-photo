@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dao.EtatImproDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.EtatImpro;
 import com.bparent.improPhoto.dto.EtatImproDto;
+import com.bparent.improPhoto.dto.SongDto;
 import com.bparent.improPhoto.util.IConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,15 @@ public class EtatImproService {
             case IConstants.IEtatImproField.STATUT_DIAPO :
                 etatImproDto.setStatutDiapo(etat.getValeur());
                 break;
+            case IConstants.IEtatImproField.CURRENT_SONG_NAME :
+                etatImproDto.setCurrentSong(new SongDto(etat.getValeur()));
+                break;
+            case IConstants.IEtatImproField.PLAYLIST_VOLUME :
+                etatImproDto.setPlaylistVolume(Integer.valueOf(etat.getValeur()));
+                break;
+            case IConstants.IEtatImproField.PLAYLIST_STATUS :
+                etatImproDto.setIsPlaylistPlaying(IConstants.IEtatImproField.IStatutPlaylist.PLAYING.equals(etat.getValeur()));
+                break;
             default:
                 break;
         }
@@ -98,6 +108,9 @@ public class EtatImproService {
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTO_COURANTE, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTOS_CHOISIES, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.STATUT_DIAPO, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CURRENT_SONG_NAME, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_STATUS, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_VOLUME, String.valueOf(10)));
 
         List<Categorie> allCategories = categorieDao.findAll();
         allCategories.forEach(categorie -> categorie.setTermine(false));

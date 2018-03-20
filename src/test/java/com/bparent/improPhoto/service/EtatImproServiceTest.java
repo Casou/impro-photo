@@ -72,7 +72,7 @@ public class EtatImproServiceTest {
         ArgumentCaptor<EtatImpro> etatImproCaptor = ArgumentCaptor.forClass(EtatImpro.class);
         this.etatImproService.resetImpro();
 
-        verify(this.statutDao, times(8)).save(etatImproCaptor.capture());
+        verify(this.statutDao, times(11)).save(etatImproCaptor.capture());
         List<EtatImpro> allEntities = etatImproCaptor.getAllValues();
         int i = 0;
         assertEquals("ecran", allEntities.get(i++).getChamp());
@@ -83,6 +83,9 @@ public class EtatImproServiceTest {
         assertEquals("photo_courante", allEntities.get(i++).getChamp());
         assertEquals("photos_choisies", allEntities.get(i++).getChamp());
         assertEquals("statut_diapo", allEntities.get(i++).getChamp());
+        assertEquals("current_song_name", allEntities.get(i++).getChamp());
+        assertEquals("playlist_status", allEntities.get(i++).getChamp());
+        assertEquals("playlist_volume", allEntities.get(i++).getChamp());
 
         i = 0;
         assertEquals("SALLE_ATTENTE", allEntities.get(i++).getValeur());
@@ -93,6 +96,9 @@ public class EtatImproServiceTest {
         assertNull(allEntities.get(i++).getValeur());
         assertNull(allEntities.get(i++).getValeur());
         assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertNull(allEntities.get(i++).getValeur());
+        assertEquals("10", allEntities.get(i++).getValeur());
     }
 
     @Test

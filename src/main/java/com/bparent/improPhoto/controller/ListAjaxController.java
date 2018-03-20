@@ -3,10 +3,7 @@ package com.bparent.improPhoto.controller;
 import com.bparent.improPhoto.dao.DateImproDao;
 import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Remerciement;
-import com.bparent.improPhoto.dto.CategorieDto;
-import com.bparent.improPhoto.dto.DateImproDto;
-import com.bparent.improPhoto.dto.RemerciementDto;
-import com.bparent.improPhoto.dto.SongDto;
+import com.bparent.improPhoto.dto.*;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.mapper.BasicMapper;
 import com.bparent.improPhoto.mapper.DateImproMapper;
@@ -86,19 +83,19 @@ public class ListAjaxController {
                         .listFiles((dir, name) -> IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
                 )
                 .map(file -> file.getName()) // ==> /photos
-                .map(fileName -> new SongDto(fileName, FileUtils.formatPathWithCharacter("/handler/playlist/" + fileName, "/")))
+                .map(fileName -> new SongDto(fileName))
                 .collect(Collectors.toList());
     }
 
 
     @RequestMapping("/jingles")
-    public List<SongDto> getAllJingles() {
+    public List<JingleDto> getAllJingles() {
         return Arrays.stream(
                 new File(IConstants.IPath.IAudio.AUDIOS_JINGLES)
                         .listFiles((dir, name) -> IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
                 )
                 .map(file -> file.getName()) // ==> /photos
-                .map(fileName -> new SongDto(fileName, FileUtils.formatPathWithCharacter("/handler/jingles/" + fileName, "/")))
+                .map(fileName -> new JingleDto(fileName))
                 .collect(Collectors.toList());
     }
 
