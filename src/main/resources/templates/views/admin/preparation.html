@@ -32,18 +32,26 @@
 	<menu>
 		<nav id="categorie_tab">Catégories</nav>
 		<nav id="musiques_tab">Musiques</nav>
+		<nav id="jingles_tab">Jingles</nav>
+		<nav id="videos_tab">Vidéos</nav>
+		<nav id="divers_tab">Divers</nav>
 	</menu>
 
 	<main>
 		<!-- Catégories -->
 		<section id="categorie_tab_main">
+			<form id="importCategories" class="importForm" onsubmit="return false;">
+				Fichier(s) ZIP contenant les fichiers à importer : <input id="inputImportCategorie" type="file" name="file" accept=".zip" multiple="multiple" />
+				<button class="submitChanges" onClick="uploadCategories(); return false;">Envoyer</button>
+			</form>
+
 			<form action="#" method="post" onsubmit="return false;">
 				<div class="submitButton">
-					<button class="submitChanges">Enregistrer les modifications</button>
+					<button class="submitChanges sendCategoriesForm">Enregistrer les modifications</button>
 				</div>
 
 				<div id="categories">
-					<h2>Liste des catégories <button onClick="newCategorie(); return false;">Ajouter</button></h2>
+					<h2>Liste des catégories</h2>
 					<input type="hidden" name="action" value="update" />
 
 					<span class="loading">Loading...</span>
@@ -67,7 +75,7 @@
 				</div>
 
 				<div class="submitButton">
-					<button class="submitChanges">Enregistrer les modifications</button>
+					<button class="submitChanges sendCategoriesForm">Enregistrer les modifications</button>
 				</div>
 
 			</form>
@@ -77,8 +85,8 @@
 
 		<!-- musiques -->
 		<section id="musiques_tab_main">
-			<form id="importMusique" onsubmit="return false;">
-				Musiques ou fichier ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
+			<form id="importMusique" class="importForm" onsubmit="return false;">
+				Musique(s) ou fichier(s) ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
 				<button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
 			</form>
 
@@ -94,6 +102,23 @@
 				<tbody>
 				</tbody>
 			</table>
+		</section>
+
+
+		<!-- Jingles -->
+		<section id="jingles_tab_main">
+			TODO Jingles
+		</section>
+
+
+		<!-- Vidéos -->
+		<section id="videos_tab_main">
+			TODO Vidéos
+		</section>
+
+		<!-- Divers -->
+		<section id="divers_tab_main">
+			TODO Divers
 		</section>
 
 
@@ -122,7 +147,9 @@
 					</span>
 					<input type="text" class="categorie_path" name="categorie_path[]" value="" />
 				</span>
-				<span class="termine">
+				<span class="pictures">
+					<span class="span-icon icon-picture"></span>
+					<span class="nb-picture"></span>
 				</span>
 				
 				<a class="delete" href="#" onClick="removeCategorie($(this).parents('li')); return false;">

@@ -11,6 +11,7 @@ import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,9 +43,14 @@ public class ListAjaxController {
 
 
 
-    @RequestMapping("/categories")
+    @GetMapping("/categories")
     public List<CategorieDto> getAllCategories() throws ImproMappingException {
         return this.categorieService.findAll();
+    }
+
+    @RequestMapping("/categoriesWithCompletion")
+    public List<CategorieDto> getAllCategoriesWithCompletion() throws ImproMappingException {
+        return this.categorieService.findAllWithCompletion();
     }
 
     @RequestMapping("/dates")

@@ -4,7 +4,10 @@ function addCategorie(dto) {
     $(`#categories li#${ idCategorie } input.categorie_nom`).val(dto.nom);
     $(`#categories li#${ idCategorie } select.categorie_type`).val(dto.type);
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
-    $(`#categories li#${ idCategorie } span.termine`).html(dto.termine ? "TERMINÉ" : "");
+    $(`#categories li#${ idCategorie } span.pictures span.nb-picture`).html(dto.nbPictures);
+    if (dto.tooManyPictures) {
+        $(`#categories li#${ idCategorie } span.pictures span.icon-picture`).removeClass("icon-picture").addClass("icon-picture_error");
+    }
 
     if (dto.pathInError) {
         $(`#categories li#${ idCategorie } input.categorie_path`)
@@ -12,6 +15,11 @@ function addCategorie(dto) {
             .addClass("help")
             .after('<span class="span-icon icon-warning help" title="Ce répertoire n\'existe pas : ' + dto.pathFolder + '"></span>')
             ;
+    }
+    if (!dto.existsInDatabase) {
+        $(`#categories li#${ idCategorie } input.categorie_path`)
+            .after('<span class="span-icon icon-exclamation help no-name" title="Ce répertoire n\'a pas de nom ni de type."></span>')
+        ;
     }
 }
 
@@ -25,10 +33,6 @@ function newCategorie(id) {
 }
 
 function removeCategorie(li) {
-    if ($('#categories li').size() == 1) {
-        alert('Vous ne pouvez pas supprimer toutes les catégories.');
-        return;
-    }
     $(li).remove();
 }
 
@@ -157,7 +161,7 @@ function deleteSelectedSongs() {
 }
 
 function uploadSongs() {
-    $("#loading").show();
+    showLoading();
     $.ajax({
         url: "/songs",
         type: 'POST',
@@ -168,7 +172,7 @@ function uploadSongs() {
     })
     .done(function () {
         $("#inputImportPlaylist").val("");
-        retrieveMusiques();
+        retrieveMusiques().then(() => hideLoading());
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response import songs");
@@ -187,8 +191,42 @@ function uploadSongs() {
             }
         }
         alert(message);
+        hideLoading();
+    });
+}
+
+
+function uploadCategories() {
+    showLoading();
+    $.ajax({
+        url: "/categories",
+        type: 'POST',
+        data: new FormData(document.getElementById("importCategories")),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false
     })
-    .always(function() {
-        $("#loading").hide();
+    .done(function () {
+        $("#inputImportCategorie").val("");
+        retrieveCategories().then(() => hideLoading());
+    })
+    .fail(function (xhr, ajaxOptions, thrownError) {
+        console.error(">> Response import categories");
+        console.error(thrownError);
+        
+        let message = "Erreur lors de l'import des catégories.";
+        if (xhr.responseText != undefined) {
+            try {
+                let response = JSON.parse(xhr.responseText);
+                console.error(response);
+                console.error(response.message);
+                message += "\n\nException : " + response.message;
+            } catch(e) {
+                console.error(">> Exception", e);
+                message += "\n\n(Impossible de formatter le message d'erreur)";
+            }
+        }
+        alert(message);
+        hideLoading();
     });
 }

@@ -42,6 +42,9 @@ public class PreparationServiceTest {
     private CategorieDao categorieDao;
 
     @Mock
+    private CategorieService categorieService;
+
+    @Mock
     private RemerciementMapper remerciementMapper;
 
     @Mock
@@ -70,9 +73,9 @@ public class PreparationServiceTest {
     public void shouldReinitCategoriesAndSaveThem() throws ImproServiceException {
         ArgumentCaptor<List> categorieDtoCaptor = ArgumentCaptor.forClass(List.class);
         List<CategorieDto> categories = Arrays.asList(
-                new CategorieDto(BigInteger.valueOf(1), "Categorie 1", CategorieTypeEnum.PHOTO, "path", true, 1, false),
-                new CategorieDto(BigInteger.valueOf(2), "Categorie 2", CategorieTypeEnum.PHOTO, "path", false, 2, false),
-                new CategorieDto(BigInteger.valueOf(3), "Categorie 3", CategorieTypeEnum.PHOTO, "path", true, 3, false)
+                CategorieDto.builder().id(BigInteger.valueOf(1)).nom("Categorie 1").type(CategorieTypeEnum.PHOTO).pathFolder("path").termine(true).ordre(1).pathInError(false).build(),
+                CategorieDto.builder().id(BigInteger.valueOf(2)).nom("Categorie 2").type(CategorieTypeEnum.PHOTO).pathFolder("path").termine(false).ordre(2).pathInError(false).build(),
+                CategorieDto.builder().id(BigInteger.valueOf(3)).nom("Categorie 3").type(CategorieTypeEnum.PHOTO).pathFolder("path").termine(true).ordre(3).pathInError(false).build()
         );
 
         this.preparationService.prepareImpro(categories, new RemerciementDto(), Arrays.asList());

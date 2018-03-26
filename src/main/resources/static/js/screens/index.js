@@ -87,7 +87,7 @@ function updateStatutPhotosJoueurs(statusDto) {
 }
 
 function updateStatutRemerciements(statusDto) {
-    if (statusDto.remerciements != null && statusDto.remerciements.texte != undefined && statusDto.remerciements.texte != "") {
+    if (statusDto.remerciements) {
         $("span#status_remerciements").removeClass("loading").html("Défini").addClass("ok").prop("title", statusDto.remerciements);
     } else {
         $("span#status_remerciements").removeClass("loading").html("Aucun").addClass("neutre");

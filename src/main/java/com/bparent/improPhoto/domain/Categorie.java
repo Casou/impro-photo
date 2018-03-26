@@ -2,6 +2,7 @@ package com.bparent.improPhoto.domain;
 
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -14,6 +15,7 @@ import java.math.BigInteger;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Categorie {
 
     @Id

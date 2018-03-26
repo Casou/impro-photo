@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
+import com.bparent.improPhoto.exception.ImproServiceException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,6 +30,9 @@ public class StatutPreparationServiceTest {
     private CategorieDao categorieDao;
 
     @Mock
+    private CategorieService categorieService;
+
+    @Mock
     private RemerciementDao remerciementDao;
 
 
@@ -41,7 +45,7 @@ public class StatutPreparationServiceTest {
 
 
     @Test
-    public void shouldCheckCategoriesFalse() {
+    public void shouldCheckCategoriesFalse() throws ImproServiceException {
         when(categorieDao.findAll()).thenReturn(Arrays.asList(
                 new Categorie(BigInteger.valueOf(1), "nom1", CategorieTypeEnum.PHOTO, "pathFolder1", false, 1),
                 new Categorie(BigInteger.valueOf(2), "nom2", CategorieTypeEnum.PHOTO, "pathFolder2", false, 2)
@@ -53,7 +57,7 @@ public class StatutPreparationServiceTest {
     // TODO Trouver un moyen de mocker les recherches de fichier
     @Ignore
     @Test
-    public void shouldCheckVideosFalse() {
+    public void shouldCheckVideosFalse() throws ImproServiceException {
         StatutPreparationDto statutPreparation = statutPreparationService.getStatutPreparation();
         assertFalse(statutPreparation.getVideoPresentationJoueurs());
         assertFalse(statutPreparation.getVideoPresentationPresentateur());
@@ -62,7 +66,7 @@ public class StatutPreparationServiceTest {
     // TODO Trouver un moyen de mocker les recherches de fichier
     @Ignore
     @Test
-    public void shouldGet0Photos() {
+    public void shouldGet0Photos() throws ImproServiceException {
         StatutPreparationDto statutPreparation = statutPreparationService.getStatutPreparation();
         assertEquals(Integer.valueOf(0), statutPreparation.getPhotosJoueurs());
         assertEquals(Integer.valueOf(0), statutPreparation.getPhotosPresentationDates());

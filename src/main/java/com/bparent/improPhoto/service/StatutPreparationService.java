@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.Remerciement;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
+import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,12 @@ public class StatutPreparationService {
     private CategorieDao categorieDao;
 
     @Autowired
+    private CategorieService categorieService;
+
+    @Autowired
     private RemerciementDao remerciementDao;
 
-    public StatutPreparationDto getStatutPreparation() {
+    public StatutPreparationDto getStatutPreparation() throws ImproServiceException {
         StatutPreparationDto dto = new StatutPreparationDto();
         dto.setCategories(checkCategories());
         dto.setVideoPresentationJoueurs(checkVideo(IConstants.IPath.IVideo.VIDEO_INTRO_JOUEURS));
@@ -36,22 +40,22 @@ public class StatutPreparationService {
         return dto;
     }
 
-    private Boolean checkCategories() {
+    private Boolean checkCategories() throws ImproServiceException {
         int nbCategories = 0;
-        boolean categorieOk = true;
-        for (Categorie cat : categorieDao.findAll()) {
+        List<Categorie> allCategories = categorieDao.findAll();
+        for (Categorie cat : allCategories) {
             File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + cat.getPathFolder());
             if (!folder.exists() || !folder.isDirectory()) {
-                categorieOk = false;
-                break;
+                return false;
             }
             nbCategories++;
-        };
-
-        if (categorieOk && nbCategories == 0) {
-            categorieOk = false;
         }
-        return categorieOk;
+
+        if (nbCategories == 0) {
+            return false;
+        }
+
+        return categorieService.getMissingCategoriesFromDatabase(allCategories).isEmpty();
     }
 
     private Boolean checkVideo(String pathVideosIntro) {

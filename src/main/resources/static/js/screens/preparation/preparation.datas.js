@@ -33,14 +33,17 @@ function retrieveAllDatas() {
     allPromises.push(retrieveCategories());
     allPromises.push(retrieveRemerciements());
     allPromises.push(retrieveDates());
-
-    Promise.all(allPromises).then(function() {
-        $('input, select, textarea').change(function() {
-            activateButtons();
-        })
-    }, function(err) {
-        console.error(err);
-        alert("Erreur lors du All Promise : " + err);
+    
+    return new Promise((resolve, reject) => {
+        Promise.all(allPromises).then(function() {
+            $('input, select, textarea').change(function() {
+                activateButtons();
+            });
+            resolve();
+        }, function(err) {
+            console.error(err);
+            alert("Erreur lors du All Promise : " + err);
+        });
     });
 }
 
@@ -49,14 +52,16 @@ function retrieveAllDatas() {
 
 function retrieveCategories() {
     return new Promise((resolve, reject) => {
-        retrieveDatas("/list/categories", function(categorieDtos) {
+        retrieveDatas("/list/categoriesWithCompletion", function(categorieDtos) {
             retrieveCategoriesCallback(categorieDtos);
+            console.log("resolve", categorieDtos);
             resolve();
         });
     });
 }
 
 function retrieveCategoriesCallback(categorieDtos) {
+    $("#categories ul#categoriesList").html("");
     $(categorieDtos).each(function(index, categorie) {
         addCategorie(categorie);
     });
@@ -128,11 +133,10 @@ function deactivateButtons() {
 
 
 function saveDatas() {
-    deactivateButtons();
-
-    let originalText = $('section#categorie_tab_main button.submitChanges').first().html();
-
-    $('section#categorie_tab_main button.submitChanges').html("Enregistrement en cours...");
+    showLoading();
+    // deactivateButtons();
+    // let originalText = $('section#categorie_tab_main button.submitChanges').first().html();
+    // $('section#categorie_tab_main button.submitChanges').html("Enregistrement en cours...");
 
     $.ajax({
         url: "/preparation",
@@ -143,7 +147,7 @@ function saveDatas() {
         contentType: 'application/json'
     })
     .done(function (response) {
-        retrieveAllDatas();
+        retrieveAllDatas().then(() => hideLoading());
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response save datas");
@@ -164,8 +168,9 @@ function saveDatas() {
         alert(message);
     })
     .always(function () {
-        $('section#categorie_tab_main button.submitChanges').html(originalText);
-        activateButtons();
+        // $('section#categorie_tab_main button.submitChanges').html(originalText);
+        // activateButtons();
+        
     });
 }
 
@@ -183,7 +188,7 @@ function buildForm() {
     let remerciement = {
         id : $('#remerciements_id').val(),
         texte : $('#remerciements_texte').val()
-    }
+    };
 
     let dates = $.map($('ul#datesList li'), function(categorie) {
         return {

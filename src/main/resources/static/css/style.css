@@ -178,7 +178,13 @@ span.span-icon {
 	vertical-align : middle;
 }
 
-span.span-icon.icon-warning { background : url("../images/warning.png") no-repeat center center; }
+span.span-icon.icon-accept { background : url("../images/icones/accept.png") no-repeat center center; }
+span.span-icon.icon-cross { background : url("../images/icones/cross.png") no-repeat center center; }
+span.span-icon.icon-exclamation { background : url("../images/icones/exclamation.png") no-repeat center center; }
+span.span-icon.icon-info { background : url("../images/icones/info.png") no-repeat center center; }
+span.span-icon.icon-picture { background : url("../images/icones/picture.png") no-repeat center center; }
+span.span-icon.icon-picture_error { background : url("../images/icones/picture_error.png") no-repeat center center; }
+span.span-icon.icon-warning { background : url("../images/icones/warning.png") no-repeat center center; }
 
 div.content_hidden {
 	display : none;

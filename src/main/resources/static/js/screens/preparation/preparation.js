@@ -5,7 +5,7 @@ $(document).ready(function() {
     retrieveAllDatas();
     retrieveMusiques();
 
-    $('section#categorie_tab_main button.submitChanges').click(function() {
+    $('section#categorie_tab_main button.sendCategoriesForm').click(function() {
         saveDatas();
     });
     
@@ -21,4 +21,12 @@ function showSection(id) {
     $("section#" + id + "_main").show();
     $("nav").removeClass("selected");
     $("nav#" + id).addClass("selected");
+}
+
+function showLoading() {
+    $("#loading").show();
+}
+
+function hideLoading() {
+    $("#loading").hide();
 }
