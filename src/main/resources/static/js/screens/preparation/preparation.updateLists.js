@@ -72,3 +72,123 @@ $(document).ready(function() {
 function calcRemainingChars() {
     $('#nb_remaining_chars').html(TEXTEAREA_MAX_CHARS - $('#remerciements_texte').val().length);
 }
+
+
+
+
+
+function deleteSong(nom, index) {
+    const songToDelete = { nom : nom };
+    $.ajax({
+        url: "/song",
+        type: 'DELETE',
+        encoding: "UTF-8",
+        dataType: 'json',
+        data: JSON.stringify(songToDelete),
+        contentType: 'application/json'
+    })
+    .done(function (response) {
+        $("tr#song_" + index).remove();
+    })
+    .fail(function (xhr, ajaxOptions, thrownError) {
+        console.error(">> Response delete song");
+        console.error(thrownError);
+        
+        let message = "Erreur lors de la suppression d'une musique.";
+        if (xhr.responseText != undefined) {
+            try {
+                let response = JSON.parse(xhr.responseText);
+                console.error(response);
+                console.error(response.message);
+                message += "\n\nException : " + response.message;
+            } catch(e) {
+                console.error(">> Exception", e);
+                message += "\n\n(Impossible de formatter le message d'erreur)";
+            }
+        }
+        alert(message);
+    });
+}
+
+function deleteSelectedSongs() {
+    const checked = $("section#musiques_tab_main table tbody td input[type=checkbox]:checked");
+    if ($(checked).length == 0) {
+        alert("Aucune musique choisie");
+        return;
+    }
+    
+    const songsToDelete = [];
+    $(checked).each(function(index, input) {
+        songsToDelete.push({ nom : input.value })
+    });
+    
+    $.ajax({
+        url: "/songs",
+        type: 'DELETE',
+        encoding: "UTF-8",
+        dataType: 'json',
+        data: JSON.stringify(songsToDelete),
+        contentType: 'application/json'
+    })
+    .done(function () {
+        $(checked).each(function(index) {
+            $("tr#song_" + index).remove();
+        });
+        $("section#musiques_tab_main table thead th input[type=checkbox]").prop("checked", false);
+    })
+    .fail(function (xhr, ajaxOptions, thrownError) {
+        console.error(">> Response delete songs");
+        console.error(thrownError);
+        
+        let message = "Erreur lors de la suppression des musiques.";
+        if (xhr.responseText != undefined) {
+            try {
+                let response = JSON.parse(xhr.responseText);
+                console.error(response);
+                console.error(response.message);
+                message += "\n\nException : " + response.message;
+            } catch(e) {
+                console.error(">> Exception", e);
+                message += "\n\n(Impossible de formatter le message d'erreur)";
+            }
+        }
+        alert(message);
+    });
+}
+
+function uploadSongs() {
+    $("#loading").show();
+    $.ajax({
+        url: "/songs",
+        type: 'POST',
+        data: new FormData(document.getElementById("importMusique")),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false
+    })
+    .done(function () {
+        $("#inputImportPlaylist").val("");
+        retrieveMusiques();
+    })
+    .fail(function (xhr, ajaxOptions, thrownError) {
+        console.error(">> Response import songs");
+        console.error(thrownError);
+        
+        let message = "Erreur lors de l'import des musiques.";
+        if (xhr.responseText != undefined) {
+            try {
+                let response = JSON.parse(xhr.responseText);
+                console.error(response);
+                console.error(response.message);
+                message += "\n\nException : " + response.message;
+            } catch(e) {
+                console.error(">> Exception", e);
+                message += "\n\n(Impossible de formatter le message d'erreur)";
+            }
+        }
+        alert(message);
+    })
+    .always(function() {
+        $("#loading").hide();
+    });
+}

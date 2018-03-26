@@ -114,11 +114,11 @@ function retrieveRemerciementsCallback(remerciementDtos) {
 
 
 function activateButtons() {
-    $('button.submitChanges').attr("disabled", false);
+    $('section#categorie_tab_main button.submitChanges').attr("disabled", false);
 }
 
 function deactivateButtons() {
-    $('button.submitChanges').attr("disabled", true);
+    $('section#categorie_tab_main button.submitChanges').attr("disabled", true);
 }
 
 
@@ -130,9 +130,9 @@ function deactivateButtons() {
 function saveDatas() {
     deactivateButtons();
 
-    let originalText = $('button.submitChanges').first().html();
+    let originalText = $('section#categorie_tab_main button.submitChanges').first().html();
 
-    $('button.submitChanges').html("Enregistrement en cours...");
+    $('section#categorie_tab_main button.submitChanges').html("Enregistrement en cours...");
 
     $.ajax({
         url: "/preparation",
@@ -143,7 +143,6 @@ function saveDatas() {
         contentType: 'application/json'
     })
     .done(function (response) {
-        console.log("Response save datas : ", response);
         retrieveAllDatas();
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
@@ -165,7 +164,7 @@ function saveDatas() {
         alert(message);
     })
     .always(function () {
-        $('button.submitChanges').html(originalText);
+        $('section#categorie_tab_main button.submitChanges').html(originalText);
         activateButtons();
     });
 }
@@ -199,4 +198,34 @@ function buildForm() {
         remerciements : remerciement,
         datesImpro : dates
     };
+}
+
+
+
+
+function retrieveMusiques() {
+    return new Promise((resolve) => {
+        retrieveDatas("/list/playlistSongs", function(musiquesDtos) {
+            retrieveMusiquesCallback(musiquesDtos);
+            resolve();
+        });
+    });
+}
+
+
+function retrieveMusiquesCallback(musiquesDtos) {
+    $("section#musiques_tab_main table tbody").html("");
+    $(musiquesDtos).each(function(index, musique) {
+        addMusique(musique, index);
+    });
+}
+
+function addMusique(musiqueDto, index) {
+    $("section#musiques_tab_main table tbody").append(`
+    <tr id="song_${ index }">
+        <td><input type="checkbox" name="musiquesToDelete[]" value="${ musiqueDto.nom }" class="actionMusique" /></td>
+        <td>${ musiqueDto.nom }</td>
+        <td><span class="deleteSong" onClick="deleteSong('${ musiqueDto.nom }', ${ index })">[X]</span></td>
+    </tr>
+    `);
 }

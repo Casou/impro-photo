@@ -1,0 +1,38 @@
+section#musiques_tab_main {
+    form {
+        border : 1px solid white;
+        padding : 3px 15px;
+        margin-bottom : 20px;
+
+        button {
+            margin-left : 15px;
+            font-size : 16px;
+        }
+    }
+
+    button.deleteSongs {
+        font-size : 12px;
+    }
+
+    table {
+        thead tr {
+            background-color : #2e2e2e;
+        }
+        tr {
+            &:nth-child(odd) { background-color : black; }
+            &:nth-child(even) { background-color : #2e2e2e; }
+        }
+        tbody {
+            td {
+                padding : 0 5px;
+                &:nth-child(2) { min-width : 400px; }
+                &:nth-child(3) { color : red; }
+
+                span.deleteSong {
+                    cursor : pointer;
+                }
+            }
+        }
+
+    }
+}

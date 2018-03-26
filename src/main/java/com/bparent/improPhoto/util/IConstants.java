@@ -11,10 +11,13 @@ public interface IConstants {
 
     public static final Long LIMIT_PICTURES = 20L;
     public static final List<String> PICTURE_EXTENSION_ACCEPTED = Arrays.asList("jpg", "jpeg", "png", "bmp", "gif");
-    public static final List<String> AUDIO_EXTENSION_ACCEPTED = Arrays.asList("mp3", "wmv");
+    public static final List<String> AUDIO_EXTENSION_ACCEPTED = Arrays.asList("mp3", "wav", "ogg");
+    public static final String ZIP_EXTENSION = "zip";
 
     public interface IPath {
         public static final String MEDIAS = "medias/";
+        public static final String MEDIAS_TEMP = IPath.MEDIAS + "temp/";
+        public static final String MEDIAS_TEMP_UNZIP = IPath.MEDIAS_TEMP + "unzip/";
 
         public interface IPhoto {
             public static final String PHOTOS = MEDIAS + "photos/";

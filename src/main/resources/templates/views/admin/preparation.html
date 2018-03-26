@@ -8,6 +8,8 @@
 	<title>GIT - Impro diapo</title>
 	<link rel="stylesheet" 		type="text/css" href="/css/style.css" />
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.less" />
+	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-categories.less" />
+	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-musiques.less" />
 	<link rel="stylesheet" 		type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
 
 	<link rel="shortcut icon" HREF="/images/logo/git_logo_rose.png" />
@@ -27,41 +29,75 @@
 		<a href="/">Retour à l'accueil</a>
 	</div>
 
-	<form action="#" method="post" onsubmit="return false;">
-		<div class="submitButton">
-			<button class="submitChanges">Enregistrer les modifications</button>
-		</div>
+	<menu>
+		<nav id="categorie_tab">Catégories</nav>
+		<nav id="musiques_tab">Musiques</nav>
+	</menu>
 
-		<div id="categories">
-			<h2>Liste des catégories <button onClick="newCategorie(); return false;">Ajouter</button></h2>
-			<input type="hidden" name="action" value="update" />
+	<main>
+		<!-- Catégories -->
+		<section id="categorie_tab_main">
+			<form action="#" method="post" onsubmit="return false;">
+				<div class="submitButton">
+					<button class="submitChanges">Enregistrer les modifications</button>
+				</div>
 
-			<span class="loading">Loading...</span>
-			<ul id="categoriesList">
-			</ul>
-		</div>
+				<div id="categories">
+					<h2>Liste des catégories <button onClick="newCategorie(); return false;">Ajouter</button></h2>
+					<input type="hidden" name="action" value="update" />
 
-		<div id="remerciements">
-			<h2>Texte de remerciements (<span id="nb_max_chars"></span> caractères max)</h2>
-			<h3>"Un grand merci : "</h3>
-			<input type="hidden" id="remerciements_id" />
-			<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="2" maxlength="70">Loading...</textarea>
-			<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
-		</div>
+					<span class="loading">Loading...</span>
+					<ul id="categoriesList">
+					</ul>
+				</div>
 
-		<div id="dates">
-			<h2>Prochaines dates <button onClick="newDate(); return false;">Ajouter</button></h2>
-			<span class="loading">Loading...</span>
-			<ul id="datesList">
-			</ul>
-		</div>
+				<div id="remerciements">
+					<h2>Texte de remerciements (<span id="nb_max_chars"></span> caractères max)</h2>
+					<h3>"Un grand merci : "</h3>
+					<input type="hidden" id="remerciements_id" />
+					<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="2" maxlength="70">Loading...</textarea>
+					<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
+				</div>
 
-		<div class="submitButton">
-			<button class="submitChanges">Enregistrer les modifications</button>
-		</div>
+				<div id="dates">
+					<h2>Prochaines dates <button onClick="newDate(); return false;">Ajouter</button></h2>
+					<span class="loading">Loading...</span>
+					<ul id="datesList">
+					</ul>
+				</div>
 
-	</form>
+				<div class="submitButton">
+					<button class="submitChanges">Enregistrer les modifications</button>
+				</div>
 
+			</form>
+		</section>
+
+
+
+		<!-- musiques -->
+		<section id="musiques_tab_main">
+			<form id="importMusique" onsubmit="return false;">
+				Musiques ou fichier ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
+				<button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
+			</form>
+
+			<button class="submitChanges deleteSongs" onClick="deleteSelectedSongs();">Supprimer</button>
+			<table>
+				<thead>
+					<tr>
+						<th><input type="checkbox" onClick="$('section#musiques_tab_main table input[type=checkbox].actionMusique').prop('checked', this.checked);" /></th>
+						<th>Titre</th>
+						<th> </th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</section>
+
+
+	</main>
 
 	<div id="hiddenClones" style="display : none;">
 		<ul>
@@ -102,6 +138,10 @@
 				</a>
 			</li>
 		</ul>
+	</div>
+
+	<div id="loading">
+		Chargement...
 	</div>
 	
 </body>

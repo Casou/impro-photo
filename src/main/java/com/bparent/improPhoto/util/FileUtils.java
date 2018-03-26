@@ -39,4 +39,8 @@ public class FileUtils {
         return FileUtils.formatPathWithCharacter("/handler/" + file.getPath(), "/");
     }
 
+    public static String getFileName(String filePath) {
+        return new File(filePath).getName();
+    }
+
 }

@@ -42,4 +42,9 @@ public class FileUtilsTest {
         assertEquals("/handler/file.txt", FileUtils.getFrontFilePath(new File("file.txt")));
     }
 
+    @Test
+    public void getFileName_shouldReturnString() {
+        assertEquals("file.txt", FileUtils.getFileName("/some/path/to/file.txt"));
+    }
+
 }
