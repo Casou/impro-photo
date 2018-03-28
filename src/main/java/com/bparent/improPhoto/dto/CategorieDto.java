@@ -24,8 +24,8 @@ public class CategorieDto {
 
     private Boolean existsInDatabase = Boolean.TRUE;
     private Boolean pathInError = Boolean.TRUE;
-    private Integer nbPictures;
-    private Boolean tooManyPictures;
+    private Integer nbPictures = 0;
+    private Boolean tooManyPictures = Boolean.FALSE;
 
     public boolean isPersistable() {
         return !StringUtils.isEmpty(this.nom) && this.type != null;

@@ -80,11 +80,19 @@ function calcRemainingChars() {
 
 
 
+function deleteJingle(nom, index) {
+    deleteAudio("/jingle", nom, index, "#jingles_tab_main");
+}
 
 function deleteSong(nom, index) {
+    deleteAudio("/song", nom, index, "#musiques_tab_main");
+}
+
+
+function deleteAudio(url, nom, index, cssSelector) {
     const songToDelete = { nom : nom };
     $.ajax({
-        url: "/song",
+        url: url,
         type: 'DELETE',
         encoding: "UTF-8",
         dataType: 'json',
@@ -92,13 +100,13 @@ function deleteSong(nom, index) {
         contentType: 'application/json'
     })
     .done(function (response) {
-        $("tr#song_" + index).remove();
+        $(cssSelector + " tr.song_" + index).remove();
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response delete song");
         console.error(thrownError);
         
-        let message = "Erreur lors de la suppression d'une musique.";
+        let message = "Erreur lors de la suppression d'une musique (" + url + ")";
         if (xhr.responseText != undefined) {
             try {
                 let response = JSON.parse(xhr.responseText);
@@ -115,7 +123,15 @@ function deleteSong(nom, index) {
 }
 
 function deleteSelectedSongs() {
-    const checked = $("section#musiques_tab_main table tbody td input[type=checkbox]:checked");
+    deleteSelectedAudio("/songs", "#musiques_tab_main");
+}
+
+function deleteSelectedJingles() {
+    deleteSelectedAudio("/jingles", "#jingles_tab_main");
+}
+
+function deleteSelectedAudio(url, cssSelector) {
+    const checked = $(cssSelector + " table tbody td input[type=checkbox].actionCheck:checked");
     if ($(checked).length == 0) {
         alert("Aucune musique choisie");
         return;
@@ -127,7 +143,7 @@ function deleteSelectedSongs() {
     });
     
     $.ajax({
-        url: "/songs",
+        url: url,
         type: 'DELETE',
         encoding: "UTF-8",
         dataType: 'json',
@@ -136,15 +152,15 @@ function deleteSelectedSongs() {
     })
     .done(function () {
         $(checked).each(function(index) {
-            $("tr#song_" + index).remove();
+            $(cssSelector + " tr.song_" + index).remove();
         });
-        $("section#musiques_tab_main table thead th input[type=checkbox]").prop("checked", false);
+        $(cssSelector + " table thead th input[type=checkbox].actionCheck").prop("checked", false);
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response delete songs");
         console.error(thrownError);
-        
-        let message = "Erreur lors de la suppression des musiques.";
+    
+        let message = "Erreur lors de la suppression des musiques (" + url + ")";
         if (xhr.responseText != undefined) {
             try {
                 let response = JSON.parse(xhr.responseText);
@@ -161,24 +177,37 @@ function deleteSelectedSongs() {
 }
 
 function uploadSongs() {
+    uploadZip("/songs", "importMusique", () => {
+        $("#inputImportPlaylist").val("");
+        retrieveMusiques().then(() => hideLoading());
+    });
+}
+
+function uploadJingles() {
+    uploadZip("/jingles", "importJingles", () => {
+        $("#inputImportJingle").val("");
+        retrieveJingles().then(() => hideLoading());
+    });
+}
+
+function uploadZip(url, formId, callback) {
     showLoading();
     $.ajax({
-        url: "/songs",
+        url: url,
         type: 'POST',
-        data: new FormData(document.getElementById("importMusique")),
+        data: new FormData(document.getElementById(formId)),
         enctype: 'multipart/form-data',
         processData: false,
         contentType: false
     })
     .done(function () {
-        $("#inputImportPlaylist").val("");
-        retrieveMusiques().then(() => hideLoading());
+        callback();
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response import songs");
         console.error(thrownError);
         
-        let message = "Erreur lors de l'import des musiques.";
+        let message = "Erreur lors de l'import du fichier.";
         if (xhr.responseText != undefined) {
             try {
                 let response = JSON.parse(xhr.responseText);

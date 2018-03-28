@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     retrieveAllDatas();
     retrieveMusiques();
+    retrieveJingles();
 
     $('section#categorie_tab_main button.sendCategoriesForm').click(function() {
         saveDatas();

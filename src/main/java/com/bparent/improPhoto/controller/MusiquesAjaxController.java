@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.controller;
 
+import com.bparent.improPhoto.dto.JingleDto;
 import com.bparent.improPhoto.dto.SongDto;
 import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
@@ -28,25 +29,25 @@ public class MusiquesAjaxController {
 
     @DeleteMapping(value = "/song", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> deleteSongRequest(@RequestBody SongDto songDto) {
-        this.deleteSong(songDto);
+        this.deleteSong(IConstants.IPath.IAudio.AUDIOS_PLAYLIST, songDto.getNom());
 
         return new SuccessResponse("ok");
     }
 
-    private void deleteSong(@RequestBody SongDto songDto) {
-        File f = new File(IConstants.IPath.IAudio.AUDIOS_PLAYLIST + songDto.getNom());
+    private void deleteSong(String path, String nom) {
+        File f = new File(path + nom);
         if (!f.exists()) {
-            throw new IllegalArgumentException("Le fichier " + songDto.getNom() + " n'existe pas.");
+            throw new IllegalArgumentException("Le fichier " + nom + " n'existe pas.");
         }
 
         if (!f.delete()) {
-            throw new RejectedExecutionException("Une erreur est survenue lors de la suppression du fichier : " + songDto.getNom());
+            throw new RejectedExecutionException("Une erreur est survenue lors de la suppression du fichier : " + nom);
         }
     }
 
     @DeleteMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> deleteSongListRequest(@RequestBody List<SongDto> songDtoList) {
-        songDtoList.forEach(this::deleteSong);
+        songDtoList.forEach(songDto -> this.deleteSong(IConstants.IPath.IAudio.AUDIOS_PLAYLIST, songDto.getNom()));
 
         return new SuccessResponse("ok");
     }
@@ -59,5 +60,29 @@ public class MusiquesAjaxController {
 
         return new SuccessResponse("ok");
     }
+
+    @DeleteMapping(value = "/jingle", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleRequest(@RequestBody JingleDto jingleDto) {
+        this.deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES, jingleDto.getNom());
+
+        return new SuccessResponse("ok");
+    }
+
+    @DeleteMapping(value = "/jingles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleListRequest(@RequestBody List<JingleDto> jingleDtoList) {
+        jingleDtoList.forEach(jingleDto -> this.deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES, jingleDto.getNom()));
+
+        return new SuccessResponse("ok");
+    }
+
+    @PostMapping(value = "/jingles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> uploadJingles(MultipartHttpServletRequest request,
+                                                                     HttpServletResponse response) {
+        request.getFiles("file").forEach(multipart -> FileUtils.handleUploadedFile(multipart, isAcceptedSongFile,
+                IConstants.AUDIO_EXTENSION_ACCEPTED, IConstants.IPath.IAudio.AUDIOS_JINGLES, true));
+
+        return new SuccessResponse("ok");
+    }
+
 
 }

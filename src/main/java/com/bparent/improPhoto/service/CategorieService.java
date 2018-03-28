@@ -38,8 +38,10 @@ public class CategorieService {
 
         databaseCategories.forEach(categorieDto -> {
             File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder());
-            categorieDto.setNbPictures(folder.listFiles().length);
-            categorieDto.setTooManyPictures(categorieDto.getNbPictures() > IConstants.LIMIT_PICTURES);
+            if (folder.exists()) {
+                categorieDto.setNbPictures(folder.listFiles().length);
+                categorieDto.setTooManyPictures(categorieDto.getNbPictures() > IConstants.LIMIT_PICTURES);
+            }
         });
 
         return databaseCategories;

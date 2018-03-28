@@ -107,7 +107,23 @@
 
 		<!-- Jingles -->
 		<section id="jingles_tab_main">
-			TODO Jingles
+			<form id="importJingles" class="importForm" onsubmit="return false;">
+				Jingle(s) ou fichier(s) ZIP à importer : <input id="inputImportJingle" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
+				<button class="submitChanges" onClick="uploadJingles(); return false;">Envoyer</button>
+			</form>
+
+			<button class="submitChanges deleteSongs" onClick="deleteSelectedJingles();">Supprimer</button>
+			<table>
+				<thead>
+				<tr>
+					<th><input type="checkbox" onClick="$('section#jingles_tab_main table input[type=checkbox].actionCheck').prop('checked', this.checked);" /></th>
+					<th>Titre</th>
+					<th> </th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
 		</section>
 
 

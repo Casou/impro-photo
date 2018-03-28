@@ -51,11 +51,8 @@ public class StatutPreparationService {
             nbCategories++;
         }
 
-        if (nbCategories == 0) {
-            return false;
-        }
+        return nbCategories != 0 && categorieService.getMissingCategoriesFromDatabase(allCategories).isEmpty();
 
-        return categorieService.getMissingCategoriesFromDatabase(allCategories).isEmpty();
     }
 
     private Boolean checkVideo(String pathVideosIntro) {

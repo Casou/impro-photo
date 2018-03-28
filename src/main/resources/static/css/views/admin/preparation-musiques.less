@@ -1,17 +1,18 @@
-section#musiques_tab_main {
+section#musiques_tab_main, section#jingles_tab_main {
     button.deleteSongs {
         font-size : 12px;
     }
 
     table {
         thead tr {
-            background-color : #2e2e2e;
-        }
-        tr {
-            &:nth-child(odd) { background-color : black; }
-            &:nth-child(even) { background-color : #2e2e2e; }
+            background-color : #393939;
         }
         tbody {
+            tr {
+                &:nth-child(even) { background-color : black; }
+                &:nth-child(odd) { background-color : #2e2e2e; }
+            }
+
             td {
                 padding : 0 5px;
                 &:nth-child(2) { min-width : 400px; }

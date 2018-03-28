@@ -211,26 +211,38 @@ function buildForm() {
 function retrieveMusiques() {
     return new Promise((resolve) => {
         retrieveDatas("/list/playlistSongs", function(musiquesDtos) {
-            retrieveMusiquesCallback(musiquesDtos);
+            retrieveMusiquesCallback(musiquesDtos, "musiques_tab_main", "deleteSong");
             resolve();
         });
     });
 }
 
 
-function retrieveMusiquesCallback(musiquesDtos) {
-    $("section#musiques_tab_main table tbody").html("");
+function retrieveMusiquesCallback(musiquesDtos, mainDivId, deleteFunctionName) {
+    $("section#" + mainDivId + " table tbody").html("");
     $(musiquesDtos).each(function(index, musique) {
-        addMusique(musique, index);
+        addMusique(musique, index, mainDivId, deleteFunctionName);
     });
 }
 
-function addMusique(musiqueDto, index) {
-    $("section#musiques_tab_main table tbody").append(`
-    <tr id="song_${ index }">
-        <td><input type="checkbox" name="musiquesToDelete[]" value="${ musiqueDto.nom }" class="actionMusique" /></td>
+function addMusique(musiqueDto, index, mainDivId, deleteFunctionName) {
+    $("section#" + mainDivId + " table tbody").append(`
+    <tr class="song_${ index }">
+        <td><input type="checkbox" name="musiquesToDelete[]" value="${ musiqueDto.nom }" class="actionCheck" /></td>
         <td>${ musiqueDto.nom }</td>
-        <td><span class="deleteSong" onClick="deleteSong('${ musiqueDto.nom }', ${ index })">[X]</span></td>
+        <td><span class="deleteSong" onClick="${ deleteFunctionName }('${ musiqueDto.nom }', ${ index });">[X]</span></td>
     </tr>
     `);
 }
+
+
+
+function retrieveJingles() {
+    return new Promise((resolve) => {
+        retrieveDatas("/list/jingles", function(musiquesDtos) {
+            retrieveMusiquesCallback(musiquesDtos, "jingles_tab_main", "deleteJingle");
+            resolve();
+        });
+    });
+}
+
