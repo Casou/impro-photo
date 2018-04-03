@@ -190,6 +190,17 @@ function uploadJingles() {
     });
 }
 
+function uploadVideo(formId, type) {
+    uploadZip("/preparation/video/" + type, formId, () => {
+        $("#" + formId + " input[type=file]").val("");
+        $("#video_" + type + " video source").each(function () {
+            $(this).attr("src", $(this).attr("originalSrc") + "?" + generateRandom(10));
+        });
+        $("#video_" + type + " video")[0].load();
+        hideLoading();
+    });
+}
+
 function uploadZip(url, formId, callback) {
     showLoading();
     $.ajax({

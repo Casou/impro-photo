@@ -94,7 +94,7 @@ public class ListAjaxController {
     }
 
 
-    @RequestMapping("/jingles")
+    @GetMapping("/jingles")
     public List<JingleDto> getAllJingles() {
         return Arrays.stream(
                 new File(IConstants.IPath.IAudio.AUDIOS_JINGLES)

@@ -4,7 +4,6 @@ function retrieveDatas(url, callback) {
         type: 'GET',
         encoding: "UTF-8",
         dataType: 'json',
-//            data: JSON.stringify(inputDto),
         contentType: 'application/json'
     })
     .done(function (dtos) {
@@ -134,9 +133,6 @@ function deactivateButtons() {
 
 function saveDatas() {
     showLoading();
-    // deactivateButtons();
-    // let originalText = $('section#categorie_tab_main button.submitChanges').first().html();
-    // $('section#categorie_tab_main button.submitChanges').html("Enregistrement en cours...");
 
     $.ajax({
         url: "/preparation",
@@ -166,11 +162,6 @@ function saveDatas() {
             }
         }
         alert(message);
-    })
-    .always(function () {
-        // $('section#categorie_tab_main button.submitChanges').html(originalText);
-        // activateButtons();
-        
     });
 }
 
@@ -245,4 +236,3 @@ function retrieveJingles() {
         });
     });
 }
-

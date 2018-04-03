@@ -5,6 +5,11 @@ $(document).ready(function() {
     retrieveAllDatas();
     retrieveMusiques();
     retrieveJingles();
+    
+    $("#videos_tab_main video source").each(function () {
+        $(this).attr("src", $(this).attr("originalSrc") + "?" + generateRandom(10));
+    });
+    $("#videos_tab_main video")[0].load();
 
     $('section#categorie_tab_main button.sendCategoriesForm').click(function() {
         saveDatas();

@@ -10,6 +10,7 @@
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.less" />
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-categories.less" />
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-musiques.less" />
+	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-videos.less" />
 	<link rel="stylesheet" 		type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
 
 	<link rel="shortcut icon" HREF="/images/logo/git_logo_rose.png" />
@@ -129,7 +130,30 @@
 
 		<!-- Vidéos -->
 		<section id="videos_tab_main">
-			TODO Vidéos
+			<div id="video_joueurs" class="video">
+				<h2>Joueurs</h2>
+				<div class="videoTag">
+					<video controls="controls" preload="auto">
+						<source src="" originalSrc="/handler/videos/intro/joueurs.mp4" type="video/mp4" />
+					</video>
+				</div>
+				<form id="importVideoJoueurs" onsubmit="return false;">
+					<input id="inputVideoJoueurs" type="file" name="file" accept=".mp4" />
+					<button class="submitChanges" onClick="uploadVideo('importVideoJoueurs', 'joueurs'); return false;">Envoyer</button>
+				</form>
+			</div>
+			<div id="video_presentateur" class="video">
+				<h2>Présentateur</h2>
+				<div class="videoTag">
+					<video controls="controls" preload="auto">
+						<source src="" originalSrc="/handler/videos/intro/presentateur.mp4" type="video/mp4" />
+					</video>
+				</div>
+				<form id="importVideoPresentateur" onsubmit="return false;">
+					<input id="inputVideoPresentateur" type="file" name="file" accept=".mp4" />
+					<button class="submitChanges" onClick="uploadVideo('importVideoPresentateur', 'presentateur'); return false;">Envoyer</button>
+				</form>
+			</div>
 		</section>
 
 		<!-- Divers -->

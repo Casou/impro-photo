@@ -12,6 +12,7 @@ public interface IConstants {
     public static final Long LIMIT_PICTURES = 20L;
     public static final List<String> PICTURE_EXTENSION_ACCEPTED = Arrays.asList("jpg", "jpeg", "png", "bmp", "gif");
     public static final List<String> AUDIO_EXTENSION_ACCEPTED = Arrays.asList("mp3", "wav", "ogg");
+    public static final List<String> VIDEO_EXTENSION_ACCEPTED = Arrays.asList("mp4");
     public static final String ZIP_EXTENSION = "zip";
 
     public interface IPath {
@@ -38,10 +39,12 @@ public interface IConstants {
 
         public interface IVideo {
             public static final String VIDEOS = MEDIAS + "videos/";
+            public static final String VIDEO_NAME_JOUEURS = "joueurs.mp4";
+            public static final String VIDEO_NAME_PRESENTATEUR = "presentateur.mp4";
 
             public static final String VIDEO_INTRO = VIDEOS + "intro/";
-            public static final String VIDEO_INTRO_JOUEURS = VIDEO_INTRO + "joueurs.mp4";
-            public static final String VIDEO_INTRO_PRESENTATEUR = VIDEO_INTRO + "presentateur.mp4";
+            public static final String VIDEO_INTRO_JOUEURS = VIDEO_INTRO + VIDEO_NAME_JOUEURS;
+            public static final String VIDEO_INTRO_PRESENTATEUR = VIDEO_INTRO + VIDEO_NAME_PRESENTATEUR;
         }
     }
 

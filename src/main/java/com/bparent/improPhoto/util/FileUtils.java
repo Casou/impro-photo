@@ -93,8 +93,8 @@ public class FileUtils {
         }
     }
 
-    private static File copyUploadedFile(MultipartFile multipart, String originalFilename, String folderName) {
-        File copiedFile = new File(folderName + originalFilename);
+    public static File copyUploadedFile(MultipartFile multipart, String newFilename, String folderName) {
+        File copiedFile = new File(folderName + newFilename);
         FileOutputStream fos = null;
         try {
             copiedFile.createNewFile();
