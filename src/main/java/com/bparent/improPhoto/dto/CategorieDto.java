@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class CategorieDto {
 
     private Boolean existsInDatabase = Boolean.TRUE;
     private Boolean pathInError = Boolean.TRUE;
-    private Integer nbPictures = 0;
+    private List<ImageDto> pictures = new ArrayList<>();
     private Boolean tooManyPictures = Boolean.FALSE;
 
     public boolean isPersistable() {

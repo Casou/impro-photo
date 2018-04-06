@@ -210,6 +210,7 @@ div.divAction button {
 #loading {
 	display : none;
 	position : fixed;
+	z-index : 999999;
 	width : 100%;
 	height : 100%;
 	top : 0;

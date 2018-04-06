@@ -1,10 +1,14 @@
+const CATEGORY_IMAGES = [];
+
 function addCategorie(dto) {
     let idCategorie = newCategorie(dto.id);
     $(`#categories li#${ idCategorie } input.categorie_id`).val(dto.id);
     $(`#categories li#${ idCategorie } input.categorie_nom`).val(dto.nom);
     $(`#categories li#${ idCategorie } select.categorie_type`).val(dto.type);
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
-    $(`#categories li#${ idCategorie } span.pictures span.nb-picture`).html(dto.nbPictures);
+    $(`#categories li#${ idCategorie } span.pictures span.nb-picture`).html(dto.pictures.length);
+    CATEGORY_IMAGES[dto.nom] = dto.pictures;
+    $(`#categories li#${ idCategorie } span.pictures span.icon-picture`).click(() => showCategoryImageViewer(dto.nom));
     if (dto.tooManyPictures) {
         $(`#categories li#${ idCategorie } span.pictures span.icon-picture`).removeClass("icon-picture").addClass("icon-picture_error");
     }
@@ -21,6 +25,11 @@ function addCategorie(dto) {
             .after('<span class="span-icon icon-exclamation help no-name" title="Ce répertoire n\'a pas de nom ni de type."></span>')
         ;
     }
+}
+
+function showCategoryImageViewer(nom) {
+    IMAGE_VIEWER.setImages(CATEGORY_IMAGES[nom]);
+    IMAGE_VIEWER.show(retrieveCategories);
 }
 
 function newCategorie(id) {

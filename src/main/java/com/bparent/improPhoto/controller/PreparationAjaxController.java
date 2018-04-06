@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.controller;
 
+import com.bparent.improPhoto.dto.ImageDto;
 import com.bparent.improPhoto.dto.form.PreparationForm;
 import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 @RestController
@@ -33,7 +37,8 @@ public class PreparationAjaxController {
     @Autowired
     private EtatImproService etatImproService;
 
-    private static final Predicate<String> isAcceptedVideoFile = IConstants.VIDEO_EXTENSION_ACCEPTED::contains;
+    private static final Predicate<String> isAcceptedPictureFile = fileExtension -> IConstants.ZIP_EXTENSION.equals(fileExtension)
+            || IConstants.PICTURE_EXTENSION_ACCEPTED.contains(fileExtension);
 
 
     @PostMapping(value = "/preparation", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -79,6 +84,82 @@ public class PreparationAjaxController {
             throw new IllegalArgumentException("You have to upload a file");
         }
         FileUtils.copyUploadedFile(multipartFile, videoName, IConstants.IPath.IVideo.VIDEO_INTRO);
+    }
+
+    @DeleteMapping(value = "/preparation/images", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteImage(@RequestBody ImageDto imageDto) {
+        File image = new File(imageDto.getPath() + imageDto.getNom());
+        if (!image.delete()) {
+            throw new RejectedExecutionException("Error while deleting file " + image.getAbsolutePath());
+        }
+
+        return new SuccessResponse("ok");
+    }
+
+    @DeleteMapping(value = "/preparation/images/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteAllImage(@RequestBody ImageDto imageDto) {
+        String folderPath;
+        switch (imageDto.getNom()) {
+            case "intro" :
+                folderPath = IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION;
+                break;
+            case "dates" :
+                folderPath = IConstants.IPath.IPhoto.PHOTOS_PRESENTATION_DATES;
+                break;
+            case "joueurs" :
+                folderPath = IConstants.IPath.IPhoto.PHOTOS_JOUEURS;
+                break;
+            default :
+                throw new IllegalArgumentException("Folder not known " + imageDto.getNom());
+        }
+
+        File folder = new File(folderPath);
+        for (File file : folder.listFiles((dir, name) ->
+                IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))) {
+            if (!file.delete()) {
+                throw new RejectedExecutionException("Error while deleting file " + file.getAbsolutePath());
+            }
+        }
+
+        return new SuccessResponse("ok");
+    }
+
+
+    @PostMapping(value = "/preparation/images/intro", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> uploadImagesIntro(MultipartHttpServletRequest request) {
+        handleUploadImages(request, IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION);
+
+        return new SuccessResponse("ok");
+    }
+
+    @PostMapping(value = "/preparation/images/dates", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> uploadImagesDates(MultipartHttpServletRequest request) {
+        handleUploadImages(request, IConstants.IPath.IPhoto.PHOTOS_PRESENTATION_DATES);
+
+        return new SuccessResponse("ok");
+    }
+
+    @PostMapping(value = "/preparation/images/joueurs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> uploadImagesJoueurs(MultipartHttpServletRequest request) {
+        handleUploadImages(request, IConstants.IPath.IPhoto.PHOTOS_JOUEURS);
+
+        return new SuccessResponse("ok");
+    }
+
+    private void handleUploadImages(MultipartHttpServletRequest request, String photosPresentationDates) {
+        List<MultipartFile> uploadedFiles = request.getFiles("file");
+
+        if (uploadedFiles.isEmpty()) {
+            throw new IllegalArgumentException("You have to upload a file");
+        }
+
+        uploadedFiles.forEach(multipartFile -> {
+            if (StringUtils.isEmpty(multipartFile.getOriginalFilename())) {
+                return;
+            }
+            FileUtils.handleUploadedFile(multipartFile, isAcceptedPictureFile,
+                    IConstants.AUDIO_EXTENSION_ACCEPTED, photosPresentationDates, true);
+        });
     }
 
 }

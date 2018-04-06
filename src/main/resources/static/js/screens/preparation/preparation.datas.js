@@ -1,4 +1,4 @@
-function retrieveDatas(url, callback) {
+function retrieveDatas(url, callback, callbackError) {
     $.ajax({
         url: url,
         type: 'GET',
@@ -16,19 +16,22 @@ function retrieveDatas(url, callback) {
             "Erreur : " + erreur + "\n" +
             "Statut : " + statut + "\n" +
             "Résultat : " + resultat);
+        if (callbackError) {
+          callbackError();
+        }
     })
     .always(function () {
     });
 }
 
 
-function retrieveAllDatas() {
+function retrieveCategoryTabDatas() {
     $('ul#categoriesList').html("");
     $('ul#datesList').html("");
     $('textarea#remerciements_texte').html("");
     $('span.loading').show();
 
-    let allPromises = [];
+    const allPromises = [];
     allPromises.push(retrieveCategories());
     allPromises.push(retrieveRemerciements());
     allPromises.push(retrieveDates());
@@ -42,6 +45,7 @@ function retrieveAllDatas() {
         }, function(err) {
             console.error(err);
             alert("Erreur lors du All Promise : " + err);
+            reject();
         });
     });
 }
@@ -51,11 +55,12 @@ function retrieveAllDatas() {
 
 function retrieveCategories() {
     return new Promise((resolve, reject) => {
-        retrieveDatas("/list/categoriesWithCompletion", function(categorieDtos) {
+        retrieveDatas("/list/categoriesWithCompletion",
+          (categorieDtos) => {
             retrieveCategoriesCallback(categorieDtos);
-            console.log("resolve", categorieDtos);
             resolve();
-        });
+          },
+          reject);
     });
 }
 
@@ -64,6 +69,7 @@ function retrieveCategoriesCallback(categorieDtos) {
     $(categorieDtos).each(function(index, categorie) {
         addCategorie(categorie);
     });
+    console.log(CATEGORY_IMAGES);
     $('#categories span.loading').hide();
     $("ul#categoriesList").sortable();
 }
@@ -76,7 +82,7 @@ function retrieveDates() {
         retrieveDatas("/list/dates", function(dateDtos) {
             retrieveDatesCallback(dateDtos);
             resolve();
-        });
+        }, reject);
     });
 }
 
@@ -95,7 +101,7 @@ function retrieveRemerciements() {
         retrieveDatas("/list/remerciements", function(remerciementDtos) {
             retrieveRemerciementsCallback(remerciementDtos);
             resolve();
-        });
+        }, reject);
     });
 }
 
@@ -142,8 +148,8 @@ function saveDatas() {
         data: JSON.stringify(buildForm()),
         contentType: 'application/json'
     })
-    .done(function (response) {
-        retrieveAllDatas().then(() => hideLoading());
+    .done(function () {
+        retrieveCategoryTabDatas().then(() => hideLoading());
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response save datas");
@@ -200,11 +206,11 @@ function buildForm() {
 
 
 function retrieveMusiques() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         retrieveDatas("/list/playlistSongs", function(musiquesDtos) {
             retrieveMusiquesCallback(musiquesDtos, "musiques_tab_main", "deleteSong");
             resolve();
-        });
+        }, reject);
     });
 }
 
@@ -229,10 +235,59 @@ function addMusique(musiqueDto, index, mainDivId, deleteFunctionName) {
 
 
 function retrieveJingles() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         retrieveDatas("/list/jingles", function(musiquesDtos) {
             retrieveMusiquesCallback(musiquesDtos, "jingles_tab_main", "deleteJingle");
             resolve();
+        }, reject);
+    });
+}
+
+
+let INTRO_PICTURES = [];
+let DATES_PICTURES = [];
+let JOUEURS_PICTURES = [];
+function retrievePicturesTabDatas() {
+    const allPromises = [];
+    allPromises.push(retrieveIntroPictures());
+    allPromises.push(retrieveDatesPictures());
+    allPromises.push(retrieveJoueursPictures());
+  
+    return new Promise((resolve, reject) => {
+        Promise.all(allPromises).then(function() {
+            resolve();
+        }, function(err) {
+            console.error(err);
+            alert("Erreur lors du All Promise (Divers tab) : " + err);
+            reject();
         });
     });
+}
+
+function retrieveIntroPictures() {
+    return new Promise((resolve, reject) => {
+        retrieveDatas("/list/pictures/intro", (pictures) => {
+            INTRO_PICTURES = pictures;
+            $("#divers_intro_nb_pictures").html(pictures.length);
+            resolve();
+        }, reject);
+    });
+}
+function retrieveDatesPictures() {
+  return new Promise((resolve, reject) => {
+    retrieveDatas("/list/pictures/dates", (pictures) => {
+        DATES_PICTURES = pictures;
+        $("#divers_dates_nb_pictures").html(pictures.length);
+        resolve();
+    }, reject);
+  });
+}
+function retrieveJoueursPictures() {
+  return new Promise((resolve, reject) => {
+    retrieveDatas("/list/pictures/joueurs", (pictures) => {
+        JOUEURS_PICTURES = pictures;
+        $("#divers_joueurs_nb_pictures").html(pictures.length);
+        resolve();
+    }, reject);
+  });
 }

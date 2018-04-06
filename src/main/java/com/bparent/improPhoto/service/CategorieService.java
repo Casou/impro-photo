@@ -3,6 +3,7 @@ package com.bparent.improPhoto.service;
 import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.dto.CategorieDto;
+import com.bparent.improPhoto.dto.ImageDto;
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.exception.ImproServiceException;
@@ -39,8 +40,11 @@ public class CategorieService {
         databaseCategories.forEach(categorieDto -> {
             File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder());
             if (folder.exists()) {
-                categorieDto.setNbPictures(folder.listFiles().length);
-                categorieDto.setTooManyPictures(categorieDto.getNbPictures() > IConstants.LIMIT_PICTURES);
+                categorieDto.setPictures(
+                        Arrays.stream(folder.listFiles())
+                                .map(file -> new ImageDto(file.getName(), IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder() + "/"))
+                                .collect(Collectors.toList()));
+                categorieDto.setTooManyPictures(categorieDto.getPictures().size() > IConstants.LIMIT_PICTURES);
             }
         });
 

@@ -5,7 +5,7 @@
 
 	<groupId>com.bparent</groupId>
 	<artifactId>improPhoto</artifactId>
-	<version>3.1.5-SNAPSHOT</version>
+	<version>3.1.6</version>
 	<packaging>jar</packaging>
 
 	<name>improPhoto</name>

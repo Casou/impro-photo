@@ -38,10 +38,14 @@ public class CategorieAjaxController {
 
     @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    ResponseEntity<MessageResponse> uploadCategories(MultipartHttpServletRequest request,
-                                                HttpServletResponse response) {
+    ResponseEntity<MessageResponse> uploadCategories(MultipartHttpServletRequest request) {
         request.getFiles("file").forEach(multipart -> FileUtils.handleUploadedFile(multipart, isAcceptedSongFile,
                 IConstants.PICTURE_EXTENSION_ACCEPTED, IConstants.IPath.IPhoto.PHOTOS_IMPRO, false));
+
+        // Clean directory
+        File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO);
+        List<File> files = Arrays.asList(folder.listFiles((file) -> file.isFile()));
+        files.forEach(File::delete);
 
         return new SuccessResponse("ok");
     }

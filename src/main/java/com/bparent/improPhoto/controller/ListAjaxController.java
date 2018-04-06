@@ -105,4 +105,28 @@ public class ListAjaxController {
                 .collect(Collectors.toList());
     }
 
+
+    @GetMapping("/pictures/intro")
+    public List<ImageDto> getPicturesIntro() {
+        return listPictures(IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION);
+    }
+    @GetMapping("/pictures/dates")
+    public List<ImageDto> getPicturesDates() {
+        return listPictures(IConstants.IPath.IPhoto.PHOTOS_PRESENTATION_DATES);
+    }
+    @GetMapping("/pictures/joueurs")
+    public List<ImageDto> getPicturesJoueurs() {
+        return listPictures(IConstants.IPath.IPhoto.PHOTOS_JOUEURS);
+    }
+
+    private List<ImageDto> listPictures(String pathFolder) {
+        return Arrays.stream(
+                new File(pathFolder)
+                        .listFiles((dir, name) -> IConstants.PICTURE_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
+        )
+                .map(file -> file.getName())
+                .map(fileName -> new ImageDto(fileName, pathFolder))
+                .collect(Collectors.toList());
+    }
+
 }

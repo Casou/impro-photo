@@ -1,4 +1,22 @@
-section#musiques_tab_main, section#jingles_tab_main {
+section#musiques_tab_main {
+
+    h2 {
+        text-align : center;
+        margin : 5px 0 15px 0;
+    }
+
+    div#importMusiqueDiv, div#importJinglesDiv {
+        display : inline-block;
+        width : 47%;
+    }
+    div#importMusiqueDiv {
+        margin-right : 5%;
+    }
+
+    form {
+        text-align : center;
+    }
+
     button.deleteSongs {
         font-size : 12px;
     }
@@ -15,7 +33,7 @@ section#musiques_tab_main, section#jingles_tab_main {
 
             td {
                 padding : 0 5px;
-                &:nth-child(2) { min-width : 400px; }
+                &:nth-child(2) { min-width : 200px; }
                 &:nth-child(3) { color : red; }
 
                 span.deleteSong {
@@ -23,6 +41,5 @@ section#musiques_tab_main, section#jingles_tab_main {
                 }
             }
         }
-
     }
 }

@@ -11,7 +11,9 @@
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-categories.less" />
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-musiques.less" />
 	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-videos.less" />
+	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-divers.less" />
 	<link rel="stylesheet" 		type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
+	<link rel="stylesheet/less" type="text/css" href="/css/image-viewer.less" />
 
 	<link rel="shortcut icon" HREF="/images/logo/git_logo_rose.png" />
 
@@ -21,26 +23,26 @@
 	<script type="text/javascript" src="/js/less.js"></script>
 	<script type="text/javascript" src="/js/screens/preparation/preparation.js"></script>
 	<script type="text/javascript" src="/js/screens/preparation/preparation.datas.js"></script>
-	<script type="text/javascript" src="/js/screens/preparation/preparation.updateLists.js"></script>
+	<script type="text/javascript" src="/js/image-viewer.js"></script>
 </head>
 <body id="newImpro" class="admin">
-	<h1>Préparation d'une impro</h1>
+<h1>Préparation d'une impro</h1>
 
-	<div id="back">
-		<a href="/">Retour à l'accueil</a>
-	</div>
+<div id="back">
+	<a href="/">Retour à l'accueil</a>
+</div>
 
-	<menu>
-		<nav id="categorie_tab">Catégories</nav>
-		<nav id="musiques_tab">Musiques</nav>
-		<nav id="jingles_tab">Jingles</nav>
-		<nav id="videos_tab">Vidéos</nav>
-		<nav id="divers_tab">Divers</nav>
-	</menu>
+<menu>
+	<nav id="categorie_tab">Catégories</nav>
+	<nav id="musiques_tab">Musiques</nav>
+	<nav id="videos_tab">Vidéos</nav>
+	<nav id="divers_tab">Divers</nav>
+</menu>
+<script type="text/javascript" src="/js/screens/preparation/preparation.updateLists.js"></script>
 
 	<main>
 		<!-- Catégories -->
-		<section id="categorie_tab_main">
+		<section id="categorie_tab_main" class="tab">
 			<form id="importCategories" class="importForm" onsubmit="return false;">
 				Fichier(s) ZIP contenant les fichiers à importer : <input id="inputImportCategorie" type="file" name="file" accept=".zip" multiple="multiple" />
 				<button class="submitChanges" onClick="uploadCategories(); return false;">Envoyer</button>
@@ -84,52 +86,57 @@
 
 
 
-		<!-- musiques -->
-		<section id="musiques_tab_main">
-			<form id="importMusique" class="importForm" onsubmit="return false;">
-				Musique(s) ou fichier(s) ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
-				<button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
-			</form>
+		<!-- Musiques -->
+		<section id="musiques_tab_main" class="tab">
+			<div id="importMusiqueDiv">
+				<h2>Musiques</h2>
+				<form id="importMusique" class="importForm" onsubmit="return false;">
+					Musique(s) ou fichier(s) ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
+					<button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
+				</form>
 
-			<button class="submitChanges deleteSongs" onClick="deleteSelectedSongs();">Supprimer</button>
-			<table>
-				<thead>
+				<button class="submitChanges deleteSongs" onClick="deleteSelectedSongs();">Supprimer</button>
+				<table>
+					<thead>
+						<tr>
+							<th><input type="checkbox" onClick="$('section#musiques_tab_main table input[type=checkbox].actionMusique').prop('checked', this.checked);" /></th>
+							<th>Titre</th>
+							<th> </th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+
+			<!-- Jingles -->
+			<div id="importJinglesDiv">
+				<h2>Jingles</h2>
+				<form id="importJingles" class="importForm" onsubmit="return false;">
+					Jingle(s) ou fichier(s) ZIP à importer : <input id="inputImportJingle" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
+					<button class="submitChanges" onClick="uploadJingles(); return false;">Envoyer</button>
+				</form>
+
+				<button class="submitChanges deleteSongs" onClick="deleteSelectedJingles();">Supprimer</button>
+				<table>
+					<thead>
 					<tr>
-						<th><input type="checkbox" onClick="$('section#musiques_tab_main table input[type=checkbox].actionMusique').prop('checked', this.checked);" /></th>
+						<th><input type="checkbox" onClick="$('section#jingles_tab_main table input[type=checkbox].actionCheck').prop('checked', this.checked);" /></th>
 						<th>Titre</th>
 						<th> </th>
 					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
 		</section>
 
-
-		<!-- Jingles -->
-		<section id="jingles_tab_main">
-			<form id="importJingles" class="importForm" onsubmit="return false;">
-				Jingle(s) ou fichier(s) ZIP à importer : <input id="inputImportJingle" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
-				<button class="submitChanges" onClick="uploadJingles(); return false;">Envoyer</button>
-			</form>
-
-			<button class="submitChanges deleteSongs" onClick="deleteSelectedJingles();">Supprimer</button>
-			<table>
-				<thead>
-				<tr>
-					<th><input type="checkbox" onClick="$('section#jingles_tab_main table input[type=checkbox].actionCheck').prop('checked', this.checked);" /></th>
-					<th>Titre</th>
-					<th> </th>
-				</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</section>
 
 
 		<!-- Vidéos -->
-		<section id="videos_tab_main">
+		<section id="videos_tab_main" class="tab">
 			<div id="video_joueurs" class="video">
 				<h2>Joueurs</h2>
 				<div class="videoTag">
@@ -157,10 +164,40 @@
 		</section>
 
 		<!-- Divers -->
-		<section id="divers_tab_main">
-			TODO Divers
+		<section id="divers_tab_main" class="tab">
+            <div id="photos_divers">
+                <h2>Photos annexes</h2>
+                <ul>
+                    <li>
+                        <span class="divers_titre">Intro</span>
+                        <span class="span-icon icon-picture" onClick="showDiversPictures(INTRO_PICTURES, 'intro');"></span>
+                        <span id="divers_intro_nb_pictures" class="nbPictures">-</span>
+                        <form id="importImagesIntro" onsubmit="return false;">
+                            <input id="inputImagesintro" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
+                            <button class="submitChanges" onClick="uploadZip('/preparation/images/intro', 'importImagesIntro', () => uploadDiversImageCallback('intro')); return false;">Envoyer</button>
+                        </form>
+                    </li>
+					<li>
+                        <span class="divers_titre">Dates</span>
+                        <span class="span-icon icon-picture" onClick="showDiversPictures(DATES_PICTURES, 'dates');"></span>
+                        <span id="divers_dates_nb_pictures" class="nbPictures">-</span>
+                        <form id="importImagesDates" onsubmit="return false;">
+                            <input id="inputImagesdates" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
+                            <button class="submitChanges" onClick="uploadZip('/preparation/images/dates', 'importImagesDates', () => uploadDiversImageCallback('dates')); return false;">Envoyer</button>
+                        </form>
+                    </li>
+					<li>
+                        <span class="divers_titre">Joueurs</span>
+                        <span class="span-icon icon-picture" onClick="showDiversPictures(JOUEURS_PICTURES, 'joueurs');"></span>
+                        <span id="divers_joueurs_nb_pictures" class="nbPictures">-</span>
+                        <form id="importImagesJoueurs" onsubmit="return false;">
+                            <input id="inputImagesjoueurs" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
+                            <button class="submitChanges" onClick="uploadZip('/preparation/images/joueurs', 'importImagesJoueurs', () => uploadDiversImageCallback('joueurs')); return false;">Envoyer</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
 		</section>
-
 
 	</main>
 

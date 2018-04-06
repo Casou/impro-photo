@@ -43,3 +43,19 @@ function showCategorieSelectedPopin(forceShow) {
 function getMonthName(monthNumber) {
     return MONTH_NAMES_FULL[monthNumber];
 }
+
+function handleAjaxError(resultat, statut, erreur, contextMessage) {
+  let message = contextMessage ? contextMessage + "\n\n" : "";
+  if (resultat.responseText !== undefined) {
+    try {
+      let response = JSON.parse(resultat.responseText);
+      console.error(response);
+      console.error(response.message);
+      message += "\n\nException : " + response.message;
+    } catch(e) {
+      console.error(">> Exception", e);
+      message += "\n\n(Impossible de formatter le message d'erreur)";
+    }
+  }
+  alert(message);
+}

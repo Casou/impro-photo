@@ -18,7 +18,6 @@ public interface IConstants {
     public interface IPath {
         public static final String MEDIAS = "medias/";
         public static final String MEDIAS_TEMP = IPath.MEDIAS + "temp/";
-        public static final String MEDIAS_TEMP_UNZIP = IPath.MEDIAS_TEMP + "unzip/";
 
         public interface IPhoto {
             public static final String PHOTOS = MEDIAS + "photos/";
