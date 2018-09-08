@@ -50,12 +50,13 @@ class Remerciements extends IScreen {
     
     renderRemerciements(remerciementsDto) {
         const ul = $("#div_joueurs ul");
+        $(ul).html("");
         remerciementsDto.photosJoueurs.forEach((pathPicture, index) => {
             ul.append(
                 `<li id="joueursPicture_${ index }">
                     <img src="${ pathPicture }" />
                 </li>`);
-            $("#joueursPicture_" + index).click(() => this.sendShowJoueurPicture(index));
+            $("#joueursPicture_" + index + " img").click(() => this.sendShowJoueurPicture(index));
         });
     
         if (remerciementsDto.texte) {

@@ -1,9 +1,8 @@
 package com.bparent.improPhoto.service;
 
 import com.bparent.improPhoto.dao.CategorieDao;
-import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Categorie;
-import com.bparent.improPhoto.domain.Remerciement;
+import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
 import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.util.FileUtils;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,10 +25,15 @@ public class StatutPreparationService {
     private CategorieService categorieService;
 
     @Autowired
-    private RemerciementDao remerciementDao;
+    private RemerciementService remerciementService;
+
+    @Autowired
+    private EtatImproService etatImproService;
+
 
     public StatutPreparationDto getStatutPreparation() throws ImproServiceException {
         StatutPreparationDto dto = new StatutPreparationDto();
+        dto.setImproLaunched(checkImproLaunched());
         dto.setCategories(checkCategories());
         dto.setVideoPresentationJoueurs(checkVideo(IConstants.IPath.IVideo.VIDEO_INTRO_JOUEURS));
         dto.setVideoPresentationPresentateur(checkVideo(IConstants.IPath.IVideo.VIDEO_INTRO_PRESENTATEUR));
@@ -38,6 +41,24 @@ public class StatutPreparationService {
         dto.setRemerciements(getRemerciements());
         dto.setPhotosPresentationDates(getNbPhotosPresentationDates());
         return dto;
+    }
+
+    private Boolean checkImproLaunched() {
+        EtatImproDto statut = etatImproService.getStatut();
+        List<Categorie> allCategories = categorieDao.findAll();
+
+        return !(
+                IConstants.IImpro.FIRST_SCREEN.equals(statut.getEcran()) &&
+                statut.getIdCategorie() == null &&
+                statut.getTypeEcran() == null &&
+                !statut.getIntegralite() &&
+                !statut.getCategoriesShown() &&
+                statut.getBlockMasques().size() == 0 &&
+                statut.getPhotosChoisies().size() == 0 &&
+                statut.getPhotoCourante() == null &&
+                statut.getStatutDiapo() == null &&
+                !allCategories.stream().anyMatch(Categorie::getTermine)
+        );
     }
 
     private Boolean checkCategories() throws ImproServiceException {
@@ -55,17 +76,13 @@ public class StatutPreparationService {
 
     }
 
+    public String getRemerciements() throws ImproServiceException {
+        return remerciementService.getRemerciements();
+    }
+
     private Boolean checkVideo(String pathVideosIntro) {
         File folder = new File(pathVideosIntro);
         return folder.exists() && folder.isFile();
-    }
-
-    public String getRemerciements() {
-        Iterator<Remerciement> iterator = remerciementDao.findAll().iterator();
-        if (!iterator.hasNext()) {
-            return null;
-        }
-        return iterator.next().getTexte();
     }
 
     private List<File> getListPhotosFolder(String folder) {

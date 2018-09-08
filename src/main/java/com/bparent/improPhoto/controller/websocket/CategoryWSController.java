@@ -99,4 +99,10 @@ public class CategoryWSController {
         return new BasicCodeLabelDto("message", "ok");
     }
 
+    @MessageMapping("/action/playAppareilPhoto")
+    @SendTo("/topic/playAppareilPhoto")
+    public BasicCodeLabelDto playAppareilPhoto() {
+        return new BasicCodeLabelDto("message", "ok");
+    }
+
 }

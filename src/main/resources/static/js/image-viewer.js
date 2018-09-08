@@ -15,6 +15,9 @@ class ImageViewer {
           </div>
       </div>
       `);
+
+        $("#imageViewerWrapper").click(() => this.hide());
+        $("#imageViewer, #imageViewerClose").click(event => event.stopPropagation());
     });
     $(document).keyup(function(e) {
       if (e.keyCode === 27) { // escape key maps to keycode `27`
@@ -39,8 +42,13 @@ class ImageViewer {
     this.render();
   }
   
-  show(hidePromiseFunction) {
+  show(hidePromiseFunction, options = { deleteAllAvailable : true }) {
     this.hidePromiseFunction = hidePromiseFunction;
+    if (options.deleteAllAvailable) {
+        $("#imageViewerImage__deleteAll").show();
+    } else {
+        $("#imageViewerImage__deleteAll").hide();
+    }
     $("#imageViewerWrapper").show();
   }
   

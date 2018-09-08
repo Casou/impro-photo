@@ -1,11 +1,32 @@
 
 $(document).ready(function() {
+    getVersion();
+    getEtatPreparation();
+});
+
+function getVersion() {
+    $.ajax({
+        url: '/applicationInfo',
+        type: 'GET',
+        encoding: "UTF-8",
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+    .done(dto => {
+        if (dto.applicationVersion) {
+            $('#version').html(dto.applicationVersion);
+        } else {
+            $('#version').hide();
+        }
+    });
+}
+
+function getEtatPreparation() {
     $.ajax({
         url: '/statutPreparation',
         type: 'GET',
         encoding: "UTF-8",
         dataType: 'json',
-//            data: JSON.stringify(inputDto),
         contentType: 'application/json'
     })
     .done(function (statusDto) {
@@ -17,12 +38,12 @@ $(document).ready(function() {
     })
     .always(function () {
     });
-});
-
+}
 
 
 function updateStatut(statusDto) {
     let allStatus = [];
+    allStatus.push(updateStatutImpro(statusDto));
     allStatus.push(updateStatutCategories(statusDto));
     allStatus.push(updateStatutVideo(statusDto));
     allStatus.push(updateStatutPhotosJoueurs(statusDto));
@@ -41,6 +62,18 @@ function updateStatut(statusDto) {
 }
 
 
+function updateStatutImpro(statusDto) {
+    let status = "ok";
+    if (statusDto.improLaunched) {
+        $("span#status_impro").addClass("ko").removeClass("ok").removeClass("loading").html("Déjà démarrée");
+        status = "ko";
+    } else {
+        $("span#status_impro").addClass("ok").removeClass("ko").removeClass("loading").html("Au début");
+    }
+    $('li#status_impro_li span.span-icon').addClass("status_" + status);
+    return status;
+}
+
 function updateStatutCategories(statusDto) {
     let status = "ok";
     if (statusDto.categories) {
@@ -57,16 +90,16 @@ function updateStatutVideo(statusDto) {
     let etatVideo = "";
     let status = "ok";
     if (!statusDto.videoPresentationPresentateur) {
-        etatVideo += '<span class="warning">Vidéo présentateur [KO]</span>';
+        etatVideo += '<span class="warning">Présentateur [KO]</span>';
         status = "warning";
     } else {
-        etatVideo += '<span class="ok">Vidéo présentateur [OK]</span>';
+        etatVideo += '<span class="ok">Présentateur [OK]</span>';
     }
     if (!statusDto.videoPresentationJoueurs) {
-        etatVideo += '<span class="warning">Vidéo joueur [KO]</span>';
+        etatVideo += '<span class="warning">Joueur [KO]</span>';
         status = "warning";
     } else {
-        etatVideo += '<span class="ok">Vidéo joueur [OK]</span>';
+        etatVideo += '<span class="ok">Joueur [OK]</span>';
     }
     $("span#status_video").removeClass("loading").html(etatVideo);
     $('li#status_video_li span.span-icon').addClass("status_" + status);

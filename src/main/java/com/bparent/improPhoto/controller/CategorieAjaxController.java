@@ -2,18 +2,15 @@ package com.bparent.improPhoto.controller;
 
 import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
+import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +22,10 @@ public class CategorieAjaxController {
 
     private static final Predicate<String> isAcceptedSongFile = fileExtension -> IConstants.ZIP_EXTENSION.equals(fileExtension);
 
-    @RequestMapping(value = "/categories/getPictures", method = RequestMethod.GET)
+    @Autowired
+    private CategorieService categorieService;
+
+    @GetMapping("/categories/getPictures")
     public List<String> getPictures(final String pathFolder) {
         return Arrays.stream(
                 new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + pathFolder)
@@ -50,5 +50,11 @@ public class CategorieAjaxController {
         return new SuccessResponse("ok");
     }
 
+
+    @DeleteMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteCategories() {
+        categorieService.deleteAllCategories();
+        return new SuccessResponse("ok");
+    }
 
 }

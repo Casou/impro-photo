@@ -65,7 +65,7 @@ class CategorieList extends IScreen {
         categoryList.forEach(function(category, index) {
             let cssClass = category.termine ? "termine" : "";
             html += `
-            <li id="categorie_${index}" index="${index}" class="transparent" style="animation-delay : ${ 3 + (index / 10) }s;">
+            <li id="categorie_${category.id}" index="${index}" class="categorie ${ !STATUS.categoriesShown && "transparent" }" style="animation-delay : ${ 3 + (index / 10) }s;">
                 <a href="#" class="${ cssClass }" onClick="categories.launchCategorie(${ category.id }); return false;">
                     ${ category.nom }
                 </a>            
@@ -81,17 +81,22 @@ class CategorieList extends IScreen {
         if (nextCategory != null && nextCategory.length > 0) {
             $(nextCategory).removeClass("transparent");
         }
-        this.wsClient.sendMessage("/app/action/showNextCategory", { });
+        STATUS.categoriesShown = STATUS.categoriesShown || !$(".transparent").length;
+        this.wsClient.sendMessage("/app/action/showNextCategory", { lastCategorie : STATUS.categoriesShown });
     }
 
     showAllCategories() {
         $("li.transparent").each(function(index, li) {
             setTimeout(() => { $(li).removeClass("transparent"); }, index * 0.2 * 1000);
         });
+        STATUS.categoriesShown = true;
         this.wsClient.sendMessage("/app/action/showAllCategories", { });
     }
 
     launchCategorie(id) {
+        if ($('#categorie_' + id).hasClass("transparent")) {
+            return;
+        }
         this.wsClient.sendMessage("/app/action/launchCategorie", { id : id });
     }
 

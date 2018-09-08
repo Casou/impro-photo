@@ -175,7 +175,7 @@ class AbstractCategorieAnimation {
         setTimeout(() => {
             $('div.imageWrapper').removeClass("selected");
             $('div#div_one_image_small').fadeIn(1000);
-        }, 10000);
+        }, 8500);
     }
 
     showPicture(id) {

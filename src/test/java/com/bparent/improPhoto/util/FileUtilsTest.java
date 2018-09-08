@@ -30,14 +30,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void shouldListFilesRecursively() throws IOException {
-        List<String> testResourcesFiles = FileUtils.listAllFilesRecursivly("src/test/resources");
-        assertEquals(2, testResourcesFiles.size());
-        assertEquals(FileUtils.formatPathToSystemDefault("src/test/resources/data.sql"), testResourcesFiles.get(0));
-        assertEquals(FileUtils.formatPathToSystemDefault("src/test/resources/schema.sql"), testResourcesFiles.get(1));
-    }
-
-    @Test
     public void getFrontFilePath_shouldReturnStringWithHandle() {
         assertEquals("/handler/file.txt", FileUtils.getFrontFilePath(new File("file.txt")));
     }
@@ -45,6 +37,14 @@ public class FileUtilsTest {
     @Test
     public void getFileName_shouldReturnString() {
         assertEquals("file.txt", FileUtils.getFileName("/some/path/to/file.txt"));
+    }
+
+    @Test
+    public void capitalizeCategoryFolderName_shouldCapitalizeString() {
+        assertEquals("Décor", FileUtils.capitalizeCategoryFolderName("01 - décor"));
+        assertEquals("Décor De NUIT", FileUtils.capitalizeCategoryFolderName("01 - décor De NUIT   "));
+        assertEquals("Écureuil", FileUtils.capitalizeCategoryFolderName("écureuil"));
+        assertEquals("ÉCUREUIL", FileUtils.capitalizeCategoryFolderName("ÉCUREUIL"));
     }
 
 }

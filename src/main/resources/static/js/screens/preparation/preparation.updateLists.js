@@ -6,6 +6,7 @@ function addCategorie(dto) {
     $(`#categories li#${ idCategorie } input.categorie_nom`).val(dto.nom);
     $(`#categories li#${ idCategorie } select.categorie_type`).val(dto.type);
     $(`#categories li#${ idCategorie } input.categorie_path`).val(dto.pathFolder);
+    $(`#categories li#${ idCategorie } span.categorie_path_not_editable`).html(dto.pathFolder);
     $(`#categories li#${ idCategorie } span.pictures span.nb-picture`).html(dto.pictures.length);
     CATEGORY_IMAGES[dto.nom] = dto.pictures;
     $(`#categories li#${ idCategorie } span.pictures span.icon-picture`).click(() => showCategoryImageViewer(dto.nom));
@@ -29,7 +30,7 @@ function addCategorie(dto) {
 
 function showCategoryImageViewer(nom) {
     IMAGE_VIEWER.setImages(CATEGORY_IMAGES[nom]);
-    IMAGE_VIEWER.show(retrieveCategories);
+    IMAGE_VIEWER.show(retrieveCategories, { deleteAllAvailable : false });
 }
 
 function newCategorie(id) {
@@ -67,14 +68,16 @@ function datePickerize(selector) {
 }
 
 function newDate(id) {
-    let newId = 'date_' + ((id == undefined) ? generateRandom(7) : id);
+    let newId = 'date_' + (id || generateRandom(7));
     $('#datesList').append($('#hiddenClones #date_clone').first().clone().attr('id', newId));
     datePickerize(`#datesList li#${ newId } input.date_date_input`);
+    $('#buttonNewDate').attr("disabled", $('#datesList li').length === 4);
     return newId;
 }
 
 function removeDate(li) {
     $(li).remove();
+    $('#buttonNewDate').attr("disabled", false);
 }
 
 let TEXTEAREA_MAX_CHARS;
@@ -88,10 +91,6 @@ function calcRemainingChars() {
 
 
 
-
-function deleteJingle(nom, index) {
-    deleteAudio("/jingle", nom, index, "#jingles_tab_main");
-}
 
 function deleteSong(nom, index) {
     deleteAudio("/song", nom, index, "#musiques_tab_main");
@@ -133,10 +132,6 @@ function deleteAudio(url, nom, index, cssSelector) {
 
 function deleteSelectedSongs() {
     deleteSelectedAudio("/songs", "#musiques_tab_main");
-}
-
-function deleteSelectedJingles() {
-    deleteSelectedAudio("/jingles", "#jingles_tab_main");
 }
 
 function deleteSelectedAudio(url, cssSelector) {
@@ -189,13 +184,6 @@ function uploadSongs() {
     uploadZip("/songs", "importMusique", () => {
         $("#inputImportPlaylist").val("");
         retrieveMusiques().then(() => hideLoading());
-    });
-}
-
-function uploadJingles() {
-    uploadZip("/jingles", "importJingles", () => {
-        $("#inputImportJingle").val("");
-        retrieveJingles().then(() => hideLoading());
     });
 }
 
@@ -276,6 +264,23 @@ function uploadCategories() {
             }
         }
         alert(message);
+        hideLoading();
+    });
+}
+
+function updateParam(context, key, input) {
+    $.ajax({
+        url: "/parametre",
+        type: 'PUT',
+        data: JSON.stringify({ id : { context, key }, value : input.value }),
+        encoding: "UTF-8",
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+    .done(function () {
+
+    })
+    .always(() => {
         hideLoading();
     });
 }

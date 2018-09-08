@@ -1,8 +1,8 @@
 package com.bparent.improPhoto.service;
 
 import com.bparent.improPhoto.dao.CategorieDao;
-import com.bparent.improPhoto.dao.RemerciementDao;
 import com.bparent.improPhoto.domain.Categorie;
+import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import com.bparent.improPhoto.exception.ImproServiceException;
@@ -33,14 +33,18 @@ public class StatutPreparationServiceTest {
     private CategorieService categorieService;
 
     @Mock
-    private RemerciementDao remerciementDao;
+    private RemerciementService remerciementService;
+
+    @Mock
+    private EtatImproService etatImproService;
 
 
     @Before
-    public void init() {
+    public void init() throws ImproServiceException {
         MockitoAnnotations.initMocks(this);
         when(categorieDao.findAll()).thenReturn(new ArrayList<>());
-        when(remerciementDao.findAll()).thenReturn(new ArrayList<>());
+        when(remerciementService.getRemerciements()).thenReturn("");
+        when(etatImproService.getStatut()).thenReturn(new EtatImproDto());
     }
 
 

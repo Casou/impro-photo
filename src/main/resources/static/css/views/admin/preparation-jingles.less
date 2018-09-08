@@ -1,0 +1,130 @@
+section#jingles_tab_main {
+
+  h2 {
+    text-align: center;
+    margin: 5px 0 15px 0;
+  }
+
+  form {
+    text-align: center;
+  }
+
+  div#importJinglesDiv {
+    width: 85%;
+    margin: auto;
+  }
+
+  #jingleList {
+    display : flex;
+
+    aside, main {
+      flex : 1;
+      height: 400px;
+      border : 1px solid #999;
+      border-radius : 0;
+      box-sizing: border-box;
+    }
+
+    aside {
+      max-width : 230px;
+
+      ul {
+
+        li {
+          &:nth-child(even) { background-color: black; }
+          &:nth-child(odd) { background-color: #2e2e2e; }
+          &.selected { color : #fa459e; }
+
+          padding : 3px 10px;
+          white-space : nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          cursor : pointer;
+        }
+      }
+    }
+
+    main {
+      padding : 0;
+
+      header {
+        text-align : center;
+        padding : 10px 10px 0 10px;
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+
+        button.deleteSongs {
+          float : left;
+          font-size: 16px;
+
+          color : white;
+          /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff6f5f+0,fb3333+100 */
+          background: #ff6f5f; /* Old browsers */
+          background: -moz-linear-gradient(top, #ff6f5f 0%, #fb3333 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(top, #ff6f5f 0%,#fb3333 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to bottom, #ff6f5f 0%,#fb3333 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6f5f', endColorstr='#fb3333',GradientType=0 ); /* IE6-9 */
+        }
+      }
+
+      #importJinglesIntoCategory {
+        font-size: 12px;
+
+        input {
+          font-size: 12px;
+        }
+
+        button {
+          float: none;
+          font-size: 12px;
+          margin-left: 5px;
+        }
+      }
+
+      div#jingleTable {
+        display: inline-block;
+        width : 100%;
+        height: calc(~'100% - 118px');
+        overflow: auto;
+
+        table {
+          width : 100%;
+
+          thead tr {
+            background-color: #393939;
+          }
+
+          tbody {
+            tr {
+              &:nth-child(even) { background-color: black; }
+              &:nth-child(odd) { background-color: #2e2e2e; }
+            }
+
+            td {
+              padding: 0 5px;
+              text-align : left;
+
+              &:nth-child(2) { width: 30px; }
+              &.actionCell { text-align : center; }
+
+              span.fa-play {
+                margin-right : 5px;
+              }
+
+              span.delete {
+                color : red;
+              }
+
+              span.fa,
+              span.delete {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

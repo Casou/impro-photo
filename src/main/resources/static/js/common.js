@@ -59,3 +59,31 @@ function handleAjaxError(resultat, statut, erreur, contextMessage) {
   }
   alert(message);
 }
+
+
+
+function showLoading() {
+    $("#loading").show();
+}
+
+function hideLoading() {
+    $("#loading").hide();
+}
+
+function getParamKey(param) {
+    return param.id.context + "-" + param.id.key;
+}
+
+function isNewestVersion(currentVersion, newestVersion) {
+    const currentVersionParts = currentVersion.split(".");
+    const newestVersionParts = newestVersion.split(".");
+    for (let i = 0; i < currentVersionParts.length; i++) {
+        const currentVersionPart = isNaN(currentVersionParts[i]) ? null : parseInt(currentVersionParts[i]);
+        const newestVersionPart = isNaN(newestVersionParts[i]) ? null : parseInt(newestVersionParts[i]);
+
+        if (newestVersionPart !== null && currentVersionPart !== null && newestVersionPart > currentVersionPart) {
+            return true;
+        }
+    }
+    return false;
+}

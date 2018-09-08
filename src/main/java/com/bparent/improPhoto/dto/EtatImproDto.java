@@ -22,5 +22,6 @@ public class EtatImproDto {
     private SongDto currentSong;
     private Boolean isPlaylistPlaying;
     private Integer playlistVolume = 10;
+    private Boolean categoriesShown = false;
 
 }

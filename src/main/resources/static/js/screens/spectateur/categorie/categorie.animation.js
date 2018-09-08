@@ -240,43 +240,61 @@ class AbstractCategorieAnimation {
         const topValue = $("div#div_selectAllTarget").offset().top
             - divImagesTop
             + $("div#div_selectAllTarget").height() * 0.28;
-        promiseLogo.then(() => {
-            $(this.selectAllImageOrder).each(function(index, imageIndex) {
-                setTimeout(() => {
-                    this.movePictureNumberToSelectAllTarget(imageIndex, topValue);
-                }, index * 200);
-            }.bind(this));
-            setTimeout(() => {
-                $('div#div_selectAllTarget')
-                    .animate({'right': `-${divAllTargetWidth}px`}, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION, () => {
-                        $('div.imageWrapper .pictureNumber').css("opacity", 0);
-                    });
-                $('div#div_one_image').html("").fadeIn(500);
-            }, this.selectAllImageOrder.length * 200 + 2000 + 500);
-        });
-    }
 
-    movePictureNumberToSelectAllTarget(imageIndex, topValue) {
-        const leftValue = $(window).width();
-        $('div.imageWrapper#picture_' + imageIndex)
-            .delay(500)
-            .animate({
-                'top' : topValue + 'px'
-            }, 1000, function() {
-                $('div.imageWrapper#picture_' + imageIndex)
-                    .animate({
-                        'left' : leftValue + 'px'
-                    }, 1000);
+        // $(".imageWrapper")
+        //     .animate( { 'top': `${midHeight}px`, 'right': `${midWidth}px` }, CATEGORY_ANIMATION_VALIDATE_MOVE_DURATION, () => {
+        //     // $('div.imageWrapper .pictureNumber').css("opacity", 0);
+        // });
+
+        promiseLogo.then(() => {
+            const midHeight = (CATEGORIE_ALL_PICTURES_HEIGHT - 140) / 2;
+            const midWidth = (CATEGORIE_ALL_PICTURES_WIDTH - 140) / 2;
+            const allImagesPromises = [];
+
+            $(".imageWrapper").each((index, item) => {
+                const l = parseInt($(item).css('left'), 10) + (((index) % 5) - 2) * 30;
+                const t = parseInt($(item).css('top'), 10) + (parseInt(index / 5, 10) - 2) * 30;
+
+                const promiseImage = new Promise((resolve) => {
+                    $(item).animate({'left': l + 'px', 'top': t + 'px'}, 500, () => {
+                        $(item)
+                            .delay(100)
+                            .animate({
+                                'left': midWidth + 'px',
+                                'top': midHeight + 'px'
+                            }, 700, () => resolve());
+
+                        $(item).children('.pictureNumber')
+                            .delay(100)
+                            .animate({
+                                'height': '50px',
+                                'width': '50px',
+                                'font-size' : '30px',
+                                'line-height' : '50px',
+                            }, 700, () => resolve());
+                    });
+                });
+
+                allImagesPromises.push(promiseImage);
             });
 
+            Promise.all(allImagesPromises).then(() => {
+                $('div#div_selectAllTarget').animate({'right': '-45px'}, 700);
 
-        $('div.imageWrapper#picture_' + imageIndex + ' .pictureNumber')
-            .animate({
-                'height': '50px',
-                'width': '50px',
-                'font-size' : '30px',
-                'line-height' : '50px',
-            }, 1500);
+                $(".imageWrapper")
+                    .delay(1000)
+                    .animate({ 'left': (700 * 2) + 'px' }, 1000, () => {
+                        $('div#div_selectAllTarget')
+                            .delay(500)
+                            .animate({'right': `-${divAllTargetWidth}px`}, 700, () => {
+                                $('div.imageWrapper .pictureNumber').css("opacity", 0);
+                            });
+                    });
+                $('div#div_one_image').html("").show();
+            });
+
+        });
+
     }
 
     showPicture(id) {

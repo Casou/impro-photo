@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 public class JingleDto {
 
     private String nom;
+    private String folder;
     private String path;
 
-    public JingleDto(String nom) {
+    public JingleDto(String nom, String nomFolder) {
         this.nom = nom;
-        this.path = FileUtils.formatPathWithCharacter("/handler/jingles/" + nom, "/");
+        this.folder = nomFolder;
+        this.path = FileUtils.formatPathWithCharacter("/handler/jingles/" + nomFolder + "/" + nom, "/");
     }
 
 }

@@ -50,6 +50,7 @@ class CategorieAnimationPolaroid extends CategorieAnimationNormal {
     
     hideMask(maskId) {
         $('#mask_' + maskId).fadeOut(1000);
+        $('#polaroidSoundAudio')[0].play();
     }
     
 }

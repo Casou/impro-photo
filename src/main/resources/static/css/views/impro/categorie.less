@@ -228,7 +228,7 @@ div#divCategoryActions {
 @importAllTargetImage : 200;
 div#div_selectAllTarget {
     position : absolute;
-    top : 60%;
+    top : calc(~'50% - 100px');
     right : unit((@importAllTargetImage * -1), px);
     height :  unit(@importAllTargetImage, px);
     width : unit(@importAllTargetImage, px);
@@ -238,6 +238,7 @@ div#div_selectAllTarget {
         height : 100%;
     }
 }
+
 
 div#div_one_image {
     position : absolute;
@@ -249,7 +250,6 @@ div#div_one_image {
     z-index : @zIndexOneImage;
 
     display : none;
-
 
     img {
         max-width : 100%;

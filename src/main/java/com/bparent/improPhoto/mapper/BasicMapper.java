@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Component
 public class BasicMapper<DTO, ENTITY> {
@@ -16,11 +17,9 @@ public class BasicMapper<DTO, ENTITY> {
     }
 
     public List<DTO> toDto(Class<DTO> dtoClass, List<ENTITY> entities) throws ImproMappingException {
-        List<DTO> list = new ArrayList<>();
-        for (ENTITY entity : entities) {
-            list.add((DTO) this.map(dtoClass, entity));
-        }
-        return list;
+        return entities.stream()
+                .map(entity -> this.toDto(dtoClass, entity))
+                .collect(Collectors.toList());
     }
 
 
@@ -29,15 +28,13 @@ public class BasicMapper<DTO, ENTITY> {
     }
 
     public List<ENTITY> toEntity(Class<ENTITY> dtoClass, List<DTO> dtos) throws ImproMappingException {
-        List<ENTITY> list = new ArrayList<>();
-        for (DTO dto : dtos) {
-            list.add((ENTITY) this.map(dtoClass, dto));
-        }
-        return list;
+        return dtos.stream()
+                .map(dto -> this.toEntity(dtoClass, dto))
+                .collect(Collectors.toList());
     }
 
 
-    private Object map(Class<?> dtoClass, Object entity) throws ImproMappingException {
+    protected Object map(Class<?> dtoClass, Object entity) throws ImproMappingException {
         Object dto;
         try {
             dto = dtoClass.newInstance();

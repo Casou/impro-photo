@@ -1,0 +1,47 @@
+#params_tab_main {
+
+  table {
+    text-align: left;
+    max-width : 75%;
+    border : 1px solid #777;
+    margin : 20px auto;
+    border-collapse: collapse;
+
+    thead tr {
+      background-color : #393939;
+      text-align : center;
+    }
+    tbody {
+      tr {
+        &:nth-child(even) { background-color : black; }
+        &:nth-child(odd) { background-color : #2e2e2e; }
+      }
+
+      td {
+        padding : 3px 10px;
+      }
+    }
+  }
+
+}
+
+#updateDiv {
+  text-align : center;
+
+  h3 { color : yellow; }
+
+  #versionTable {
+    th, td { text-align : center; };
+
+    td:nth-child(3) {
+      text-align : left;
+    }
+
+    .olderVersion {
+      opacity : 0.6;
+    }
+  }
+
+}
+
+

@@ -1,15 +1,18 @@
 package com.bparent.improPhoto.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RemerciementDto {
+public class VersioningDto {
 
-    private Integer id;
-    private String texte;
+    private List<VersionDto> versions;
 
 }

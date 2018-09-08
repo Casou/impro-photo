@@ -6,7 +6,7 @@ class Intro extends IScreen {
 
     init(status) {
         $("#intro").fadeIn(ANIMATION_FADE_DURATION);
-        $("html").addClass("black");
+        $("#intro video").hide();
     }
 
     goToNextScreen(responseJson) {

@@ -76,6 +76,9 @@ public class EtatImproService {
             case IConstants.IEtatImproField.PLAYLIST_STATUS :
                 etatImproDto.setIsPlaylistPlaying(IConstants.IEtatImproField.IStatutPlaylist.PLAYING.equals(etat.getValeur()));
                 break;
+            case IConstants.IEtatImproField.CATEGORIES_SHOWN :
+                etatImproDto.setCategoriesShown(Boolean.valueOf(etat.getValeur()));
+                break;
             default:
                 break;
         }
@@ -108,6 +111,8 @@ public class EtatImproService {
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTO_COURANTE, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PHOTOS_CHOISIES, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.STATUT_DIAPO, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CATEGORIES_SHOWN, String.valueOf(false)));
+
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CURRENT_SONG_NAME, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_STATUS, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_VOLUME, String.valueOf(10)));

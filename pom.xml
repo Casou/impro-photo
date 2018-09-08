@@ -5,19 +5,20 @@
 
 	<groupId>com.bparent</groupId>
 	<artifactId>improPhoto</artifactId>
-	<version>3.1.6</version>
+	<version>3.1.9</version>
 	<packaging>jar</packaging>
 
 	<name>improPhoto</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Logiciel d'impro photo(C) du GIT</description>
 
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>dd/MM/yyyy HH:mm</maven.build.timestamp.format>
 	</properties>
-
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -66,6 +67,11 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
 
 
 
@@ -102,16 +108,6 @@
 		</dependency>
 
 
-
-
-
-
-
-
-
-
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -120,6 +116,18 @@
 	</dependencies>
 
 	<build>
+		<!--<resources>-->
+			<!--<resource>-->
+				<!--<filtering>true</filtering>-->
+				<!--<directory>src/main/resources</directory>-->
+				<!--<includes>-->
+					<!--<include>application.properties</include>-->
+					<!--<include>application-dev.properties</include>-->
+					<!--<include>application-test.properties</include>-->
+				<!--</includes>-->
+			<!--</resource>-->
+		<!--</resources>-->
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

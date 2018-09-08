@@ -26,9 +26,9 @@
     <script type="text/javascript" src="/js/jquery-ui.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript" src="/js/less.js"></script>
+    <script type="text/javascript" src="/js/screens/preload.js"></script>
     <script type="text/javascript" src="/js/screens/iscreen.js"></script>
 
-    <!--<script src="/webjars/jquery/jquery.min.js"></script>-->
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/js/websocket.js"></script>
@@ -45,12 +45,15 @@
             blockMasques : null,
             currentSong : null,
             isPlaylistPlaying : null,
-            playlistVolume : null
+            playlistVolume : null,
+            categoriesShown : null
         };
         const SCREENS = [];
 
         const WEBSOCKET_CLIENT = new WebsocketClient();
         const ANIMATION_FADE_DURATION = 2000;
+
+        const PARAMETRES = [];
 
     </script>
 
@@ -72,6 +75,17 @@
 
     <div id="watermark">
         <img src="/images/logo/git_logo_gris.png" />
+    </div>
+
+    <div id="loadingHiddenDiv" style="display : none">
+
+    </div>
+
+    <div id="loading" style="background-color : black;">
+        <div>
+            Chargement...
+            <span id="loadingPercentage">0</span>%
+        </div>
     </div>
 
     <script>

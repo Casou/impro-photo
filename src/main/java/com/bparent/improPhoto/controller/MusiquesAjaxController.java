@@ -1,11 +1,14 @@
 package com.bparent.improPhoto.controller;
 
+import com.bparent.improPhoto.dto.JingleCategoryDto;
 import com.bparent.improPhoto.dto.JingleDto;
 import com.bparent.improPhoto.dto.SongDto;
 import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
+import com.bparent.improPhoto.service.JingleService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +26,9 @@ import java.util.function.Predicate;
 
 @RestController
 public class MusiquesAjaxController {
+
+    @Autowired
+    private JingleService jingleService;
 
     private static final Predicate<String> isAcceptedSongFile = fileExtension -> IConstants.ZIP_EXTENSION.equals(fileExtension)
             || IConstants.AUDIO_EXTENSION_ACCEPTED.contains(fileExtension);
@@ -46,7 +52,7 @@ public class MusiquesAjaxController {
     }
 
     @DeleteMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<MessageResponse> deleteSongListRequest(@RequestBody List<SongDto> songDtoList) {
+    public @ResponseBody ResponseEntity<MessageResponse> deleteSongList(@RequestBody List<SongDto> songDtoList) {
         songDtoList.forEach(songDto -> this.deleteSong(IConstants.IPath.IAudio.AUDIOS_PLAYLIST, songDto.getNom()));
 
         return new SuccessResponse("ok");
@@ -62,15 +68,15 @@ public class MusiquesAjaxController {
     }
 
     @DeleteMapping(value = "/jingle", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleRequest(@RequestBody JingleDto jingleDto) {
-        this.deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES, jingleDto.getNom());
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingle(@RequestBody JingleDto jingleDto) {
+        this.deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingleDto.getFolder() + "/", jingleDto.getNom());
 
         return new SuccessResponse("ok");
     }
 
-    @DeleteMapping(value = "/jingles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleListRequest(@RequestBody List<JingleDto> jingleDtoList) {
-        jingleDtoList.forEach(jingleDto -> this.deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES, jingleDto.getNom()));
+    @DeleteMapping(value = "/jingleCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleCategory(@RequestBody JingleCategoryDto jingleCategoryDto) {
+        this.jingleService.deleteJingleCategory(jingleCategoryDto);
 
         return new SuccessResponse("ok");
     }
@@ -79,10 +85,20 @@ public class MusiquesAjaxController {
     public @ResponseBody ResponseEntity<MessageResponse> uploadJingles(MultipartHttpServletRequest request,
                                                                      HttpServletResponse response) {
         request.getFiles("file").forEach(multipart -> FileUtils.handleUploadedFile(multipart, isAcceptedSongFile,
-                IConstants.AUDIO_EXTENSION_ACCEPTED, IConstants.IPath.IAudio.AUDIOS_JINGLES, true));
+                IConstants.AUDIO_EXTENSION_ACCEPTED, IConstants.IPath.IAudio.AUDIOS_JINGLES, false));
 
         return new SuccessResponse("ok");
     }
 
+    @PostMapping(value = "/jingleCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> uploadJinglesIntoCategory(MultipartHttpServletRequest request,
+                                                                     HttpServletResponse response) {
+        request.getFiles("file").forEach(multipart -> FileUtils.handleUploadedFile(multipart, isAcceptedSongFile,
+                IConstants.AUDIO_EXTENSION_ACCEPTED,
+                IConstants.IPath.IAudio.AUDIOS_JINGLES + request.getParameter("category_name") + "/",
+                true));
+
+        return new SuccessResponse("ok");
+    }
 
 }

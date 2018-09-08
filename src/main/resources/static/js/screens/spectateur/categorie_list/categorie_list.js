@@ -6,7 +6,7 @@ class CategorieList extends IScreen {
 
     init(status, categoryList) {
         $("#categorie_list").fadeIn(ANIMATION_FADE_DURATION);
-        if (categoryList != undefined) {
+        if (categoryList) {
             this.renderCategoryList(categoryList);
         } else {
             this.retrieveCategoryList();
@@ -27,7 +27,7 @@ class CategorieList extends IScreen {
 
     subscriptions() {
         super.subscriptions();
-        this.wsClient.subscribe("/topic/category_list/showNextCategory", () => this.showNextCategory());
+        this.wsClient.subscribe("/topic/category_list/showNextCategory", (dto) => this.showNextCategory(dto));
         this.wsClient.subscribe("/topic/category_list/showAllCategories", () => this.showAllCategories());
         this.wsClient.subscribe("/topic/category_list/launchCategorie", (response) => this.launchCategorieScreen(JSON.parse(response.body)));
         this.wsClient.subscribe("/topic/category_list/goRemerciements", (response) => this.goToNextScreen(JSON.parse(response.body)));
@@ -58,7 +58,7 @@ class CategorieList extends IScreen {
         $(categoryList).each(function(index, category) {
             let cssClass = category.termine ? "termine" : "";
             html += `
-            <li id="categorie_${index}" class="hidden">
+            <li id="categorie_${index}" class="categorie ${ !STATUS.categoriesShown && "hidden" }">
                 <a href="#" class="${ cssClass }">
                     ${ category.nom }
                 </a>            
@@ -68,14 +68,16 @@ class CategorieList extends IScreen {
         $("ul#categoryList").html(html);
     }
 
-    showNextCategory() {
-        $(".hidden").first().removeClass("hidden").addClass("animated flipInY");
+    showNextCategory(dto) {
+        $("li.categorie.hidden").first().removeClass("hidden").addClass("animated flipInY");
+        STATUS.categoriesShown = STATUS.categoriesShown || dto.lastCategorie;
     }
 
     showAllCategories() {
-        $("li.hidden").each(function(index, li) {
+        $("li.categorie.hidden").each(function(index, li) {
             $(li).removeClass("hidden").addClass("animated flipInY").css("animation-delay", (index * 0.2) + "s");
         });
+        STATUS.categoriesShown = true;
     }
 
 }

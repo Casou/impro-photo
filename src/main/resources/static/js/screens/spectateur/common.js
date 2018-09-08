@@ -78,7 +78,10 @@ function updateVolume(volumeDto) {
 
 WEBSOCKET_CLIENT.subscribe("/topic/general/nextSong", () => loadRandom());
 function loadRandom() {
-    if (PLAYLIST_REMAINING_SONGS.length == 0) {
+    if (PLAYLIST_REMAINING_SONGS.length === 0) {
+        if (PLAYLIST_SONGS.length === 0) {
+            return;
+        }
         PLAYLIST_REMAINING_SONGS = PLAYLIST_SONGS.slice(0);
     }
     

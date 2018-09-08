@@ -6,33 +6,32 @@ import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
 import com.bparent.improPhoto.exception.ImproControllerException;
 import com.bparent.improPhoto.exception.ImproServiceException;
+import com.bparent.improPhoto.service.CategorieService;
+import com.bparent.improPhoto.service.DateImproService;
 import com.bparent.improPhoto.service.EtatImproService;
-import com.bparent.improPhoto.service.PreparationService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 @RestController
 public class PreparationAjaxController {
 
     @Autowired
-    private PreparationService preparationService;
+    private DateImproService dateImproService;
+
+    @Autowired
+    private CategorieService categorieService;
 
     @Autowired
     private EtatImproService etatImproService;
@@ -44,14 +43,28 @@ public class PreparationAjaxController {
     @PostMapping(value = "/preparation", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> savePreparation(@RequestBody PreparationForm form) throws ImproControllerException {
 
-        try {
-            preparationService.prepareImpro(form.getCategories(), form.getRemerciements(), form.getDatesImpro());
-        } catch (ImproServiceException e) {
-            throw new ImproControllerException("Error while saving preparation impro", e);
+        if (form.getDatesImpro() != null) {
+            try {
+                dateImproService.prepareDates(form.getDatesImpro());
+            } catch (ImproServiceException e) {
+                throw new ImproControllerException("Error while saving dates in preparation impro", e);
+            }
         }
 
-        etatImproService.resetImpro();
+        if (form.getCategories() != null) {
+            try {
+                categorieService.prepareCategories(form.getCategories());
+            } catch (ImproServiceException e) {
+                throw new ImproControllerException("Error while saving categories in preparation impro", e);
+            }
+        }
 
+        return new SuccessResponse("ok");
+    }
+
+    @PutMapping("/preparation/resetImpro")
+    public @ResponseBody ResponseEntity<MessageResponse> resetImpro() {
+        etatImproService.resetImpro();
         return new SuccessResponse("ok");
     }
 
@@ -141,12 +154,13 @@ public class PreparationAjaxController {
 
     @PostMapping(value = "/preparation/images/joueurs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> uploadImagesJoueurs(MultipartHttpServletRequest request) {
+        FileUtils.deleteFolderContent(new File(IConstants.IPath.IPhoto.PHOTOS_JOUEURS));
         handleUploadImages(request, IConstants.IPath.IPhoto.PHOTOS_JOUEURS);
 
         return new SuccessResponse("ok");
     }
 
-    private void handleUploadImages(MultipartHttpServletRequest request, String photosPresentationDates) {
+    private void handleUploadImages(MultipartHttpServletRequest request, String folderPath) {
         List<MultipartFile> uploadedFiles = request.getFiles("file");
 
         if (uploadedFiles.isEmpty()) {
@@ -158,7 +172,7 @@ public class PreparationAjaxController {
                 return;
             }
             FileUtils.handleUploadedFile(multipartFile, isAcceptedPictureFile,
-                    IConstants.AUDIO_EXTENSION_ACCEPTED, photosPresentationDates, true);
+                    IConstants.PICTURE_EXTENSION_ACCEPTED, folderPath, true);
         });
     }
 

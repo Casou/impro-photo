@@ -27,5 +27,7 @@ nbdist/
 datas
 datas/*
 *.db
-photos/
+medias/
+medias/*
 sources-php
+*.mp3

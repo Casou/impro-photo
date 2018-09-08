@@ -1,45 +1,69 @@
 section#musiques_tab_main {
 
-    h2 {
-        text-align : center;
-        margin : 5px 0 15px 0;
-    }
+  h2 {
+    text-align: center;
+    margin: 5px 0 15px 0;
+  }
 
-    div#importMusiqueDiv, div#importJinglesDiv {
-        display : inline-block;
-        width : 47%;
-    }
-    div#importMusiqueDiv {
-        margin-right : 5%;
-    }
+  div#importMusiqueDiv {
+    width: 85%;
+    margin: auto;
+  }
 
-    form {
-        text-align : center;
-    }
+  form {
+    text-align: center;
+  }
 
-    button.deleteSongs {
-        font-size : 12px;
-    }
+  #deleteButtonDiv {
+    text-align: center;
+    margin-top : 15px;
+  }
+  button.deleteSongs {
+    font-size: 16px;
+  }
+
+  #musiqueTableDiv {
+    max-height : 350px;
+    overflow : auto;
+    text-align : center;
 
     table {
-        thead tr {
-            background-color : #393939;
-        }
-        tbody {
-            tr {
-                &:nth-child(even) { background-color : black; }
-                &:nth-child(odd) { background-color : #2e2e2e; }
-            }
+      width : 70%;
+      margin : auto;
+      border: 1px solid #444;
+      text-align : left;
 
-            td {
-                padding : 0 5px;
-                &:nth-child(2) { min-width : 200px; }
-                &:nth-child(3) { color : red; }
+      thead tr {
+        background-color: #393939;
+      }
 
-                span.deleteSong {
-                    cursor : pointer;
-                }
-            }
+      th:nth-child(1), td:nth-child(1),
+      th:nth-child(3), td:nth-child(3) {
+        width : 30px;
+        text-align : center;
+      }
+
+      tbody {
+        tr {
+          &:nth-child(even) { background-color: black; }
+          &:nth-child(odd) { background-color: #2e2e2e; }
         }
+
+        td {
+          padding: 0 5px;
+
+          &:nth-child(2) { min-width: 200px; }
+          &:nth-child(3) { color: red; }
+
+          span.deleteSong { cursor: pointer; }
+
+          span.fa {
+            cursor : pointer;
+            margin-right : 5px;
+          }
+        }
+      }
     }
+  }
+
 }

@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -37,13 +38,6 @@ public class FileUtils {
         return FileUtils.formatPathWithCharacter(path, File.separator);
     }
 
-    public static List<String> listAllFilesRecursivly(String folder) throws IOException {
-        return Files.walk(Paths.get(folder))
-                .filter(Files::isRegularFile)
-                .map(pathObject -> pathObject.toFile().getPath())
-                .collect(Collectors.toList());
-    }
-
     public static String getFrontFilePath(File file) {
         return FileUtils.formatPathWithCharacter("/handler/" + file.getPath(), "/");
     }
@@ -53,6 +47,11 @@ public class FileUtils {
     }
 
     public static void deleteFolder(File folder) {
+        deleteFolderContent(folder);
+        folder.delete();
+    }
+
+    public static void deleteFolderContent(File folder) {
         if (!folder.exists()) {
             throw new IllegalArgumentException("Folder " + folder.getAbsolutePath() + " not found");
         }
@@ -67,9 +66,6 @@ public class FileUtils {
                 file.delete();
             }
         }
-
-        folder.delete();
-
     }
 
     public static void handleUploadedFile(MultipartFile multipart, Predicate<String> isAcceptedFile,
@@ -152,5 +148,25 @@ public class FileUtils {
         if (!tempZipFile.delete()) {
             throw new RejectedExecutionException("Error while deleting temp zip file");
         }
+    }
+
+    public static String capitalizeCategoryFolderName(String folderName) {
+        String capitalizedString = folderName;
+        char c = capitalizedString.charAt(0);
+        while (!isCharacterToRemoveFromCategoryFolder(c)) {
+            capitalizedString = capitalizedString.substring(1);
+            c = capitalizedString.charAt(0);
+        }
+
+        return StringUtils.capitalize(capitalizedString.trim());
+    }
+
+    private static final String ACCEPTED_CHARS_FOR_FOLDER_NAME =
+            "abcdefghijqklmnopqrstuvwxyz" +
+            "ABCDEFGHIJQKLMNOPQRSTUVWXYZ" +
+            "aàâäéèêëiîïoôuùû" +
+            "AÀÂÄÉÈÊËIÎÏOÔUÙÛ";
+    private static boolean isCharacterToRemoveFromCategoryFolder(char c) {
+        return ACCEPTED_CHARS_FOR_FOLDER_NAME.contains(c + "");
     }
 }

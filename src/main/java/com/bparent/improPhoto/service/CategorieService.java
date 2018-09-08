@@ -8,16 +8,15 @@ import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.mapper.CategorieMapper;
+import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,12 +73,15 @@ public class CategorieService {
                 missingCategories.add(CategorieDto.builder()
                         .ordre(9999)
                         .type(CategorieTypeEnum.PHOTO)
+                        .nom(FileUtils.capitalizeCategoryFolderName(categorieFolder.getName()))
                         .pathFolder(categorieFolder.getName())
                         .pathInError(false)
                         .existsInDatabase(false)
                         .build());
             }
         });
+
+        missingCategories.sort(Comparator.comparing(CategorieDto::getPathFolder));
 
         return missingCategories;
     }
@@ -89,6 +91,37 @@ public class CategorieService {
     }
 
     public void save(CategorieDto dto) throws ImproMappingException {
-        this.categorieDao.save(categorieMapper.toEntity(dto));
+        this.categorieDao.save(categorieMapper.toEntity(Categorie.class, dto));
+    }
+
+    public void deleteAllCategories() {
+        categorieDao.findAll().forEach(categorie -> {
+            categorieDao.delete(categorie);
+            FileUtils.deleteFolder(new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorie.getPathFolder()));
+        });
+    }
+
+    @Transactional
+    public void prepareCategories(List<CategorieDto> categories) throws ImproServiceException {
+        List<CategorieDto> categoriesToSave = categories.stream()
+                .filter(CategorieDto::isPersistable)
+                .collect(Collectors.toList());
+        if (categoriesToSave.isEmpty()) {
+            categorieDao.deleteAll();
+        } else {
+            categorieDao.deleteByIdNotIn(categoriesToSave.stream()
+                    .filter(categorie -> categorie.getId() != null)
+                    .map(categorie -> categorie.getId())
+                    .collect(Collectors.toList()));
+            try {
+                categoriesToSave.forEach(cat -> cat.setTermine(false));
+                categorieDao.save(categorieMapper.toEntity(Categorie.class, categoriesToSave));
+            } catch (ImproMappingException e) {
+                throw new ImproServiceException("Error while saving categorie_list", e);
+            }
+        }
+
+        List<CategorieDto> categoriesToDelete = this.getMissingCategories(categories);
+        categoriesToDelete.forEach(categorieDto -> FileUtils.deleteFolder(new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder())));
     }
 }

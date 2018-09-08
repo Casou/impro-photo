@@ -1,111 +1,117 @@
-ul#categoriesList {
-    width : 850px;
+#categories {
+  h2 {
+    margin-bottom : 5px;
 
-    li {
-        padding : 2px 0 2px 2px;
-        cursor : move;
-        color : black;
-
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fefefe+0,e8e8e8+49,e0e0e0+50,e2e2e2+100 */
-        background: #fefefe; /* Old browsers */
-        background: -moz-linear-gradient(top,  #fefefe 0%, #e8e8e8 49%, #e0e0e0 50%, #e2e2e2 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #fefefe 0%,#e8e8e8 49%,#e0e0e0 50%,#e2e2e2 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #fefefe 0%,#e8e8e8 49%,#e0e0e0 50%,#e2e2e2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2',GradientType=0 ); /* IE6-9 */
-
-
-        input.categorie_nom,
-        span.id_tech,
-        span.type {
-            margin-right : 15px;
-        }
-
-        a.delete {
-            float : right;
-            margin-right : 10px;
-            color : red;
-        }
-
-        span.id_tech {
-            display : inline-block;
-            padding : 0 4px 0 2px;
-            min-width : 24px;
-            text-align : right;
-        }
-
-        input.categorie_path {
-            width : 200px;
-        }
-
-        span.pictures {
-            width: 50px;
-            text-align: left;
-            display: inline-block;
-            margin-left: 10px;
-            cursor : pointer;
-        }
-
+    button {
+      cursor : pointer;
+      background-color: #ff7476;
+      border : none;
+      border-radius : 5px;
+      font-size : 14px;
+      margin-left : 25px;
     }
+  }
+
+  #importCategories {
+    margin-top : 15px;
+    text-align : center;
+  }
+}
+
+ul#categoriesList {
+  width: 850px;
+
+  li {
+    padding: 2px 0 2px 2px;
+    cursor: move;
+    color: black;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fefefe+0,e8e8e8+49,e0e0e0+50,e2e2e2+100 */
+    background: #fefefe; /* Old browsers */
+    background: -moz-linear-gradient(top, #fefefe 0%, #e8e8e8 49%, #e0e0e0 50%, #e2e2e2 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #fefefe 0%, #e8e8e8 49%, #e0e0e0 50%, #e2e2e2 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #fefefe 0%, #e8e8e8 49%, #e0e0e0 50%, #e2e2e2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e2e2e2', GradientType=0); /* IE6-9 */
+
+    input.categorie_nom,
+    span.id_tech,
+    span.type {
+      margin-right: 15px;
+    }
+
+    a.delete {
+      float: right;
+      margin-right: 10px;
+      color: red;
+    }
+
+    span.id_tech {
+      display: inline-block;
+      padding: 0 4px 0 2px;
+      min-width: 24px;
+      text-align: right;
+    }
+
+    input.categorie_path, span.categorie_path_not_editable {
+      width: 200px;
+      display: inline-block;
+    }
+
+    span.pictures {
+      width: 50px;
+      text-align: left;
+      display: inline-block;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+  }
 }
 
 ul#datesList {
-    input.date_date {
-        width : 80px;
-        text-align : center;
-    }
+  input.date_date {
+    width: 80px;
+    text-align: center;
+  }
 
-    input.date_nom {
-        width : 300px;
-    }
+  input.date_nom {
+    width: 300px;
+  }
 
-    li a.delete {
-        margin-left : 10px;
-        color : red;
-    }
+  li a.delete {
+    margin-left: 10px;
+    color: red;
+  }
 
 }
 
 #ui-datepicker-div {
-    .ui-datepicker-week-end a {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fc8afa+0,ee6cf0+100 */
-        background: #fc8afa; /* Old browsers */
-        background: -moz-linear-gradient(top,  #fc8afa 0%, #ee6cf0 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #fc8afa 0%,#ee6cf0 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #fc8afa 0%,#ee6cf0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8afa', endColorstr='#ee6cf0',GradientType=0 ); /* IE6-9 */
+  z-index : 9999 !important;
 
-    }
-    .ui-datepicker-week-end a.ui-state-hover {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fdb9fc+0,f392f4+100 */
-        background: #fdb9fc; /* Old browsers */
-        background: -moz-linear-gradient(top,  #fdb9fc 0%, #f392f4 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #fdb9fc 0%,#f392f4 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #fdb9fc 0%,#f392f4 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdb9fc', endColorstr='#f392f4',GradientType=0 ); /* IE6-9 */
-    }
-    .ui-datepicker-week-end a.ui-state-active {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f915f5+0,d716da+100 */
-        background: #f915f5; /* Old browsers */
-        background: -moz-linear-gradient(top,  #f915f5 0%, #d716da 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #f915f5 0%,#d716da 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #f915f5 0%,#d716da 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f915f5', endColorstr='#d716da',GradientType=0 ); /* IE6-9 */
-    }
+  .ui-datepicker-week-end a {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fc8afa+0,ee6cf0+100 */
+    background: #fc8afa; /* Old browsers */
+    background: -moz-linear-gradient(top, #fc8afa 0%, #ee6cf0 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #fc8afa 0%, #ee6cf0 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #fc8afa 0%, #ee6cf0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8afa', endColorstr='#ee6cf0', GradientType=0); /* IE6-9 */
 
-}
+  }
+  .ui-datepicker-week-end a.ui-state-hover {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fdb9fc+0,f392f4+100 */
+    background: #fdb9fc; /* Old browsers */
+    background: -moz-linear-gradient(top, #fdb9fc 0%, #f392f4 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #fdb9fc 0%, #f392f4 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #fdb9fc 0%, #f392f4 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdb9fc', endColorstr='#f392f4', GradientType=0); /* IE6-9 */
+  }
+  .ui-datepicker-week-end a.ui-state-active {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f915f5+0,d716da+100 */
+    background: #f915f5; /* Old browsers */
+    background: -moz-linear-gradient(top, #f915f5 0%, #d716da 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #f915f5 0%, #d716da 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #f915f5 0%, #d716da 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f915f5', endColorstr='#d716da', GradientType=0); /* IE6-9 */
+  }
 
-div#remerciements {
-    textarea#remerciements_texte {
-        font-size : 20px;
-    }
-
-    p#textarea_remaining_chars {
-        margin : 0;
-        font-size : 14px;
-        font-style : italic;
-    }
-
-    span#nb_remaining_chars {
-        color : red;
-    }
 }

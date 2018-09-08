@@ -1,252 +1,399 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<title>GIT - Impro diapo</title>
-	<link rel="stylesheet" 		type="text/css" href="/css/style.css" />
-	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.less" />
-	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-categories.less" />
-	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-musiques.less" />
-	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-videos.less" />
-	<link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-divers.less" />
-	<link rel="stylesheet" 		type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
-	<link rel="stylesheet/less" type="text/css" href="/css/image-viewer.less" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GIT - Impro diapo</title>
 
-	<link rel="shortcut icon" HREF="/images/logo/git_logo_rose.png" />
+    <link rel="stylesheet"      type="text/css" href="/css/style.css"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-categories.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-musiques.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-jingles.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-videos.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-remerciements.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-intro.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-dates.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation-params.less"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/views/admin/preparation.helpImage.less"/>
+    <link rel="stylesheet"      type="text/css" href="/css/jquery-ui/jquery-ui.css"/>
+    <link rel="stylesheet/less" type="text/css" href="/css/image-viewer.less"/>
 
-	<script type="text/javascript" src="/js/jquery.js"></script>
-	<script type="text/javascript" src="/js/common.js"></script>
-	<script type="text/javascript" src="/js/jquery-ui.js"></script>
-	<script type="text/javascript" src="/js/less.js"></script>
-	<script type="text/javascript" src="/js/screens/preparation/preparation.js"></script>
-	<script type="text/javascript" src="/js/screens/preparation/preparation.datas.js"></script>
-	<script type="text/javascript" src="/js/image-viewer.js"></script>
+    <link rel="stylesheet"      type="text/css" href="/css/font/font-awesome/css/font-awesome.css" />
+
+    <link rel="shortcut icon" HREF="/images/logo/git_logo_rose.png"/>
+
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/less.js"></script>
+    <script type="text/javascript" src="/js/screens/preparation/preparation.js"></script>
+    <script type="text/javascript" src="/js/screens/preparation/preparation.datas.js"></script>
+    <script type="text/javascript" src="/js/screens/preparation/preparation.jingles.js"></script>
+    <script type="text/javascript" src="/js/screens/preparation/preparation.helpImage.js"></script>
+    <script type="text/javascript" src="/js/image-viewer.js"></script>
 </head>
 <body id="newImpro" class="admin">
 <h1>Préparation d'une impro</h1>
 
 <div id="back">
-	<a href="/">Retour à l'accueil</a>
+    <a href="/">Retour à l'accueil</a>
 </div>
+<buttondiv id="reset" onClick="resetImpro();">
+    Redémarrer l'impro
+</buttondiv>
 
 <menu>
-	<nav id="categorie_tab">Catégories</nav>
-	<nav id="musiques_tab">Musiques</nav>
-	<nav id="videos_tab">Vidéos</nav>
-	<nav id="divers_tab">Divers</nav>
+    <nav id="attente_tab"><a href="#attente">Intro</a></nav>
+    <nav id="videos_tab"><a href="#videos">Vidéos</a></nav>
+    <nav id="categorie_tab"><a href="#categorie">Catégories</a></nav>
+    <nav id="remerciements_tab"><a href="#remerciements">Remerciements</a></nav>
+    <nav id="dates_tab"><a href="#dates">Dates</a></nav>
+    <nav id="musiques_tab"><a href="#musiques">Musiques</a></nav>
+    <nav id="jingles_tab"><a href="#jingles">Jingles</a></nav>
+    <nav id="params_tab"><a href="#params">Paramètres</a></nav>
 </menu>
 <script type="text/javascript" src="/js/screens/preparation/preparation.updateLists.js"></script>
 
-	<main>
-		<!-- Catégories -->
-		<section id="categorie_tab_main" class="tab">
-			<form id="importCategories" class="importForm" onsubmit="return false;">
-				Fichier(s) ZIP contenant les fichiers à importer : <input id="inputImportCategorie" type="file" name="file" accept=".zip" multiple="multiple" />
-				<button class="submitChanges" onClick="uploadCategories(); return false;">Envoyer</button>
-			</form>
+<main>
 
-			<form action="#" method="post" onsubmit="return false;">
-				<div class="submitButton">
-					<button class="submitChanges sendCategoriesForm">Enregistrer les modifications</button>
-				</div>
+    <!-- Salle d'attente -->
+    <section id="attente_tab_main" class="tab">
+        <div id="attente_main">
+            <h2>Photos de la salle d'attente</h2>
 
-				<div id="categories">
-					<h2>Liste des catégories</h2>
-					<input type="hidden" name="action" value="update" />
+            <div>
+                <form id="importImagesIntro" onsubmit="return false;">
+                    <span class="divers_titre">Photos</span>
+                    <span class="span-icon icon-picture" onClick="showDiversPictures(INTRO_PICTURES, 'intro');"></span>
+                    <span id="divers_intro_nb_pictures" class="nbPictures">-</span>
 
-					<span class="loading">Loading...</span>
-					<ul id="categoriesList">
-					</ul>
-				</div>
+                    <input id="inputImagesintro" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip"
+                           multiple="multiple"/>
 
-				<div id="remerciements">
-					<h2>Texte de remerciements (<span id="nb_max_chars"></span> caractères max)</h2>
-					<h3>"Un grand merci : "</h3>
-					<input type="hidden" id="remerciements_id" />
-					<textarea id="remerciements_texte" name="remerciements_texte" cols="60" rows="2" maxlength="70">Loading...</textarea>
-					<p id="textarea_remaining_chars"><span id="nb_remaining_chars"></span> caractères restants.</p>
-				</div>
-
-				<div id="dates">
-					<h2>Prochaines dates <button onClick="newDate(); return false;">Ajouter</button></h2>
-					<span class="loading">Loading...</span>
-					<ul id="datesList">
-					</ul>
-				</div>
-
-				<div class="submitButton">
-					<button class="submitChanges sendCategoriesForm">Enregistrer les modifications</button>
-				</div>
-
-			</form>
-		</section>
+                    <span class="fa fa-question-circle helpImage" image="FlatZip"></span>
+                    <button class="submitChanges"
+                            onClick="uploadZip('/preparation/images/intro', 'importImagesIntro', () => uploadDiversImageCallback('intro')); return false;">
+                        Envoyer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
 
-
-		<!-- Musiques -->
-		<section id="musiques_tab_main" class="tab">
-			<div id="importMusiqueDiv">
-				<h2>Musiques</h2>
-				<form id="importMusique" class="importForm" onsubmit="return false;">
-					Musique(s) ou fichier(s) ZIP à importer : <input id="inputImportPlaylist" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
-					<button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
-				</form>
-
-				<button class="submitChanges deleteSongs" onClick="deleteSelectedSongs();">Supprimer</button>
-				<table>
-					<thead>
-						<tr>
-							<th><input type="checkbox" onClick="$('section#musiques_tab_main table input[type=checkbox].actionMusique').prop('checked', this.checked);" /></th>
-							<th>Titre</th>
-							<th> </th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-
-
-			<!-- Jingles -->
-			<div id="importJinglesDiv">
-				<h2>Jingles</h2>
-				<form id="importJingles" class="importForm" onsubmit="return false;">
-					Jingle(s) ou fichier(s) ZIP à importer : <input id="inputImportJingle" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple" />
-					<button class="submitChanges" onClick="uploadJingles(); return false;">Envoyer</button>
-				</form>
-
-				<button class="submitChanges deleteSongs" onClick="deleteSelectedJingles();">Supprimer</button>
-				<table>
-					<thead>
-					<tr>
-						<th><input type="checkbox" onClick="$('section#jingles_tab_main table input[type=checkbox].actionCheck').prop('checked', this.checked);" /></th>
-						<th>Titre</th>
-						<th> </th>
-					</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-		</section>
+    <!-- Vidéos -->
+    <section id="videos_tab_main" class="tab">
+        <div id="video_joueurs" class="video">
+            <h2>Joueurs</h2>
+            <div class="videoTag">
+                <video controls="controls" preload="auto">
+                    <source src="" originalSrc="/handler/videos/intro/joueurs.mp4" type="video/mp4"/>
+                </video>
+            </div>
+            <form id="importVideoJoueurs" onsubmit="return false;">
+                <input id="inputVideoJoueurs" type="file" name="file" accept=".mp4"/>
+                <button class="submitChanges" onClick="uploadVideo('importVideoJoueurs', 'joueurs'); return false;">
+                    Envoyer
+                </button>
+            </form>
+        </div>
+        <div id="video_presentateur" class="video">
+            <h2>Présentateur</h2>
+            <div class="videoTag">
+                <video controls="controls" preload="auto">
+                    <source src="" originalSrc="/handler/videos/intro/presentateur.mp4" type="video/mp4"/>
+                </video>
+            </div>
+            <form id="importVideoPresentateur" onsubmit="return false;">
+                <input id="inputVideoPresentateur" type="file" name="file" accept=".mp4"/>
+                <button class="submitChanges"
+                        onClick="uploadVideo('importVideoPresentateur', 'presentateur'); return false;">Envoyer
+                </button>
+            </form>
+        </div>
+    </section>
 
 
+    <!-- Catégories -->
+    <section id="categorie_tab_main" class="tab">
 
-		<!-- Vidéos -->
-		<section id="videos_tab_main" class="tab">
-			<div id="video_joueurs" class="video">
-				<h2>Joueurs</h2>
-				<div class="videoTag">
-					<video controls="controls" preload="auto">
-						<source src="" originalSrc="/handler/videos/intro/joueurs.mp4" type="video/mp4" />
-					</video>
-				</div>
-				<form id="importVideoJoueurs" onsubmit="return false;">
-					<input id="inputVideoJoueurs" type="file" name="file" accept=".mp4" />
-					<button class="submitChanges" onClick="uploadVideo('importVideoJoueurs', 'joueurs'); return false;">Envoyer</button>
-				</form>
-			</div>
-			<div id="video_presentateur" class="video">
-				<h2>Présentateur</h2>
-				<div class="videoTag">
-					<video controls="controls" preload="auto">
-						<source src="" originalSrc="/handler/videos/intro/presentateur.mp4" type="video/mp4" />
-					</video>
-				</div>
-				<form id="importVideoPresentateur" onsubmit="return false;">
-					<input id="inputVideoPresentateur" type="file" name="file" accept=".mp4" />
-					<button class="submitChanges" onClick="uploadVideo('importVideoPresentateur', 'presentateur'); return false;">Envoyer</button>
-				</form>
-			</div>
-		</section>
+        <div id="categories">
+            <h2>Liste des catégories
+                <button>Supprimer tous les dossiers</button>
+            </h2>
+            <input type="hidden" name="action" value="update"/>
 
-		<!-- Divers -->
-		<section id="divers_tab_main" class="tab">
-            <div id="photos_divers">
-                <h2>Photos annexes</h2>
+            <form id="importCategories" class="importForm" onsubmit="return false;">
+                Fichier(s) <span class="instructionImportante">ZIP</span> contenant les fichiers à importer :
+                <input id="inputImportCategorie"
+                       type="file"
+                       name="file"
+                       accept=".zip"
+                       multiple="multiple"/>
+                <span class="fa fa-question-circle helpImage" image="CategorieZip"></span>
+                <button class="submitChanges" onClick="uploadCategories(); return false;">Envoyer</button>
+            </form>
+
+            <form action="#" method="post" onsubmit="return false;">
+                <span class="loading">Loading...</span>
+                <ul id="categoriesList">
+                </ul>
+            </form>
+        </div>
+
+        <div class="submitButton">
+            <button class="submitChanges sendCategoriesForm">Enregistrer les modifications</button>
+        </div>
+
+    </section>
+
+
+    <!-- Remerciements -->
+    <section id="remerciements_tab_main" class="tab">
+        <div>
+            <h2>Joueurs</h2>
+
+            <div id="photos_joueurs">
+                <h3 class="instructionImportante">Les photos de joueurs importées remplaceront les photos actuelles.</h3>
+                <form id="importImagesJoueurs" onsubmit="return false;">
+                    <input id="inputImagesJoueurs" type="file" name="file" accept=".zip"/>
+                    <span class="fa fa-question-circle helpImage" image="FlatZip"></span>
+                    <button class="submitChanges"
+                            onClick="uploadZip('/preparation/images/joueurs', 'importImagesJoueurs', () => { retrieveJoueurs(); hideLoading(); }); return false;">
+                        Envoyer
+                    </button>
+                </form>
+
                 <ul>
-                    <li>
-                        <span class="divers_titre">Intro</span>
-                        <span class="span-icon icon-picture" onClick="showDiversPictures(INTRO_PICTURES, 'intro');"></span>
-                        <span id="divers_intro_nb_pictures" class="nbPictures">-</span>
-                        <form id="importImagesIntro" onsubmit="return false;">
-                            <input id="inputImagesintro" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
-                            <button class="submitChanges" onClick="uploadZip('/preparation/images/intro', 'importImagesIntro', () => uploadDiversImageCallback('intro')); return false;">Envoyer</button>
-                        </form>
-                    </li>
-					<li>
-                        <span class="divers_titre">Dates</span>
-                        <span class="span-icon icon-picture" onClick="showDiversPictures(DATES_PICTURES, 'dates');"></span>
-                        <span id="divers_dates_nb_pictures" class="nbPictures">-</span>
-                        <form id="importImagesDates" onsubmit="return false;">
-                            <input id="inputImagesdates" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
-                            <button class="submitChanges" onClick="uploadZip('/preparation/images/dates', 'importImagesDates', () => uploadDiversImageCallback('dates')); return false;">Envoyer</button>
-                        </form>
-                    </li>
-					<li>
-                        <span class="divers_titre">Joueurs</span>
-                        <span class="span-icon icon-picture" onClick="showDiversPictures(JOUEURS_PICTURES, 'joueurs');"></span>
-                        <span id="divers_joueurs_nb_pictures" class="nbPictures">-</span>
-                        <form id="importImagesJoueurs" onsubmit="return false;">
-                            <input id="inputImagesjoueurs" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip" multiple="multiple" />
-                            <button class="submitChanges" onClick="uploadZip('/preparation/images/joueurs', 'importImagesJoueurs', () => uploadDiversImageCallback('joueurs')); return false;">Envoyer</button>
-                        </form>
-                    </li>
+
                 </ul>
             </div>
-		</section>
 
-	</main>
+            <div id="remerciements_div">
+                <h3>Un grand merci</h3>
+                <textarea id="remerciements_texte"
+                          name="remerciements_texte"
+                          cols="60" rows="2"
+                          maxlength="70"
+                          onBlur="postRemerciements()"
+                >
+						Loading...
+					</textarea>
+                <p id="textarea_remaining_chars">
+                    <span id="nb_remaining_chars"></span> / <span id="nb_max_chars"></span> caractères restants.
+                </p>
+            </div>
+        </div>
+    </section>
 
-	<div id="hiddenClones" style="display : none;">
-		<ul>
-			<li class="ui-state-default" id="cat_clone">
-				<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-				
-				<span class="help id_tech" title="Id technique"></span>
-				<input type="hidden" class="categorie_id" name="categorie_id[]" value="" />
-				<input type="text" class="categorie_nom" name="categorie_nom[]" value="" />
-				
-				<span class="type">
+
+    <!-- Dates -->
+    <section id="dates_tab_main" class="tab">
+        <div id="dates_main">
+            <h2>Aperçu</h2>
+
+            <div id="dates_preview">
+                <ul id="dates_preview_calendar"></ul>
+                <div id="dates_preview_photos"></div>
+            </div>
+
+            <div class="submitButton">
+                <button class="submitChanges sendDatesForm">Enregistrer les modifications</button>
+            </div>
+
+            <div id="datesNext">
+                <h2>Prochaines dates (4 max)
+                    <button id="buttonNewDate" onClick="newDate(); return false;">Ajouter</button>
+                </h2>
+                <span class="loading">Loading...</span>
+                <ul id="datesList">
+                </ul>
+            </div>
+
+            <div id="dates_photos">
+                <h2>Photos
+                    (
+                    <span id="divers_dates_nb_pictures" class="nbPictures">-</span>
+                    <span class="span-icon icon-picture" onClick="showDiversPictures(DATES_PICTURES, 'dates');"></span>
+                    )
+                </h2>
+
+                <form id="importImagesDates" onsubmit="return false;">
+                    <input id="inputImagesdates" type="file" name="file" accept=".jpg, .jpeg, .png, .bmp, .gif, .zip"
+                           multiple="multiple"/>
+                    <span class="fa fa-question-circle helpImage" image="FlatZip"></span>
+                    <button class="submitChanges"
+                            onClick="uploadZip('/preparation/images/dates', 'importImagesDates', () => uploadDiversImageCallback('dates')); return false;">
+                        Envoyer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Musiques -->
+    <section id="musiques_tab_main" class="tab">
+        <div id="importMusiqueDiv">
+            <h2>Musiques</h2>
+            <form id="importMusique" class="importForm" onsubmit="return false;">
+                Musique(s) ou fichier(s) ZIP à importer :
+                <input id="inputImportPlaylist"
+                       type="file"
+                       name="file"
+                       accept=".mp3,.wav,.ogg,.zip"
+                       multiple="multiple"
+                />
+                <span class="fa fa-question-circle helpImage" image="FlatMusiqueZip"></span>
+                <button class="submitChanges" onClick="uploadSongs(); return false;">Envoyer</button>
+            </form>
+
+            <div id="musiqueTableDiv">
+                <audio autoplay="false" controls="true"></audio>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox"
+                                   onClick="$('section#musiques_tab_main table input[type=checkbox]').prop('checked', this.checked);" />
+                        </th>
+                        <th>Titre</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="deleteButtonDiv">
+                <button class="submitChanges deleteSongs" onClick="deleteSelectedSongs();">Supprimer les chansons sélectionnées</button>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Jingles -->
+    <section id="jingles_tab_main" class="tab">
+        <!-- Jingles -->
+        <div id="importJinglesDiv">
+            <h2>Jingles</h2>
+            <form id="importJingles" class="importForm" onsubmit="return false;">
+                Archive ZIP contentant les <span class="instructionImportante">dossiers</span> de jingles à importer :
+                <input id="inputImportJingle" type="file" name="file" accept=".zip" />
+                <span class="fa fa-question-circle helpImage" image="CategorieMusiqueZip"></span>
+                <button class="submitChanges" onClick="uploadJingles(); return false;">Envoyer</button>
+            </form>
+
+            <div id="jingleList">
+                <aside>
+                    <ul></ul>
+                </aside>
+                <main>
+
+                </main>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Mise à jour -->
+    <section id="params_tab_main" class="tab">
+        <div id="params_main">
+            <h2>Paramètres</h2>
+            <table id="param_tab">
+                <thead>
+                    <tr>
+                        <th>Contexte</th>
+                        <th>Clef</th>
+                        <th>Description</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="4">Loading...</td></tr>
+                </tbody>
+            </table>
+
+            <div id="updateDiv">
+                <h2>Mise à jour</h2>
+                <h3>En construction</h3>
+                <div>Version actuelle : <span id="currentBuild">???</span></div>
+                <div>Date du build : <span id="currentBuildDate">???</span></div>
+
+                <table id="versionTable">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div id="hiddenClones" style="display : none;">
+    <ul>
+        <li class="ui-state-default" id="cat_clone">
+            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+
+            <span class="help id_tech" title="Id technique"></span>
+            <input type="hidden" class="categorie_id" name="categorie_id[]" value=""/>
+            <input type="text" class="categorie_nom" name="categorie_nom[]" value=""/>
+
+            <span class="type">
 					Type : 
 					<select class="categorie_type" name="categorie_type[]">
 						<option th:each="categorie : ${ categorieTypes }"
-								th:value="${ categorie.code }"
-								th:text="${ categorie.label }">-- Category text --</option>
+                                th:value="${ categorie.code }"
+                                th:text="${ categorie.label }">-- Category text --</option>
 					</select>
 				</span>
-				<span class="chemin">
+            <span class="chemin">
 					<span>
 					Chemin :
 					</span>
-					<input type="text" class="categorie_path" name="categorie_path[]" value="" />
+					<span class="categorie_path_not_editable" />
+					<input type="hidden" class="categorie_path" name="categorie_path[]" value=""/>
 				</span>
-				<span class="pictures">
+            <span class="pictures">
 					<span class="span-icon icon-picture"></span>
 					<span class="nb-picture"></span>
 				</span>
-				
-				<a class="delete" href="#" onClick="removeCategorie($(this).parents('li')); return false;">
-					[X]
-				</a>
-			</li>
-			<li id="date_clone">
-				<input type="hidden" class="date_date date_id_hidden" name="date_id[]" maxlength="10" placeholder="Date" value="" />
-				<input type="text" class="date_date date_date_input" name="date_date[]" maxlength="10" placeholder="Date" value="" />
-				<input type="text" class="date_nom date_nom_input" name="date_nom[]" maxlength="40" placeholder="Nom de l'évènement" value="" />
-				<a class="delete" href="#" onClick="removeDate($(this).parents('li')); return false;">
-					[X]
-				</a>
-			</li>
-		</ul>
-	</div>
 
-	<div id="loading">
-		Chargement...
-	</div>
-	
+            <a class="delete" href="#" onClick="removeCategorie($(this).parents('li')); return false;">
+                [X]
+            </a>
+        </li>
+        <li id="date_clone">
+            <input type="hidden" class="date_date date_id_hidden" name="date_id[]" maxlength="10" placeholder="Date"
+                   value=""/>
+            <input type="text" class="date_date date_date_input" name="date_date[]" maxlength="10" placeholder="Date"
+                   value=""/>
+            <input type="text" class="date_nom date_nom_input" name="date_nom[]" maxlength="40"
+                   placeholder="Nom de l'évènement" value=""/>
+            <a class="delete" href="#" onClick="removeDate($(this).parents('li')); return false;">
+                [X]
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div id="loading">
+    Chargement...
+</div>
+
 </body>
 </html>

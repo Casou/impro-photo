@@ -59,6 +59,7 @@ public interface IConstants {
         public static final String CURRENT_SONG_NAME = "current_song_name";
         public static final String PLAYLIST_STATUS = "playlist_status";
         public static final String PLAYLIST_VOLUME = "playlist_volume";
+        public static final String CATEGORIES_SHOWN = "categories_shown";
 
         public interface IStatutDiapo {
             public static final String LAUNCHED = "launched";

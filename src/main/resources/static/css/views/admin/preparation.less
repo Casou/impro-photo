@@ -1,134 +1,288 @@
 .help {
-    cursor : help;
+  cursor: help;
 }
 
 .error {
-    color : red;
+  color: red;
 }
 
 p.important {
-    font-weight : bold;
-    font-size : 20px;
-    margin : 5px 0 0 0;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 5px 0 0 0;
 }
-
-
-
 
 #back {
-    margin-top : 40px;
+  margin-top: 40px;
 
-    a {
-        padding : 3px 7px;
-        border : 1px dotted white;
-        border-radius : 3px;
-        background-color : #222;
-        font-weight : bold;
-    }
-    a:hover {
-        background-color : #777;
-    }
+  a {
+    padding: 3px 7px;
+    border: 1px dotted white;
+    border-radius: 3px;
+    background-color: #222;
+    font-weight: bold;
+  }
+  a:hover {
+    background-color: #777;
+  }
 }
 
+#reset {
+  position: absolute;
+  top: 92px;
+  left: 50%;
+  width: 200px;
+  margin-left: -75px;
+  line-height: 30px;
+  height: 30px;
+  border-radius: 5px;
+
+  font-size: 20px;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a4e535+0,a8e448+50,8ad610+51,83cb07+100 */
+  background: #a4e535; /* Old browsers */
+  background: -moz-linear-gradient(top, #a4e535 0%, #a8e448 50%, #8ad610 51%, #83cb07 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #a4e535 0%, #a8e448 50%, #8ad610 51%, #83cb07 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #a4e535 0%, #a8e448 50%, #8ad610 51%, #83cb07 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a4e535', endColorstr='#83cb07', GradientType=0); /* IE6-9 */
+}
 
 div.submitButton {
-    text-align : center;
-    margin : 40px 0;
+  text-align: center;
+  margin: 40px 0;
 }
 
 button.submitChanges {
-    font-size : 20px;
-    padding : 3px 15px;
-    border-radius : 5px;
-    border : 1px solid #461827;
-    color : black;
+  font-size: 20px;
+  padding: 3px 15px;
+  border-radius: 5px;
+  border: 1px solid #461827;
+  color: black;
 
-    background: #fc8afa; /* Old browsers */
-    background: -moz-linear-gradient(top,  #fc8afa 0%, #ee6cf0 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  #fc8afa 0%,#ee6cf0 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  #fc8afa 0%,#ee6cf0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8afa', endColorstr='#ee6cf0',GradientType=0 ); /* IE6-9 */
+  background: #fc8afa; /* Old browsers */
+  background: -moz-linear-gradient(top, #fc8afa 0%, #ee6cf0 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #fc8afa 0%, #ee6cf0 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #fc8afa 0%, #ee6cf0 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8afa', endColorstr='#ee6cf0', GradientType=0); /* IE6-9 */
 
-    cursor : pointer;
+  cursor: pointer;
 
-    &[disabled] {
-        cursor : default;
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100;Grey+Flat */
-        background: #eeeeee; /* Old browsers */
-        background: -moz-linear-gradient(top,  #eeeeee 0%, #eeeeee 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #eeeeee 0%,#eeeeee 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #eeeeee 0%,#eeeeee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-        color : grey;
-    }
+  &[disabled] {
+    cursor: default;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100;Grey+Flat */
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top, #eeeeee 0%, #eeeeee 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #eeeeee 0%, #eeeeee 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #eeeeee 0%, #eeeeee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#eeeeee', GradientType=0); /* IE6-9 */
+    color: grey;
+  }
 }
 
-
-
-
 body.admin {
-    padding : 0 15px;
-    overflow : auto;
+  padding: 0 15px;
+  overflow: auto;
 
-    h1 {
-        text-align : center;
-    }
+  h1, h2 {
+    text-align: center;
+  }
 
-    h2, h3 {
-        margin-bottom : 0;
-    }
-    h3 {
-        margin-top : 0;
-    }
+  h2, h3 {
+    margin-bottom: 0;
+  }
+  h3 {
+    margin-top: 0;
+  }
 
 }
 
 menu {
-    width : 100%;
-    padding-left : 20px;
-    margin-bottom : 0;
-    height : 35px;
+  width: 100%;
+  padding-left: 20px;
+  margin-bottom: 0;
+  height: 40px;
 
-    nav {
-        //display : inline-block;
-        float : left;
-        font-size : 20px;
-        margin : 0 7px;
-        padding : 5px 20px;
-        background-color : black;
-        border : 2px solid white;
-        transition: background-color .3s;
-        cursor : pointer;
-        border-radius : 10px 10px 0 0;
+  nav {
+    display: inline-block;
+    font-size: 20px;
+    margin: 0 -5px;
+    padding: 4px 22px 4px 16px;
+    border: 2px solid white;
+    transition: background-color .3s;
+    cursor: pointer;
+    border-radius: 7px 7px 0 0;
+    vertical-align: bottom;
+    z-index: 10;
 
-        &:hover {
-            background-color : #1f1f1f;
-        }
-        &.selected {
-            background-color : #383838;
-        }
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1f2529+0,181a1c+73,0d1113+100 */
+    background: #1f2529; /* Old browsers */
+    background: -moz-linear-gradient(left, #1f2529 0%, #181a1c 73%, #0d1113 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #1f2529 0%, #181a1c 73%, #0d1113 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #1f2529 0%, #181a1c 73%, #0d1113 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1f2529', endColorstr='#0d1113', GradientType=1); /* IE6-9 */
+
+    &:hover {
+      background-color: #1f1f1f;
     }
+    &.selected {
+      position: relative;
+      z-index: 20;
+      padding: 5px 28px;
+      font-size: 24px;
+      text-shadow: 2px 2px 0 black;
+
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5f6f7d+0,4c535a+36,29363d+100 */
+      background: #5f6f7d; /* Old browsers */
+      background: -moz-linear-gradient(top, #5f6f7d 0%, #4c535a 36%, #29363d 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #5f6f7d 0%, #4c535a 36%, #29363d 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #5f6f7d 0%, #4c535a 36%, #29363d 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5f6f7d', endColorstr='#29363d', GradientType=0); /* IE6-9 */
+    }
+  }
 }
 
 main {
-    border : 2px solid white;
-    padding : 10px;
-    margin-bottom : 20px;
-    background-color : black;
-    border-radius : 4px;
+  border: 2px solid white;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: black;
+  border-radius: 4px;
 
-    section {
-        display : none;
-    }
+  section {
+    display: none;
+  }
 }
 
 form.importForm {
-    border : 1px solid white;
-    padding : 3px 15px;
-    margin-bottom : 20px;
+  border: 1px solid white;
+  padding: 3px 15px;
+  margin-bottom: 20px;
 
-    button {
-        margin-left : 15px;
-        font-size : 16px;
+  button {
+    margin-left: 15px;
+    font-size: 16px;
+  }
+}
+
+h2 {
+  margin-top: 5px;
+}
+
+.instructionImportante {
+  color : yellow;
+}
+
+span.fa-question-circle {
+  cursor : pointer;
+  margin : 0 5px;
+}
+
+
+
+
+div#imageViewerWrapper {
+  display : none;
+  position : fixed;
+  z-index : 99990;
+  width : 100%;
+  height : 100%;
+  top : 0;
+  left : 0;
+  background-color : rgba(100, 100, 100, 0.6);
+
+  div#imageViewerClose {
+    position : absolute;
+    z-index : 99999;
+    top : 50%;
+    margin-top : -338px;
+    left : 50%;
+    margin-left : 438px;
+    width : 25px;
+    height : 25px;
+    line-height : 24px;
+    text-align : center;
+    border-radius : 25px;
+    background-color : black;
+    border : 2px solid white;
+    cursor : pointer;
+
+    img {
+      vertical-align: middle;
     }
+  }
+
+  div#imageViewer {
+    position : fixed;
+    z-index : 99995;
+    width : 900px;
+    margin-left : -450px;
+    height : 650px;
+    margin-top : -325px;
+    top : 50%;
+    left : 50%;
+    background-color : black;
+    text-align : center;
+    border : 2px solid white;
+    box-shadow: 10px 10px 30px rgba(255, 255, 255, 0.5);
+
+    #imageViewerBigPicture {
+      display: inline-block;
+      width : 100%;
+      height : 550px;
+
+      img {
+        display: inline-block;
+        max-width: 100%;
+        max-height : 100%;
+      }
+    }
+    #imageViewerImageList {
+      display: inline-block;
+      width : 100%;
+      height : 100px;
+      overflow: auto;
+      white-space: nowrap;
+      text-align : left;
+
+      .imageViewerBox {
+        position: relative;
+        display: inline-block;
+        height : 70px;
+        margin : 5px 0;
+        border : 1px solid grey;
+        text-align : center;
+        cursor : pointer;
+        vertical-align: top;
+
+        &.selected {
+          box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+          border-color : red;
+        }
+
+        &#imageViewerImage__deleteAll {
+          line-height : 70px;
+          background-color: #7f7f7f;
+          border-color : white;
+          margin-left : 10px;
+          padding : 0 5px;
+        }
+
+        img {
+          display: inline-block;
+          max-width: 200px;
+          max-height : 70px;
+        }
+        span.delete {
+          position : absolute;
+          top : 5px;
+          right : 5px;
+          cursor : pointer;
+        }
+      }
+    }
+
+  }
 }

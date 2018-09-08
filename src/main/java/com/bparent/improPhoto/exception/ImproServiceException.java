@@ -6,4 +6,6 @@ public class ImproServiceException extends Exception {
         super(message, e);
     }
 
+    public ImproServiceException(String s) {
+    }
 }

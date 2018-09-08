@@ -1,3 +1,7 @@
+less = {
+    logLevel : 1
+};
+
 /*!
  * Less - Leaner CSS v2.7.2
  * http://lesscss.org

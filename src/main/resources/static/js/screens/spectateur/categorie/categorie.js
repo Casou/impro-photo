@@ -16,6 +16,8 @@ class Categorie extends IScreen {
         this.wsClient.subscribe("/topic/category/backToBlack", () => this.animation.backToBlack());
         
         this.wsClient.subscribe("/topic/polaroid/hideMask", (response) => this.animation.hideMask(JSON.parse(response.body).id));
+
+        this.wsClient.subscribe("/topic/playAppareilPhoto", () => $("#photoSoundAudio")[0].play());
     }
 
     init(status, categorie) {

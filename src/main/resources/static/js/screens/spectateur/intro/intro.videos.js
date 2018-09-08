@@ -7,9 +7,9 @@ class IntroVideosHandler {
 
         $("div.video video").each(function(index, vid) {
             vid.pause();
-            $(vid).hide();
+            $(vid).fadeOut(500);
         });
-        $(video).show();
+        $(video).delay(500).fadeIn(500);
         video.play();
     }
 

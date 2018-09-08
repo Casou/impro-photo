@@ -2,6 +2,7 @@ package com.bparent.improPhoto.controller.websocket;
 
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
 import com.bparent.improPhoto.dto.CategorieDto;
+import com.bparent.improPhoto.dto.LastCategorieDto;
 import com.bparent.improPhoto.dto.json.NewScreenDto;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.service.CategorieService;
@@ -26,13 +27,17 @@ public class CategoryListWSController {
 
     @MessageMapping("/action/showNextCategory")
     @SendTo("/topic/category_list/showNextCategory")
-    public BasicCodeLabelDto showNextCategory() {
-        return new BasicCodeLabelDto("message", "ok");
+    public LastCategorieDto showNextCategory(LastCategorieDto lastCategorieDto) {
+        if (lastCategorieDto.getLastCategorie()) {
+            etatImproService.updateStatus(IConstants.IEtatImproField.CATEGORIES_SHOWN, String.valueOf(true));
+        }
+        return lastCategorieDto;
     }
 
     @MessageMapping("/action/showAllCategories")
     @SendTo("/topic/category_list/showAllCategories")
     public BasicCodeLabelDto showAllCategories() {
+        etatImproService.updateStatus(IConstants.IEtatImproField.CATEGORIES_SHOWN, String.valueOf(true));
         return new BasicCodeLabelDto("message", "ok");
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CategorieMapper extends BasicMapper<CategorieDto, Categorie> {
@@ -20,26 +21,9 @@ public class CategorieMapper extends BasicMapper<CategorieDto, Categorie> {
     }
 
     public List<CategorieDto> toDto(List<Categorie> entities) throws ImproMappingException {
-        List<CategorieDto> list = new ArrayList<>();
-        for (Categorie entity : entities) {
-            list.add(this.toDto(entity));
-        }
-
-        return list;
-    }
-
-    public Categorie toEntity(CategorieDto dto) throws ImproMappingException {
-        Categorie entity = super.toEntity(Categorie.class, dto);
-        return entity;
-    }
-
-    public List<Categorie> toEntity(List<CategorieDto> entities) throws ImproMappingException {
-        List<Categorie> list = new ArrayList<>();
-        for (CategorieDto dto : entities) {
-            list.add(this.toEntity(dto));
-        }
-
-        return list;
+        return entities.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
 }

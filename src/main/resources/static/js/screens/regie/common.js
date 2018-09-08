@@ -18,14 +18,16 @@ $(document).ready(function () {
             <div id="volume">
                 <span id="volume_value">${ VOLUME_PLAYLIST }</span>
                 <div id="volume_buttons">
-                    <button class="metal radial mini" onClick="plusVolume();"><span class="fa fa-plus"  aria-hidden="true"></span></button>
-                    <button class="metal radial mini" onClick="minusVolume();"><span class="fa fa-minus" aria-hidden="true"></span></button>
+                    <button onClick="plusVolume();"><span class="fa fa-plus"  aria-hidden="true"></span></button>
+                    <button onClick="minusVolume();"><span class="fa fa-minus" aria-hidden="true"></span></button>
                 </div>
             </div>
         </div>
         <div id="jingles">
-            <h2>Jingles</h2>
-            <ul>
+            <ul id="jingles_categories">
+                <li>Loading...</li>            
+            </ul>
+            <ul id="jingles_files">
                 <li>Loading...</li>            
             </ul>
         </div>
@@ -33,10 +35,12 @@ $(document).ready(function () {
             <button id="refresh" class="metal radial" onClick="refreshImpro();"><img src="/images/refresh.png" /></button>
             <button id="restart" class="metal radial" onClick="restartImpro();"><img src="/images/restart.png" /></button>
         </div>
+        <footer>Version <span id="applicationVersion"></span><span id="applicationTimestamp"></span></footer>
     </div>
     `);
     
     initJingles();
+    getInfos();
 });
 
 function initPlayer() {
@@ -89,7 +93,7 @@ function getStatusChar() {
 
 function updatePlaylistScreen() {
     if (CURRENT_SONG) {
-        $("#playlist_screen").html(getStatusChar() + " " + CURRENT_SONG.nom);
+        $("#playlist_screen").html("<span class='status_char'>" + getStatusChar() + "</span> " + CURRENT_SONG.nom);
     }
     if (IS_PLAYING) {
         $('#togglePlaylist span').removeClass("fa-play").addClass("fa-pause");
@@ -137,11 +141,11 @@ function updateSong(songDto) {
 /* ***********************************
  *************  JINGLES  *************
  *********************************** */
-
+let JINGLE_CATEGORIES = [];
 function initJingles() {
-    const allJinglesPromise = getAllJingles();
-    allJinglesPromise.then((allJingles) => {
-        fillJingleList(allJingles);
+    getAllJingles().then((allJingleCategories) => {
+        JINGLE_CATEGORIES = allJingleCategories;
+        renderJingleList();
     });
 }
 
@@ -155,28 +159,45 @@ function getAllJingles() {
             encoding: "UTF-8",
             contentType: 'application/json'
         })
-            .done(function (allSongs) {
-                resolve(allSongs);
-            })
-            .fail(function (resultat, statut, erreur) {
-                handleAjaxError(resultat, statut, erreur);
-                reject();
-            })
-            .always(function () {
-            });
+        .done(function (allSongs) {
+            resolve(allSongs);
+        })
+        .fail(function (resultat, statut, erreur) {
+            handleAjaxError(resultat, statut, erreur);
+            reject();
+        })
+        .always(function () {
+        });
     });
 }
 
-function fillJingleList(allJingles) {
+function renderJingleList() {
     $('#jingles ul').html("");
-    $(allJingles).each((index, jingle) => {
-        const html = `<li>
-            <button class="metal radial mini jingle" onClick="toggleJingle('${ jingle.path }', this);"><span class="fa fa-play" aria-hidden="true"></span></button>
-            ${ jingle.nom }
-        </li>`;
-        $('#jingles ul').append(html);
-    });
+    $('#jingles_categories').html(JINGLE_CATEGORIES.map(category => `
+        <li onClick="selectJingleCategory('${ category.nom }')">
+            ${ category.nom }
+        </li>`).join(""));
 }
+
+function selectJingleCategory(nom) {
+    const category = JINGLE_CATEGORIES.filter(c => c.nom = nom)[0];
+    $('#jingles_files')
+        .html(`<li class="back" onClick="unSelectJingleCategory()">Retour</li>`)
+        .append(
+            category.jingles.map(jingle =>
+                `<li>
+                    <button class="jingle" onClick="toggleJingle('${ jingle.path }', this);"><span class="fa fa-play" aria-hidden="true"></span></button>
+                    ${ jingle.nom }
+                </li>`
+            ).join("")
+    );
+    $('#jingles_categories').addClass("selectedJingleCategory");
+}
+
+function unSelectJingleCategory() {
+    $('#jingles_categories').removeClass("selectedJingleCategory");
+}
+
 
 function toggleJingle(path, button) {
     // pausePlaylist();
@@ -226,4 +247,31 @@ function refreshImpro() {
     if (confirm("Voulez-vous rafraichir l'affichage de la régie ET du spectateur ?")) {
         WEBSOCKET_CLIENT.sendMessage("/app/action/refresh", {});
     }
+}
+
+
+
+
+
+/* ************************************
+ *************  GET INFO  *************
+ ************************************ */
+
+function getInfos() {
+  $.ajax({
+    type: 'GET',
+    url: '/applicationInfo',
+    dataType: 'json',
+    encoding: "UTF-8",
+    contentType: 'application/json'
+  })
+  .done(function (infoDto) {
+    $("#applicationVersion").html(infoDto.applicationVersion);
+    $("#applicationTimestamp").html(infoDto.applicationTimestamp);
+  })
+  .fail(function (resultat, statut, erreur) {
+    handleAjaxError(resultat, statut, erreur);
+  })
+  .always(function () {
+  });
 }

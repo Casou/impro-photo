@@ -1,4 +1,8 @@
 @echo off
+
+rem Get mvn version
+rem mvn help:evaluate -Dexpression=project.version | sed -e 1h -e '2,3{H;g}' -e '/\[INFO\] BUILD SUCCESS/ q' -e '1,2d' -e '{N;D}' | sed -e '1q'
+
 set folder=impro-photo
 set folderPath=../%folder%
 set backup_exclude_list=backup_%folder%_exclude.lst

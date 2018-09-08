@@ -40,7 +40,7 @@ class Dates extends IScreen {
             this.renderDates(listDatesDto);
         })
         .fail(function (resultat, statut, erreur) {
-            console.log(resultat, statut, erreur);
+            console.error(resultat, statut, erreur);
             alert("Erreur lors de la récuparation des infos de remerciements : " + erreur);
         })
         .always(function () {
@@ -49,6 +49,7 @@ class Dates extends IScreen {
     
     renderDates(listDatesDto) {
         const div = $("#div_dates");
+        $(div).html("");
         listDatesDto.forEach((dateDto) => {
             const date = new Date(dateDto.date);
             div.append(
@@ -91,6 +92,7 @@ class Dates extends IScreen {
     
     renderPhotos(listPhotos) {
         const div = $("#img_impros");
+        $(div).html("");
         listPhotos.forEach((photoPath, index) => {
             const randRotate = Math.round(Math.random() * 40) - 20;
             div.append(

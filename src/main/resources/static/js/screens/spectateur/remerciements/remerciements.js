@@ -44,6 +44,7 @@ class Remerciements extends IScreen {
     
     renderRemerciements(remerciementsDto) {
         const ul = $("#div_joueurs ul");
+        $(ul).html("");
         remerciementsDto.photosJoueurs.forEach((pathPicture, index) => {
             ul.append(
                 `<li id="joueursPicture_${ index }">
