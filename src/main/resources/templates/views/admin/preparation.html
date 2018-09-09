@@ -156,35 +156,36 @@
         <div>
             <h2>Joueurs</h2>
 
-            <div id="photos_joueurs">
-                <h3 class="instructionImportante">Les photos de joueurs importées remplaceront les photos actuelles.</h3>
-                <form id="importImagesJoueurs" onsubmit="return false;">
-                    <input id="inputImagesJoueurs" type="file" name="file" accept=".zip"/>
-                    <span class="fa fa-question-circle helpImage" image="FlatZip"></span>
-                    <button class="submitChanges"
-                            onClick="uploadZip('/preparation/images/joueurs', 'importImagesJoueurs', () => { retrieveJoueurs(); hideLoading(); }); return false;">
-                        Envoyer
-                    </button>
-                </form>
+            <div id="remerciements_preview">
+                <div id="photos_joueurs">
+                    <h3 class="instructionImportante">Les photos de joueurs importées remplaceront les photos actuelles.</h3>
+                    <form id="importImagesJoueurs" onsubmit="return false;">
+                        <input id="inputImagesJoueurs" type="file" name="file" accept=".zip"/>
+                        <span class="fa fa-question-circle helpImage" image="FlatZip"></span>
+                        <button class="submitChanges"
+                                onClick="uploadZip('/preparation/images/joueurs', 'importImagesJoueurs', () => { retrieveJoueurs(); hideLoading(); }); return false;">
+                            Envoyer
+                        </button>
+                    </form>
 
-                <ul>
+                    <ul>
 
-                </ul>
-            </div>
+                    </ul>
+                </div>
 
-            <div id="remerciements_div">
-                <h3>Un grand merci</h3>
-                <textarea id="remerciements_texte"
-                          name="remerciements_texte"
-                          cols="60" rows="2"
-                          maxlength="70"
-                          onBlur="postRemerciements()"
-                >
-						Loading...
-					</textarea>
-                <p id="textarea_remaining_chars">
-                    <span id="nb_remaining_chars"></span> / <span id="nb_max_chars"></span> caractères restants.
-                </p>
+                <div id="remerciements_div">
+                    <h3>Un grand merci</h3>
+                    <textarea id="remerciements_texte"
+                              name="remerciements_texte"
+                              maxlength="70"
+                              onBlur="postRemerciements()"
+                    >
+                            Loading...
+                        </textarea>
+                    <p id="textarea_remaining_chars">
+                        <span id="nb_remaining_chars"></span> / <span id="nb_max_chars"></span> caractères restants.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
