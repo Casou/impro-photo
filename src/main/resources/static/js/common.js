@@ -78,12 +78,26 @@ function isNewestVersion(currentVersion, newestVersion) {
     const currentVersionParts = currentVersion.split(".");
     const newestVersionParts = newestVersion.split(".");
     for (let i = 0; i < currentVersionParts.length; i++) {
-        const currentVersionPart = isNaN(currentVersionParts[i]) ? null : parseInt(currentVersionParts[i]);
-        const newestVersionPart = isNaN(newestVersionParts[i]) ? null : parseInt(newestVersionParts[i]);
+        const currentVersionPart = parseVersionPart(currentVersionParts[i]);
+        const newestVersionPart = parseVersionPart(newestVersionParts[i]);
 
         if (newestVersionPart !== null && currentVersionPart !== null && newestVersionPart > currentVersionPart) {
             return true;
         }
     }
     return false;
+}
+
+function parseVersionPart(versionPart) {
+    if (!isNaN(versionPart)) {
+        return parseInt(versionPart);
+    }
+
+    const versionParts = versionPart.split("-");
+    if (isNaN(versionParts[0])) {
+        return null;
+    }
+
+    let minus = versionParts[1] === "SNAPSHOT" ? -0.3 : versionParts[1] === "ALPHA" ? -0.2 : versionParts[1] === "BETA" ? -0.1 : 0;
+    return parseInt(versionParts[0]) - minus;
 }

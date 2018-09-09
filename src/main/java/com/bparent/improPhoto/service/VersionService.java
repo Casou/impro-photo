@@ -22,7 +22,9 @@ public class VersionService {
     private VersionMapper versionMapper;
 
     public List<VersionDto> findAll() {
-        return versionMapper.toDto(VersionDto.class, versionDao.findAll());
+        List<VersionDto> allVersions = versionMapper.toDto(VersionDto.class, versionDao.findAll());
+        allVersions.sort(VersionDto::compareTo);
+        return allVersions;
     }
 
 }
