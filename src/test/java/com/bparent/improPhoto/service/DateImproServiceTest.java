@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -38,8 +39,6 @@ public class DateImproServiceTest {
     @Before
     public void init() throws ImproMappingException {
         MockitoAnnotations.initMocks(this);
-
-        Mockito.doCallRealMethod().when(dateImproMapper).toEntity(eq(DateImpro.class), anyList());
     }
 
     @Test
@@ -51,9 +50,10 @@ public class DateImproServiceTest {
         ));
 
         verify(this.dateImproDao).deleteByIdNotIn(Arrays.asList(BigInteger.valueOf(1), BigInteger.valueOf(2)));
-        verify(this.dateImproDao).save(dateImproCaptor.capture());
+        verify(this.dateImproDao).save(anyListOf(DateImpro.class));
+        verify(this.dateImproMapper).toEntity(eq(DateImpro.class), dateImproCaptor.capture());
 
-        List<DateImpro> allDates = dateImproCaptor.getValue();
+        List<DateImproDto> allDates = dateImproCaptor.getValue();
         assertEquals(2, allDates.size());
 
         assertEquals(dateFormatter.parse("06/01/2018"), allDates.get(0).getDate());

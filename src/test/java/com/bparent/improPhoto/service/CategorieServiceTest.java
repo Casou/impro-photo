@@ -9,7 +9,10 @@ import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.mapper.CategorieMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -17,8 +20,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 public class CategorieServiceTest {
@@ -36,9 +39,6 @@ public class CategorieServiceTest {
     @Before
     public void init() throws ImproMappingException {
         MockitoAnnotations.initMocks(this);
-
-        Mockito.doCallRealMethod().when(categorieMapper).toEntity(any(), any(CategorieDto.class));
-        Mockito.doCallRealMethod().when(categorieMapper).toEntity(any(), anyList());
     }
 
     @Test
@@ -53,9 +53,10 @@ public class CategorieServiceTest {
         this.categorieService.prepareCategories(categories);
 
         verify(this.categorieDao).deleteByIdNotIn(Arrays.asList(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3)));
-        verify(this.categorieDao).save(categorieDtoCaptor.capture());
+        verify(this.categorieDao).save(anyListOf(Categorie.class));
+        verify(this.categorieMapper).toEntity(eq(Categorie.class), categorieDtoCaptor.capture());
 
-        List<Categorie> allCategories = categorieDtoCaptor.getValue();
+        List<CategorieDto> allCategories = categorieDtoCaptor.getValue();
         assertEquals(3, allCategories.size());
 
         assertFalse(allCategories.get(0).getTermine());
