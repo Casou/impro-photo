@@ -40,3 +40,30 @@ L'application se lance toute seule au démarrage, et démarre Chrome en plein é
 
 **Si l'application est lancée sur un PC** : 
 Remplacer _improphoto.fr_ par l'adresse IP et le port fournis par le script launchImpro.exe 
+
+## Configuration complète du Raspberry
+### Installation de Java
+{...]
+
+### SSH Raspberry
+Password temporaire du user "pi" : "sshlegit".
+Déposer et dézipper le fichier dans le dossier /var/www/impro-photo.
+
+### Lancer le programme au démarrage du Raspberry
+Modifier le fichier .bashrc et ajouter la ligne
+```
+alias impro='cd /var/www/impro-photo && sudo ./laucnhImpro.sh'
+```
+
+Lancement du script launchImpro.sh dans un terminal en fullscreen.
+* Créer un fichier ~.config/autostart/impro.desktop avec le contenu suivant
+```
+[Desktop Entry]
+Type=Application
+Exec=lxterm -maximized -e 'sudo /var/www/impro-photo/launchImpro.sh'
+Name=ImproPhoto
+Comment=Logiciel d'impro photo du GIT
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+```
