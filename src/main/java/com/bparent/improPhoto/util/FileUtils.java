@@ -131,7 +131,7 @@ public class FileUtils {
             if (flatPath) {
                 fileName = FileUtils.getFileName(fileName);
             }
-            File newFile = new File(destinationFolder + fileName);
+            File newFile = new File(destinationFolder + sanitizeFilename(fileName));
             //create directories for sub directories in zip
             new File(newFile.getParent()).mkdirs();
             FileOutputStream fos = new FileOutputStream(newFile);
@@ -169,4 +169,9 @@ public class FileUtils {
     private static boolean isCharacterToRemoveFromCategoryFolder(char c) {
         return ACCEPTED_CHARS_FOR_FOLDER_NAME.contains(c + "");
     }
+
+    protected static String sanitizeFilename(String inputName) {
+        return inputName.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+    }
+
 }

@@ -47,4 +47,9 @@ public class FileUtilsTest {
         assertEquals("ÉCUREUIL", FileUtils.capitalizeCategoryFolderName("ÉCUREUIL"));
     }
 
+    @Test
+    public void sanitizeFilename_shouldSanitizeString() {
+        assertEquals("01_-_d_cor", FileUtils.sanitizeFilename("01 - décor"));
+    }
+
 }
