@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -31,13 +32,20 @@ public class StartupCheckRunner implements CommandLineRunner {
     @Value("${server.port}")
     private String serverPort;
 
+    @Value("${chrome.path}")
+    private String chromePath;
+
     @Override
-    public void run(String... strings) throws Exception {
+    public void run(String... args) throws Exception {
         checkDefaultParameters();
 
         // System.out.println(NetworkUtils.getFormattedIpString(environment.getProperty("server.serverPort")));
         AsciiArtUtils.printMessage(NetworkUtils.getIpString(serverPort));
         System.out.println("\n\n\n\n\n\n\n");
+
+        if (Arrays.asList(args).contains("-browser")) {
+            this.launchBrowser();
+        }
     }
 
     private void checkDefaultParameters() throws ImproServiceException {
@@ -52,6 +60,11 @@ public class StartupCheckRunner implements CommandLineRunner {
                         .build());
             }
         }
+    }
+
+    private void launchBrowser() throws IOException {
+        final String cmd = chromePath + "  -kiosk -fullscreen " + NetworkUtils.getIpString(serverPort);
+        Runtime.getRuntime().exec(cmd);
     }
 
 }
