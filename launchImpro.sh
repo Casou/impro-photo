@@ -16,4 +16,4 @@ echo
 echo "Launch JAR : ${lastJar}"
 echo 
 
-java -Xdebug -jar target/${lastJar} -browser
+java -Xdebug -jar -Dspring.profiles.active=prod target/${lastJar} -browser

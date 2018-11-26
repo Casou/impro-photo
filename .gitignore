@@ -31,3 +31,4 @@ medias/
 medias/*
 sources-php
 *.mp3
+log/

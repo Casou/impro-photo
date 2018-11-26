@@ -9,6 +9,8 @@ import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.service.ParametreService;
 import com.bparent.improPhoto.util.AsciiArtUtils;
 import com.bparent.improPhoto.util.NetworkUtils;
+import com.bparent.improPhoto.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@Slf4j
 public class StartupCheckRunner implements CommandLineRunner {
 
     @Autowired
@@ -42,6 +45,7 @@ public class StartupCheckRunner implements CommandLineRunner {
         // System.out.println(NetworkUtils.getFormattedIpString(environment.getProperty("server.serverPort")));
         AsciiArtUtils.printMessage(NetworkUtils.getIpString(serverPort));
         System.out.println("\n\n\n\n\n\n\n");
+        log.debug("Application launched");
 
         if (Arrays.asList(args).contains("-browser")) {
             this.launchBrowser();
@@ -62,9 +66,15 @@ public class StartupCheckRunner implements CommandLineRunner {
         }
     }
 
-    private void launchBrowser() throws IOException {
-        final String cmd = chromePath + "  -kiosk -fullscreen " + NetworkUtils.getIpString(serverPort);
-        Runtime.getRuntime().exec(cmd);
+    private void launchBrowser() {
+        log.debug("Try to launch Chrome");
+        final String cmd = chromePath + " -kiosk -fullscreen " + NetworkUtils.getIpString(serverPort);
+        try {
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error(StringUtils.stackTrace(e));
+        }
     }
 
 }

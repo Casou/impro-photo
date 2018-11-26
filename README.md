@@ -5,7 +5,7 @@
 ### Sur PC et Raspberry
 Installer Java 8 : Aller sur le site d'Oracle [...]
 
-Télécharger sur le poste le fichier *.jar* et le fichier *launcher.bat*. (lancer le programme avec les arguments --spring.profiles.active=prod)
+Télécharger sur le poste le fichier *.jar* et le fichier *launcher.bat*. (lancer le programme avec les arguments -Dspring.profiles.active=prod)
 
 [...]
 

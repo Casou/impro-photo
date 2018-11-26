@@ -1,0 +1,39 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <!-- You can override this to have a custom pattern -->
+    <property name="CONSOLE_LOG_PATTERN" value="[%-5level] %d{dd/MM/yyyy HH:mm:ss} - %C{2} : %msg%n"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>log/improPhoto.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>improPhoto.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 90 days' worth of history capped at 3GB total size -->
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="ch.qos.logback" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.bparent" level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
