@@ -10,11 +10,42 @@ Télécharger sur le poste le fichier *.jar* et le fichier *launcher.bat*. (lanc
 [...]
 
 ### Sur Raspberry uniquement
+#### Activation du SSH et changement du mot de passe
+Lancer la commande `raspi-config`, choisir l'option `ssh` puis `Enable`.
+
+Sur la même fenêtre, choisir `change password` pour redifinir un nouveau mot de passe.
+
+#### Lancement du programme au démarrage du Raspberry
+Créer un fichier dans `~/.config/autostart/impro.desktop` et y insérer le contenu suivant : 
+```
+[Desktop Entry]
+Type=Application
+Exec=xterm -e 'sudo /var/www/impro-photo/launchImpro.sh; bash'
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+```
+
+#### Désactiver l'extinction automatique de l'écran
+Dans le fichier `/boot/config.txt`, ajouter les lignes suivantes : 
+```
+# power down monitor when lockscreen enabled
+hdmi_blanking=1
+```
+
+Dans le fichier `~/.config/lxsession/LXDE-pi/autostart`, ajouter les lignes suivantes :
+```
+@xset s 0 0
+@xset s noblank
+@xset s noexpose
+@xset dpms 0 0 0
+```
+
+#### Configuration des droits d'accès
+Lancer le script [... script qui donne les droits au script download-update.sh]
+
 #### Point d'accès Wifi
 [...]
-
-### Sur Linux uniquement
-Lancer le script [... script qui donne les droits au script download-update.sh]
 
 #### Configuration du DNS
 [...]

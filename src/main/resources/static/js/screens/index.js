@@ -14,9 +14,24 @@ function getVersion() {
     })
     .done(dto => {
         if (dto.applicationVersion) {
-            $('#version').html(dto.applicationVersion);
+            let ip = "";
+            if (dto.ip && dto.ip.indexOf(":") > 0) {
+                const ipAndPort = dto.ip.split(":");
+                const ipParts = ipAndPort[0].split(".");
+                ip += ipParts.join('<span class="separator">.</span>');
+                ip += '<span class="separator">:</span>' + ipAndPort[1];
+            }
+            $('#ip').html(ip);
+
+            let version = "Version ?";
+            if (dto.applicationVersion.indexOf(".") > 0) {
+                const versionParts = dto.applicationVersion.split(/\.|\-/);
+                version = "Version " + versionParts.join('<span class="separator">.</span>');
+            }
+            $('#version').html(version);
+            $('aside').show();
         } else {
-            $('#version').hide();
+            $('aside').hide();
         }
     });
 }

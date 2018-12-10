@@ -9,6 +9,7 @@ import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.service.StatutPreparationService;
 import com.bparent.improPhoto.service.VersionService;
+import com.bparent.improPhoto.util.NetworkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,9 @@ public class MainAjaxController {
     @Value("${build.timestamp}")
     private String buildTimestamp;
 
+    @Value("${server.port}")
+    private String serverPort;
+
 
     @GetMapping("/statutPreparation")
     public StatutPreparationDto getStatutPreparation() throws ImproControllerException {
@@ -53,6 +57,7 @@ public class MainAjaxController {
     @GetMapping("/applicationInfo")
     public InfoDto getInfos() {
         return InfoDto.builder()
+                .ip(NetworkUtils.getIpString(serverPort))
                 .applicationName(applicationName)
                 .applicationVersion(buildVersion)
                 .applicationTimestamp(buildTimestamp)
