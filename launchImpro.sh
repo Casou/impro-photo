@@ -17,4 +17,4 @@ echo "Launch JAR : ${lastJar}"
 echo 
 
 # java -Xms1024m -Xdebug -jar -Dspring.profiles.active=prod target/${lastJar} -browser
-java -Xms1024m -Xdebug -jar -Dspring.profiles.active=prod target/${lastJar}
+java -Xms1024m -Xdebug -jar -Dspring.profiles.active=prod target/${lastJar} -raspberry

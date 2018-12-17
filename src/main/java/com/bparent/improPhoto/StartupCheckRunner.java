@@ -36,6 +36,8 @@ public class StartupCheckRunner implements CommandLineRunner {
     @Value("${chrome.path}")
     private String chromePath;
 
+    public static boolean IS_RASPBERRY;
+
     @Override
     public void run(String... args) throws Exception {
         this.checkDefaultParameters();
@@ -47,6 +49,7 @@ public class StartupCheckRunner implements CommandLineRunner {
         log.info("IP : " + NetworkUtils.getIpString(serverPort) + "\n\n\n");
 
 
+        IS_RASPBERRY = Arrays.asList(args).contains("-raspberry");
         if (Arrays.asList(args).contains("-browser")) {
             this.launchBrowser();
         }

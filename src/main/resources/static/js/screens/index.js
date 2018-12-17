@@ -15,6 +15,7 @@ function getVersion() {
         contentType: 'application/json'
     })
     .done(dto => {
+        // console.log(dto);
         if (dto.applicationVersion) {
             let ip = "";
             if (dto.ip && dto.ip.indexOf(":") > 0) {
@@ -34,6 +35,9 @@ function getVersion() {
             $('aside').show();
         } else {
             $('aside').hide();
+        }
+        if (dto.isRaspberry) {
+            $(".raspberry_only").show();
         }
     });
 }

@@ -10,4 +10,5 @@ public class InfoDto {
     private String applicationName;
     private String applicationVersion;
     private String applicationTimestamp;
+    private Boolean isRaspberry;
 }

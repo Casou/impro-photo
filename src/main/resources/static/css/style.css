@@ -1,219 +1,238 @@
 html {
-	background-color : black;
+    background-color: black;
 
-	height : 100%;
-	color : white;
+    height: 100%;
+    color: white;
 }
 
 @font-face {
-	font-family: 'coolvetica';
-	src: url('font/coolvetica/coolvetica_rg-webfont.eot');
-	src: url('font/coolvetica/coolvetica_rg-webfont.eot?#iefix') format('embedded-opentype'),
-	url('font/coolvetica/coolvetica_rg-webfont.woff2') format('woff2'),
-	url('font/coolvetica/coolvetica_rg-webfont.woff') format('woff'),
-	url('font/coolvetica/coolvetica_rg-webfont.ttf') format('truetype'),
-	url('font/coolvetica/coolvetica_rg-webfont.svg#coolvetica_rgregular') format('svg');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'coolvetica';
+    src: url('font/coolvetica/coolvetica_rg-webfont.eot');
+    src: url('font/coolvetica/coolvetica_rg-webfont.eot?#iefix') format('embedded-opentype'),
+    url('font/coolvetica/coolvetica_rg-webfont.woff2') format('woff2'),
+    url('font/coolvetica/coolvetica_rg-webfont.woff') format('woff'),
+    url('font/coolvetica/coolvetica_rg-webfont.ttf') format('truetype'),
+    url('font/coolvetica/coolvetica_rg-webfont.svg#coolvetica_rgregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 * {
-	font-family : coolvetica;
+    font-family: coolvetica;
 }
 
 body {
-	overflow : hidden;
-	margin : 0;
-	padding : 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 body#index {
-	overflow : visible;
+    overflow: visible;
 }
 
 h1 {
-	color: #fff; 
-	text-shadow: 	1px 1px 0px #999, 
-					2px 2px 0px #888;
+    color: #fff;
+    text-shadow: 1px 1px 0px #999,
+    2px 2px 0px #888;
 }
 
 #debug {
-	position : absolute;
-	bottom : 5px;
-	height : 130px;
-	width : 90%;
-	margin-left : 4%;
-	background-color : black;
-	padding : 5px;
-	border : 1px solid white;
-	overflow : auto;
-	z-index : 999999;
-	display : none;
+    position: absolute;
+    bottom: 5px;
+    height: 130px;
+    width: 90%;
+    margin-left: 4%;
+    background-color: black;
+    padding: 5px;
+    border: 1px solid white;
+    overflow: auto;
+    z-index: 999999;
+    display: none;
 }
 
 #debug a.clear {
-	position : absolute;
-	top : 0;
-	right : 5px;
-	font-size : 13px;
-	font-weight: normal;
-	padding : 0 3px;
-	border-radius: 0 0 3px 3px;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0 3px;
+    border-radius: 0 0 3px 3px;
 
-	color : black;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
-	background: rgb(238,238,238); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+    color: black;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
+    background: rgb(238, 238, 238); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(238, 238, 238, 1) 0%, rgba(204, 204, 204, 1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(238, 238, 238, 1) 0%, rgba(204, 204, 204, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(238, 238, 238, 1) 0%, rgba(204, 204, 204, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc', GradientType=0); /* IE6-9 */
 
 }
 
 #debugContent {
-	color : #0F0;
-	font-family : Courier New, Tahoma, Arial, serif;
-	font-size : 12px;
+    color: #0F0;
+    font-family: Courier New, Tahoma, Arial, serif;
+    font-size: 12px;
 }
 
 #access_debug, #restartButton, #refreshButton {
-	position : absolute;
-	right : 65px;
-	opacity : 0.5;
-	top : 10px;
-	z-index : 999999;
+    position: absolute;
+    right: 65px;
+    opacity: 0.5;
+    top: 10px;
+    z-index: 999999;
 }
 
 #restartButton {
-	right : 15px;
+    right: 15px;
 }
 
 #refreshButton {
-	top : 45px;
-	right : 15px;
+    top: 45px;
+    right: 15px;
 }
 
 #refreshButton img,
 #restartButton img {
-	height : 30px;
+    height: 30px;
 }
 
 #access_debug img {
-	width : 30px;
+    width: 30px;
 }
 
 #refreshButton:hover,
 #restartButton:hover,
 #access_debug:hover {
-	opacity : 0.8;
+    opacity: 0.8;
 }
 
 section {
-	display : none;
+    display: none;
 }
 
 a, a:visited {
-	color : white;
-	text-decoration : none;
+    color: white;
+    text-decoration: none;
 }
 
 ul {
-	margin : 0;
-	padding : 0;
-	list-style-type : none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 a.button,
 div.button {
-	position : absolute;
-	border-radius : 4px;
-	padding : 4px 10px;
-	color : black;
-	cursor : pointer;
-	
-	background: rgb(244,244,244); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(244,244,244,1) 0%, rgba(244,244,244,1) 51%, rgba(198,198,198,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(244,244,244,1)), color-stop(51%,rgba(244,244,244,1)), color-stop(100%,rgba(198,198,198,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(244,244,244,1) 0%,rgba(244,244,244,1) 51%,rgba(198,198,198,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(244,244,244,1) 0%,rgba(244,244,244,1) 51%,rgba(198,198,198,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(244,244,244,1) 0%,rgba(244,244,244,1) 51%,rgba(198,198,198,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(244,244,244,1) 0%,rgba(244,244,244,1) 51%,rgba(198,198,198,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4f4f4', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
-	border : 1px solid #888;
+    position: absolute;
+    border-radius: 4px;
+    padding: 4px 10px;
+    color: black;
+    cursor: pointer;
+
+    background: rgb(244, 244, 244); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(244, 244, 244, 1) 0%, rgba(244, 244, 244, 1) 51%, rgba(198, 198, 198, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(244, 244, 244, 1)), color-stop(51%, rgba(244, 244, 244, 1)), color-stop(100%, rgba(198, 198, 198, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(244, 244, 244, 1) 0%, rgba(244, 244, 244, 1) 51%, rgba(198, 198, 198, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(244, 244, 244, 1) 0%, rgba(244, 244, 244, 1) 51%, rgba(198, 198, 198, 1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(244, 244, 244, 1) 0%, rgba(244, 244, 244, 1) 51%, rgba(198, 198, 198, 1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(244, 244, 244, 1) 0%, rgba(244, 244, 244, 1) 51%, rgba(198, 198, 198, 1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#c6c6c6', GradientType=0); /* IE6-9 */
+    border: 1px solid #888;
 }
 
 a.button:hover, div.button:hover {
-	color : #666666;
+    color: #666666;
 }
 
-
 div#watermark {
-	position : absolute;
-	bottom : 0;
-	left : 0;
-	width : 200px;
-	height : 200px;
-	opacity : 0.6;
-	z-index : -1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    opacity: 0.6;
+    z-index: -1;
 }
 
 div#watermark img {
-	width : 100%;
+    width: 100%;
 }
 
-
 .help {
-	cursor : help;
+    cursor: help;
 }
 
 span.span-icon {
-	display : inline-block;
-	width : 16px;
-	height : 16px;
-	vertical-align : middle;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
 }
 
-span.span-icon.icon-accept { background : url("../images/icones/accept.png") no-repeat center center; }
-span.span-icon.icon-cross { background : url("../images/icones/cross.png") no-repeat center center; }
-span.span-icon.icon-exclamation { background : url("../images/icones/exclamation.png") no-repeat center center; }
-span.span-icon.icon-info { background : url("../images/icones/info.png") no-repeat center center; }
-span.span-icon.icon-picture { background : url("../images/icones/picture.png") no-repeat center center; }
-span.span-icon.icon-picture_error { background : url("../images/icones/picture_error.png") no-repeat center center; }
-span.span-icon.icon-warning { background : url("../images/icones/warning.png") no-repeat center center; }
+span.span-icon.icon-accept {
+    background: url("../images/icones/accept.png") no-repeat center center;
+}
+
+span.span-icon.icon-cross {
+    background: url("../images/icones/cross.png") no-repeat center center;
+}
+
+span.span-icon.icon-exclamation {
+    background: url("../images/icones/exclamation.png") no-repeat center center;
+}
+
+span.span-icon.icon-info {
+    background: url("../images/icones/info.png") no-repeat center center;
+}
+
+span.span-icon.icon-picture {
+    background: url("../images/icones/picture.png") no-repeat center center;
+}
+
+span.span-icon.icon-picture_error {
+    background: url("../images/icones/picture_error.png") no-repeat center center;
+}
+
+span.span-icon.icon-warning {
+    background: url("../images/icones/warning.png") no-repeat center center;
+}
 
 div.content_hidden {
-	display : none;
+    display: none;
 }
-
-
-
 
 .spectateur div.divAction {
-	display : none;
+    display: none;
 }
+
 div.divAction {
-	position : absolute;
-	bottom : 15px;
-	right : 25px;
-    z-index : 999999999;
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    z-index: 999999999;
 }
 
 div.divAction button {
-	font-size : 20px;
+    font-size: 20px;
 }
 
-
 #loading {
-	display : none;
-	position : fixed;
-	z-index : 999999;
-	width : 100%;
-	height : 100%;
-	top : 0;
-	left : 0;
-	background-color : rgba(100, 100, 100, 0.6);
-	font-size : 45px;
-	line-height : 200px;
-	text-align : center;
-	text-shadow : 1px 1px 0 black, 2px 2px 0 black;
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(100, 100, 100, 0.6);
+    font-size: 45px;
+    line-height: 200px;
+    text-align: center;
+    text-shadow: 1px 1px 0 black, 2px 2px 0 black;
+}
+
+.raspberry_only {
+    display: none;
 }

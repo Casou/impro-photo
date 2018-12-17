@@ -1,5 +1,6 @@
 package com.bparent.improPhoto.controller;
 
+import com.bparent.improPhoto.StartupCheckRunner;
 import com.bparent.improPhoto.dto.EtatImproDto;
 import com.bparent.improPhoto.dto.InfoDto;
 import com.bparent.improPhoto.dto.StatutPreparationDto;
@@ -67,6 +68,7 @@ public class MainAjaxController {
                 .applicationName(applicationName)
                 .applicationVersion(buildVersion)
                 .applicationTimestamp(buildTimestamp)
+                .isRaspberry(StartupCheckRunner.IS_RASPBERRY)
                 .build();
     }
 
