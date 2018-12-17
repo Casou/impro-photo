@@ -99,7 +99,7 @@ public class FileUtils {
             fos = new FileOutputStream(copiedFile);
             fos.write(multipart.getBytes());
 
-            log.debug("\t\tFile copied : " + newFilename);
+            log.debug("File copied : " + newFilename);
 
         } catch (IOException e) {
             throw new RejectedExecutionException("Error while copying file", e);
