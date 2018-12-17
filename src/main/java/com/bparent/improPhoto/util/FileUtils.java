@@ -1,18 +1,20 @@
 package com.bparent.improPhoto.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
+@Slf4j
 public class FileUtils {
 
     public static String getFileExtension(String fileName) {
@@ -70,6 +72,8 @@ public class FileUtils {
         String originalFilename = multipart.getOriginalFilename();
         String fileExtension = getFileExtension(originalFilename);
 
+        log.debug("Uploaded file : " + originalFilename);
+
         if (!isAcceptedFile.test(fileExtension)) {
             throw new IllegalArgumentException("Ce type de fichier n'est pas autorisé : " + fileExtension);
         }
@@ -86,6 +90,7 @@ public class FileUtils {
     }
 
     public static File copyUploadedFile(MultipartFile multipart, String newFilename, String folderName) {
+        log.debug("Copy file : " + newFilename);
         File copiedFile = new File(folderName + newFilename);
         FileOutputStream fos = null;
         try {
@@ -93,6 +98,8 @@ public class FileUtils {
 
             fos = new FileOutputStream(copiedFile);
             fos.write(multipart.getBytes());
+
+            log.debug("\t\tFile copied : " + newFilename);
 
         } catch (IOException e) {
             throw new RejectedExecutionException("Error while copying file", e);
@@ -113,33 +120,66 @@ public class FileUtils {
 
     private static void unzipUploadedFile(MultipartFile multipart, String fileZip, List<String> fileExtensionsAccepted,
                                           String destinationFolder, boolean flatPath) throws IOException {
+        log.debug("Unzip file...");
         File tempZipFile = copyUploadedFile(multipart, fileZip, IConstants.IPath.MEDIAS_TEMP);
 
+        int b;
         byte[] buffer = new byte[1024];
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(tempZipFile));
-        ZipEntry zipEntry = zis.getNextEntry();
-        while(zipEntry != null){
-            String fileName = zipEntry.getName();
-            if (!fileExtensionsAccepted.contains(getFileExtension(fileName))) {
-                zipEntry = zis.getNextEntry();
+
+        ZipFile zipFile = new ZipFile(tempZipFile, CharsetDetector.detectCharset(tempZipFile));
+        Enumeration e = zipFile.entries();
+
+        while (e.hasMoreElements()) {
+            ZipEntry entry = (ZipEntry) e.nextElement();
+
+            if (entry.isDirectory()) {
+                log.debug("\t\tDirectory : " + entry.getName());
                 continue;
             }
+
+            String fileName = entry.getName();
+
+            if (!fileExtensionsAccepted.contains(getFileExtension(fileName))) {
+                log.debug("\t\tFile : " + fileName + " (rejected)");
+                continue;
+            }
+
+            log.debug("\t\tFile : " + fileName);
             if (flatPath) {
                 fileName = FileUtils.getFileName(fileName);
             }
-            File newFile = new File(destinationFolder + sanitizeFilename(fileName));
+            File newFile = new File(destinationFolder +
+                    Arrays.stream(fileName.split("/"))
+                            .map(FileUtils::sanitizeFilename)
+                            .collect(Collectors.joining("/")));
+
             //create directories for sub directories in zip
             new File(newFile.getParent()).mkdirs();
-            FileOutputStream fos = new FileOutputStream(newFile);
-            int len;
-            while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
+
+            // Copy file
+            BufferedInputStream bis = null;
+            BufferedOutputStream bos = null;
+            try {
+                bis = new BufferedInputStream(zipFile.getInputStream(entry));
+
+                FileOutputStream fos = new FileOutputStream(newFile);
+                bos = new BufferedOutputStream(fos, 1024);
+
+                while ((b = bis.read(buffer, 0, 1024)) != -1) {
+                    bos.write(buffer, 0, b);
+                }
+            } finally {
+                if (bos != null) {
+                    bos.flush();
+                    bos.close();
+                }
+                if (bis != null) {
+                    bis.close();
+                }
             }
-            fos.close();
-            zipEntry = zis.getNextEntry();
         }
-        zis.closeEntry();
-        zis.close();
+
+        zipFile.close();
 
         if (!tempZipFile.delete()) {
             throw new RejectedExecutionException("Error while deleting temp zip file");

@@ -11,16 +11,16 @@ Télécharger sur le poste le fichier *.jar* et le fichier *launcher.bat*. (lanc
 
 ### Sur Raspberry uniquement
 #### Activation du SSH et changement du mot de passe
-Lancer la commande `raspi-config`, choisir l'option `ssh` puis `Enable`.
+Lancer la commande `raspi-config`, choisir l'option `Interfacing options > SSH` puis `Enable`.
 
-Sur la même fenêtre, choisir `change password` pour redifinir un nouveau mot de passe.
+Choisir ensuite `change user password` pour redifinir un nouveau mot de passe (par défaut = "raspberry", changé la première fois en "legit").
 
 #### Lancement du programme au démarrage du Raspberry
 Créer un fichier dans `~/.config/autostart/impro.desktop` et y insérer le contenu suivant : 
 ```
 [Desktop Entry]
 Type=Application
-Exec=xterm -e 'sudo /var/www/impro-photo/launchImpro.sh; bash'
+Exec=xterm -geometry '75x15+10+50 -e 'sudo /var/www/impro-photo/launchImpro.sh; bash'
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -40,6 +40,9 @@ Dans le fichier `~/.config/lxsession/LXDE-pi/autostart`, ajouter les lignes suiv
 @xset s noexpose
 @xset dpms 0 0 0
 ```
+
+#### Configuration d'un écran 3.5 pouces (facultatif)
+[Tutoriel pour installer les drivers](https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(A))
 
 #### Configuration des droits d'accès
 Lancer le script [... script qui donne les droits au script download-update.sh]
@@ -72,6 +75,16 @@ L'application se lance toute seule au démarrage, et démarre Chrome en plein é
 **Si l'application est lancée sur un PC** : 
 Remplacer _improphoto.fr_ par l'adresse IP et le port fournis par le script launchImpro.exe 
 
+## Accéder au Raspberry via SSH (Windows)
+
+Connecter le raspberry en éthernet sur une box ou un routeur et le mettre en route. Ouvrir une invite de commande et taper la commande
+suivante `arp -a`. L'adresse du Raspberry commence par `192.168.0` (il faudra les tester une à une pour avoir la bonne adresse).
+
+Pour transfert des fichiers, passer par une application telle que Filezilla. Pour accéder à l'invite de commande du Raspberry, 
+utiliser Putty :
+* user : pi
+* password : _le password SSH précédemment défini_ 
+ 
 ## Configuration complète du Raspberry
 ### Installation de Java
 {...]

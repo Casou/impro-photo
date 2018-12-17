@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dto.json.SuccessResponse;
 import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class CategorieAjaxController {
 
     private static final Predicate<String> isAcceptedSongFile = fileExtension -> IConstants.ZIP_EXTENSION.equals(fileExtension);
@@ -43,9 +45,13 @@ public class CategorieAjaxController {
                 IConstants.PICTURE_EXTENSION_ACCEPTED, IConstants.IPath.IPhoto.PHOTOS_IMPRO, false));
 
         // Clean directory
+        log.debug("Clean directory");
         File folder = new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO);
         List<File> files = Arrays.asList(folder.listFiles((file) -> file.isFile()));
-        files.forEach(File::delete);
+        files.forEach(f -> {
+            log.debug("Delete file : " + f.getName());
+            f.delete();
+        });
 
         return new SuccessResponse("ok");
     }

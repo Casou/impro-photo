@@ -10,12 +10,18 @@ import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.service.StatutPreparationService;
 import com.bparent.improPhoto.service.VersionService;
 import com.bparent.improPhoto.util.NetworkUtils;
+import com.bparent.improPhoto.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
+@Slf4j
 public class MainAjaxController {
 
     @Autowired
@@ -69,6 +75,30 @@ public class MainAjaxController {
         return VersioningDto.builder()
                 .versions(versionService.findAll())
                 .build();
+    }
+
+    @PostMapping("/restart")
+    public void restartRaspberry() {
+        log.debug("Restart raspberry");
+        final String cmd = "sudo restart";
+        try {
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error(StringUtils.stackTrace(e));
+        }
+    }
+
+    @PostMapping("/shutdown")
+    public void shutdownRaspberry() {
+        log.debug("Shutdown raspberry");
+        final String cmd = "sudo shutdown -h now";
+        try {
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error(StringUtils.stackTrace(e));
+        }
     }
 
 }

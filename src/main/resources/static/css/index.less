@@ -44,7 +44,7 @@ a.button {
 }
 
 
-aside {
+#version_aside {
     position : absolute;
     bottom : 20px;
     right : 30px;
@@ -54,14 +54,30 @@ aside {
     border : 2px solid white;
     border-radius : 5px;
     background-color: #1a1a1a;
+
+    .separator {
+        margin : 0 5px;
+    }
+
+    & > span {
+        margin : 0 10px;
+    }
 }
 
-aside .separator {
-    margin : 0 5px;
-}
+#restart_aside {
+    position : absolute;
+    top: 50%;
+    right: 100px;
+    height: 100px;
+    width: 200px;
 
-aside > span {
-    margin : 0 10px;
+    div {
+        position: relative;
+        font-size : 20px;
+        width : 100%;
+        text-align : center;
+        margin-bottom : 30px;
+    }
 }
 
 

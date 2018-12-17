@@ -1,7 +1,9 @@
-
 $(document).ready(function() {
     getVersion();
     getEtatPreparation();
+
+    $("#restart_raspberry").click(restartRaspberry);
+    $("#shutdown_raspberry").click(shutdownRaspberry);
 });
 
 function getVersion() {
@@ -155,4 +157,24 @@ function updatePhotosPresentationDates(statusDto) {
     }
     $('li#status_photos_dates_li span.span-icon').addClass("status_" + status);
     return status;
+}
+
+function restartRaspberry() {
+    $.ajax({
+        url: '/restart',
+        type: 'POST',
+        encoding: "UTF-8",
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+}
+
+function shutdownRaspberry() {
+    $.ajax({
+        url: '/shutdown',
+        type: 'POST',
+        encoding: "UTF-8",
+        dataType: 'json',
+        contentType: 'application/json'
+    });
 }
