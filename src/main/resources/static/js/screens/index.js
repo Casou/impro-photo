@@ -160,6 +160,9 @@ function updatePhotosPresentationDates(statusDto) {
 }
 
 function restartRaspberry() {
+    if (!alert("Êtes-vous sûr de vouloir redémarrer le Rasperry ?")) {
+        return;
+    }
     $.ajax({
         url: '/restart',
         type: 'POST',
@@ -170,6 +173,9 @@ function restartRaspberry() {
 }
 
 function shutdownRaspberry() {
+    if (!alert("Êtes-vous sûr de vouloir éteindre le Rasperry ?")) {
+        return;
+    }
     $.ajax({
         url: '/shutdown',
         type: 'POST',

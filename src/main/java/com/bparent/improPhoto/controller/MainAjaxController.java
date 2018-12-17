@@ -80,7 +80,7 @@ public class MainAjaxController {
     @PostMapping("/restart")
     public void restartRaspberry() {
         log.debug("Restart raspberry");
-        final String cmd = "sudo restart";
+        final String cmd = "sudo reboot";
         try {
             Runtime.getRuntime().exec(cmd);
         } catch (IOException e) {
