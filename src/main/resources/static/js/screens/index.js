@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     $("#restart_raspberry").click(restartRaspberry);
     $("#shutdown_raspberry").click(shutdownRaspberry);
+    $("#renew_ip_raspberry").click(renewIpRaspberry);
 });
 
 function getVersion() {
@@ -164,7 +165,7 @@ function updatePhotosPresentationDates(statusDto) {
 }
 
 function restartRaspberry() {
-    if (!alert("Êtes-vous sûr de vouloir redémarrer le Rasperry ?")) {
+    if (!confirm("Êtes-vous sûr de vouloir redémarrer le Rasperry ?")) {
         return;
     }
     $.ajax({
@@ -177,7 +178,7 @@ function restartRaspberry() {
 }
 
 function shutdownRaspberry() {
-    if (!alert("Êtes-vous sûr de vouloir éteindre le Rasperry ?")) {
+    if (!confirm("Êtes-vous sûr de vouloir éteindre le Rasperry ?")) {
         return;
     }
     $.ajax({
@@ -188,3 +189,33 @@ function shutdownRaspberry() {
         contentType: 'application/json'
     });
 }
+
+function renewIpRaspberry() {
+    $("#dialog_terminal").show();
+    $.ajax({
+        url: '/renewIp',
+        type: 'GET',
+        encoding: "UTF-8",
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+    .done(function (result) {
+        console.log(result);
+        $("#dialog_terminal pre").html(result.label)
+            .removeClass("error");
+    })
+    .fail(function (resultat, statut, erreur) {
+        console.error(resultat);
+        console.error(statut);
+        console.error(erreur);
+        $("#dialog_terminal pre")
+            .html(resultat.responseJSON.message.replace("<", "&lt;"))
+            .addClass("error");
+    });
+}
+
+$(document).keyup(function(e) {
+    if (e.key === "Escape") { // escape key maps to keycode `27`
+        $("#dialog_terminal").hide();
+    }
+});

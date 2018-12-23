@@ -1,10 +1,7 @@
 package com.bparent.improPhoto.controller;
 
 import com.bparent.improPhoto.StartupCheckRunner;
-import com.bparent.improPhoto.dto.EtatImproDto;
-import com.bparent.improPhoto.dto.InfoDto;
-import com.bparent.improPhoto.dto.StatutPreparationDto;
-import com.bparent.improPhoto.dto.VersioningDto;
+import com.bparent.improPhoto.dto.*;
 import com.bparent.improPhoto.exception.ImproControllerException;
 import com.bparent.improPhoto.exception.ImproServiceException;
 import com.bparent.improPhoto.service.EtatImproService;
@@ -19,7 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -81,25 +81,39 @@ public class MainAjaxController {
 
     @PostMapping("/restart")
     public void restartRaspberry() {
-        log.debug("Restart raspberry");
+        log.info("Restart raspberry");
         final String cmd = "sudo reboot";
         try {
             Runtime.getRuntime().exec(cmd);
         } catch (IOException e) {
-            e.printStackTrace();
             log.error(StringUtils.stackTrace(e));
         }
     }
 
     @PostMapping("/shutdown")
     public void shutdownRaspberry() {
-        log.debug("Shutdown raspberry");
+        log.info("Shutdown raspberry");
         final String cmd = "sudo shutdown -h now";
         try {
             Runtime.getRuntime().exec(cmd);
         } catch (IOException e) {
-            e.printStackTrace();
             log.error(StringUtils.stackTrace(e));
+        }
+    }
+
+    @GetMapping("/renewIp")
+    public BasicCodeLabelDto renewIp() {
+        log.info("Renew IP for SSH login");
+        final String cmd = "sudo dhclient -v";
+        try {
+            Process process = Runtime.getRuntime().exec(cmd);
+            BufferedReader lineReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String result = lineReader.lines().collect(Collectors.joining("\n"));
+            log.info(result);
+            return new BasicCodeLabelDto("result", result);
+        } catch (IOException e) {
+            log.error(StringUtils.stackTrace(e));
+            throw new RuntimeException("[ERROR]\n" + StringUtils.stackTrace(e));
         }
     }
 

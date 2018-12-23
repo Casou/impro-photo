@@ -15,6 +15,8 @@ Lancer la commande `raspi-config`, choisir l'option `Interfacing options > SSH` 
 
 Choisir ensuite `change user password` pour redifinir un nouveau mot de passe (par défaut = "raspberry", changé la première fois en "legit").
 
+**Important** : Une fois que le Raspberry aura une IP statique, on ne pourra plus y accéder par SSH. Il faudra lancer la commande `sudo dhclient -v` **avec un câble éthernet branché** pour pouvoir renouveler l'IP.
+
 #### Lancement du programme au démarrage du Raspberry
 Créer un fichier dans `~/.config/autostart/impro.desktop` et y insérer le contenu suivant : 
 ```
@@ -47,13 +49,10 @@ Dans le fichier `~/.config/lxsession/LXDE-pi/autostart`, ajouter les lignes suiv
 #### Configuration des droits d'accès
 Lancer le script [... script qui donne les droits au script download-update.sh]
 
-#### Point d'accès Wifi
-[...]
+#### Point d'accès Wifi et DNS
+[Tutoriel pour passer le Raspberry en mode routeur](https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/)
 
-#### Configuration du DNS
-[...]
-
-## Configuration de Chrome
+## Configuration de Chrome pour le PC spectateur
 Depuis avril 2018, pour lutter contre les pubs intrusives, Chrome a une nouvelle politique d'autoplay. 
 
 Le logiciel contrôle des vidéos et de l'audio sans contrôle direct de l'utilisateur (c'est le code qui s'en charge). Il faut donc débloquer ce comportement sur Chrome.
