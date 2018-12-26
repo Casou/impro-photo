@@ -38,5 +38,5 @@ echo.
 rem ---------------------------------------------
 rem ---------------------------------------------
 
-java -Xdebug -jar target\%lastJar%
+java -Xdebug -jar target\%lastJar% -Dspring.profiles.active=prod
 pause

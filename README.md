@@ -3,21 +3,32 @@
 ## Installation
 
 ### Sur PC et Raspberry
-Installer Java 8 : Aller sur le site d'Oracle [...]
+#### Installer Java 8
+Aller sur le site d'Oracle [...]
 
-Télécharger sur le poste le fichier *.jar* et le fichier *launcher.bat*. (lancer le programme avec les arguments -Dspring.profiles.active=prod)
-
+#### Charger les fichiers
+Télécharger sur le poste le fichier *.jar* et le fichier *launchImpro.bat* / *launchImpro.sh*.
 [...]
+* Sur Raspberry, si on veut lancer le Chrome automatiquement, ajouter l'option -browser
+* Sur Raspberry, déposer et dézipper le fichier dans le dossier /var/www/impro-photo.
 
 ### Sur Raspberry uniquement
 #### Activation du SSH et changement du mot de passe
 Lancer la commande `raspi-config`, choisir l'option `Interfacing options > SSH` puis `Enable`.
 
+*Password par défaut du user "pi" : "raspberry" . Password temporaire du user "pi" : "legit".*
+
 Choisir ensuite `change user password` pour redifinir un nouveau mot de passe (par défaut = "raspberry", changé la première fois en "legit").
 
-**Important** : Une fois que le Raspberry aura une IP statique, on ne pourra plus y accéder par SSH. Il faudra lancer la commande `sudo dhclient -v` **avec un câble éthernet branché** pour pouvoir renouveler l'IP.
+**Important** : Une fois que le Raspberry aura une IP statique (plus loin dans cette notice), on ne pourra plus y accéder par SSH. 
+Il faudra lancer la commande `sudo dhclient -v` **avec un câble éthernet branché** à votre box pour pouvoir renouveler l'IP.
 
-#### Lancement du programme au démarrage du Raspberry
+### Lancer le programme au démarrage du Raspberry
+*(Facultatif)* Modifier le fichier .bashrc et ajouter la ligne
+```
+alias impro='cd /var/www/impro-photo && sudo ./laucnhImpro.sh'
+```
+
 Créer un fichier dans `~/.config/autostart/impro.desktop` et y insérer le contenu suivant : 
 ```
 [Desktop Entry]
@@ -27,6 +38,9 @@ Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
 ```
+
+#### Configuration d'un écran 3.5 pouces (facultatif)
+[Tutoriel pour installer les drivers](https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(A))
 
 #### Désactiver l'extinction automatique de l'écran
 Dans le fichier `/boot/config.txt`, ajouter les lignes suivantes : 
@@ -43,14 +57,22 @@ Dans le fichier `~/.config/lxsession/LXDE-pi/autostart`, ajouter les lignes suiv
 @xset dpms 0 0 0
 ```
 
-#### Configuration d'un écran 3.5 pouces (facultatif)
-[Tutoriel pour installer les drivers](https://www.waveshare.com/wiki/3.5inch_RPi_LCD_(A))
+#### Configurer le DNS (nom de domaine)
+Lancer la commande suivante `sudo vim /etc/hosts` et ajouter les lignes suivantes :
+```
+172.24.1.1  impro
+172.24.1.1  impro.fr
+172.24.1.1  impro-diapo
+172.24.1.1  impro-diapo.fr
+``` 
 
 #### Configuration des droits d'accès
 Lancer le script [... script qui donne les droits au script download-update.sh]
 
 #### Point d'accès Wifi et DNS
 [Tutoriel pour passer le Raspberry en mode routeur](https://frillip.com/using-your-raspberry-pi-3-as-a-wifi-access-point-with-hostapd/)
+* SSID du réseau : impro-diapo-prive
+* Mot de passe : legitlegit
 
 ## Configuration de Chrome pour le PC spectateur
 Depuis avril 2018, pour lutter contre les pubs intrusives, Chrome a une nouvelle politique d'autoplay. 
@@ -65,17 +87,16 @@ Pour ça, aller sur l'URL suivante : ```chrome://flags/#autoplay-policy``` et pl
 Lancer le script launchImpro.exe. Une fois que l'adresse IP est affichée, vous pouvez lancer Chrome 
 
 ### Sur le Raspberry
-L'application se lance toute seule au démarrage, et démarre Chrome en plein écran.
+L'application se lance toute seule au démarrage. Le raspberry se lance en mode point d'accès Wifi. Il faut se connecter au réseau impro-diapo-prive.
 
 ## Liens utiles (si lancé sur Raspberry)
-* [http://improphoto.fr](http://improphoto.fr) : URL principale de l'application
-* [http://improphoto.fr/console](http://improphoto.fr/console) : Accès à la base de données (fichier ```jdbc:h2:file:./datas/dbImproPhoto```, login : ```sa```)
+* [http://impro-diapo.fr](http://impro-diapo.fr) : URL principale de l'application
+* [http://impro-diapo.fr/console](http://impro-diapo.fr/console) : Accès à la base de données (fichier ```jdbc:h2:file:./datas/dbImproPhoto```, login : ```sa```)
 
 **Si l'application est lancée sur un PC** : 
-Remplacer _improphoto.fr_ par l'adresse IP et le port fournis par le script launchImpro.exe 
+Remplacer _impro-diapo.fr_ par l'adresse IP et le port fourni par le script .bat ou .sh 
 
 ## Accéder au Raspberry via SSH (Windows)
-
 Connecter le raspberry en éthernet sur une box ou un routeur et le mettre en route. Ouvrir une invite de commande et taper la commande
 suivante `arp -a`. L'adresse du Raspberry commence par `192.168.0` (il faudra les tester une à une pour avoir la bonne adresse).
 
@@ -83,30 +104,3 @@ Pour transfert des fichiers, passer par une application telle que Filezilla. Pou
 utiliser Putty :
 * user : pi
 * password : _le password SSH précédemment défini_ 
- 
-## Configuration complète du Raspberry
-### Installation de Java
-{...]
-
-### SSH Raspberry
-Password temporaire du user "pi" : "sshlegit".
-Déposer et dézipper le fichier dans le dossier /var/www/impro-photo.
-
-### Lancer le programme au démarrage du Raspberry
-Modifier le fichier .bashrc et ajouter la ligne
-```
-alias impro='cd /var/www/impro-photo && sudo ./laucnhImpro.sh'
-```
-
-Lancement du script launchImpro.sh dans un terminal en fullscreen.
-* Créer un fichier ~.config/autostart/impro.desktop avec le contenu suivant
-```
-[Desktop Entry]
-Type=Application
-Exec=lxterm -maximized -e 'sudo /var/www/impro-photo/launchImpro.sh'
-Name=ImproPhoto
-Comment=Logiciel d'impro photo du GIT
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-```
