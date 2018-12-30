@@ -5,6 +5,7 @@ import com.bparent.improPhoto.dto.json.SuccessResponse;
 import com.bparent.improPhoto.service.CategorieService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
+import com.bparent.improPhoto.util.ZipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,7 +42,7 @@ public class CategorieAjaxController {
     @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     ResponseEntity<MessageResponse> uploadCategories(MultipartHttpServletRequest request) {
-        request.getFiles("file").forEach(multipart -> FileUtils.handleUploadedFile(multipart, isAcceptedSongFile,
+        request.getFiles("file").forEach(multipart -> ZipUtils.copyAnyUploadedFile(multipart, isAcceptedSongFile,
                 IConstants.PICTURE_EXTENSION_ACCEPTED, IConstants.IPath.IPhoto.PHOTOS_IMPRO, false));
 
         // Clean directory

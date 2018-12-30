@@ -11,6 +11,7 @@ import com.bparent.improPhoto.service.DateImproService;
 import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
+import com.bparent.improPhoto.util.ZipUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -96,7 +97,7 @@ public class PreparationAjaxController {
         if (StringUtils.isEmpty(multipartFile.getOriginalFilename())) {
             throw new IllegalArgumentException("You have to upload a file");
         }
-        FileUtils.copyUploadedFile(multipartFile, videoName, IConstants.IPath.IVideo.VIDEO_INTRO);
+        ZipUtils.copySingleUploadedFile(multipartFile, videoName, IConstants.IPath.IVideo.VIDEO_INTRO);
     }
 
     @DeleteMapping(value = "/preparation/images", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -171,7 +172,7 @@ public class PreparationAjaxController {
             if (StringUtils.isEmpty(multipartFile.getOriginalFilename())) {
                 return;
             }
-            FileUtils.handleUploadedFile(multipartFile, isAcceptedPictureFile,
+            ZipUtils.copyAnyUploadedFile(multipartFile, isAcceptedPictureFile,
                     IConstants.PICTURE_EXTENSION_ACCEPTED, folderPath, true);
         });
     }

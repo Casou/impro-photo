@@ -1,6 +1,6 @@
 function retrieveJingles() {
     return new Promise((resolve, reject) => {
-        fetchDatas("/list/jingles", function (categoryJingleDtos) {
+        fetchDatas("/jingles", function (categoryJingleDtos) {
             retrieveJinglesCallback(mapJingles(categoryJingleDtos));
             resolve();
         }, reject);
@@ -67,7 +67,7 @@ function renderJingleMainCategory() {
         <audio autoplay="false" controls="true"></audio>
         
         <form id="importJinglesIntoCategory" class="importForm" onsubmit="return false;">
-            Archive ZIP / fichiers audio contentant les <span class="instructionImportante">jingles</span> à importer dans cette catégorie : 
+            Archive ZIP / fichiers audio contentant les <span class="instructionImportante">jingles</span> à importer dans ce dossier : 
             <input id="inputImportJingleIntoCategory" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple"/>
             <span class="fa fa-question-circle helpImage" image="FlatMusiqueZip" onclick="displayHelpImage('FlatMusiqueZip')"></span>
             <button class="submitChanges" onClick="uploadJingleCategory(); return false;">Envoyer</button>

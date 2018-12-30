@@ -156,7 +156,7 @@ function getAllJingles() {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
-            url: '/list/jingles',
+            url: '/jingles',
             dataType: 'json',
             encoding: "UTF-8",
             contentType: 'application/json'

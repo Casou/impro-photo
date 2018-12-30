@@ -93,12 +93,6 @@ public class ListAjaxController {
     }
 
 
-    @GetMapping("/jingles")
-    public List<JingleCategoryDto> getAllJingles() {
-        return jingleService.getAllJingles();
-    }
-
-
     @GetMapping("/pictures/intro")
     public List<ImageDto> getPicturesIntro() {
         return listPictures(IConstants.IPath.IPhoto.PHOTOS_INTRODUCTION);

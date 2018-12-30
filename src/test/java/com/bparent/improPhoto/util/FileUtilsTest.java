@@ -3,8 +3,6 @@ package com.bparent.improPhoto.util;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,6 +48,18 @@ public class FileUtilsTest {
     @Test
     public void sanitizeFilename_shouldSanitizeString() {
         assertEquals("01_-_d_cor", FileUtils.sanitizeFilename("01 - décor"));
+        assertEquals("01_-_d_cor/", FileUtils.sanitizeFilename("01 - décor/"));
+    }
+
+    @Test
+    public void getFolderName_shouldReturnString() {
+        assertEquals("", FileUtils.getFolderName("/file.txt"));
+        assertEquals("folder/", FileUtils.getFolderName("folder/file.txt"));
+        assertEquals("/folder/", FileUtils.getFolderName("/folder/file.txt"));
+        assertEquals("/folder/sub-folder/", FileUtils.getFolderName("/folder/sub-folder/file.txt"));
+
+        assertEquals("", FileUtils.getFolderName("/"));
+        assertEquals("/folder/", FileUtils.getFolderName("/folder/sub-folder/"));
     }
 
 }

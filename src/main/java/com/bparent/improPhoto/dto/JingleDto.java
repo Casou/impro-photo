@@ -6,12 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class JingleDto {
 
+    private BigInteger id;
     private String nom;
     private String folder;
     private String path;
