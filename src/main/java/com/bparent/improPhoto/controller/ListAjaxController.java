@@ -92,17 +92,6 @@ public class ListAjaxController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/playlistSongs")
-    public List<SongDto> getAllPlaylistSongs() {
-        return Arrays.stream(
-                new File(IConstants.IPath.IAudio.AUDIOS_PLAYLIST)
-                        .listFiles((dir, name) -> IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase())))
-                )
-                .map(file -> file.getName()) // ==> /photos
-                .map(fileName -> new SongDto(fileName))
-                .collect(Collectors.toList());
-    }
-
 
     @GetMapping("/jingles")
     public List<JingleCategoryDto> getAllJingles() {

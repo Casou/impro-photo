@@ -102,7 +102,7 @@ public class EtatImproServiceTest {
         assertEquals("categories_shown", allEntities.get(i).getChamp());
         assertFalse(Boolean.valueOf(allEntities.get(i).getValeur()));
         i++;
-        assertEquals("current_song_name", allEntities.get(i).getChamp());
+        assertEquals("current_song", allEntities.get(i).getChamp());
         assertNull(allEntities.get(i).getValeur());
         i++;
         assertEquals("playlist_status", allEntities.get(i).getChamp());

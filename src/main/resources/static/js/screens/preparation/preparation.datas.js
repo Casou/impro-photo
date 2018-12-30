@@ -203,7 +203,7 @@ function saveDates() {
 
 function retrieveMusiques() {
     return new Promise((resolve, reject) => {
-        fetchDatas("/list/playlistSongs", function (musiquesDtos) {
+        fetchDatas("/songs", function (musiquesDtos) {
             retrieveMusiquesCallback(musiquesDtos);
             resolve();
         }, reject);
@@ -216,7 +216,7 @@ function retrieveMusiquesCallback(musiquesDtos) {
     $(musiquesDtos).each(function (index, musiqueDto) {
         $("section#musiques_tab_main table tbody").append(`
             <tr class="song_${ index }">
-                <td><input type="checkbox" name="musiquesToDelete[]" value="${ musiqueDto.nom }" class="actionCheck" /></td>
+                <td><input type="checkbox" name="musiquesToDelete[]" value="${ musiqueDto.id }" class="actionCheck" /></td>
                 <td>
                     <span class="fa fa-play" 
                           aria-hidden="true" 
@@ -224,7 +224,7 @@ function retrieveMusiquesCallback(musiquesDtos) {
                     ></span>
                     ${ musiqueDto.nom }
                 </td>
-                <td><span class="deleteSong" onClick="deleteSong('${ musiqueDto.nom }', ${ index });">[X]</span></td>
+                <td><span class="deleteSong" onClick="deleteSong('${ musiqueDto.id }', ${ index });">[X]</span></td>
             </tr>
         `);
     });

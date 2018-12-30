@@ -2,10 +2,12 @@ package com.bparent.improPhoto.service;
 
 import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.dao.EtatImproDao;
+import com.bparent.improPhoto.dao.MusiqueDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.domain.EtatImpro;
+import com.bparent.improPhoto.domain.Musique;
 import com.bparent.improPhoto.dto.EtatImproDto;
-import com.bparent.improPhoto.dto.SongDto;
+import com.bparent.improPhoto.dto.MusiqueDto;
 import com.bparent.improPhoto.util.IConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class EtatImproService {
 
     @Autowired
     private CategorieDao categorieDao;
+
+    @Autowired
+    private MusiqueDao musiqueDao;
 
 
     public EtatImproDto getStatut() {
@@ -67,8 +72,12 @@ public class EtatImproService {
             case IConstants.IEtatImproField.STATUT_DIAPO :
                 etatImproDto.setStatutDiapo(etat.getValeur());
                 break;
-            case IConstants.IEtatImproField.CURRENT_SONG_NAME :
-                etatImproDto.setCurrentSong(new SongDto(etat.getValeur()));
+            case IConstants.IEtatImproField.CURRENT_SONG :
+                Musique musique = musiqueDao.findOne(new BigInteger(etat.getValeur()));
+                if (musique == null) {
+                    break;
+                }
+                etatImproDto.setCurrentSong(new MusiqueDto(musique));
                 break;
             case IConstants.IEtatImproField.PLAYLIST_VOLUME :
                 etatImproDto.setPlaylistVolume(Integer.valueOf(etat.getValeur()));
@@ -113,7 +122,7 @@ public class EtatImproService {
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.STATUT_DIAPO, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CATEGORIES_SHOWN, String.valueOf(false)));
 
-        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CURRENT_SONG_NAME, null));
+        etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.CURRENT_SONG, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_STATUS, null));
         etatImproDao.save(new EtatImpro(IConstants.IEtatImproField.PLAYLIST_VOLUME, String.valueOf(10)));
 

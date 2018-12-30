@@ -92,22 +92,20 @@ function calcRemainingChars() {
 
 
 
-function deleteSong(nom, index) {
-    deleteAudio("/song", nom, index, "#musiques_tab_main");
+function deleteSong(id, index) {
+    deleteAudio("/song/" + id, index, "#musiques_tab_main");
 }
 
-
-function deleteAudio(url, nom, index, cssSelector) {
-    const songToDelete = { nom : nom };
+function deleteAudio(url, index, cssSelector) {
     $.ajax({
         url: url,
         type: 'DELETE',
         encoding: "UTF-8",
         dataType: 'json',
-        data: JSON.stringify(songToDelete),
+        // data: JSON.stringify(songToDelete),
         contentType: 'application/json'
     })
-    .done(function (response) {
+    .done(function () {
         $(cssSelector + " tr.song_" + index).remove();
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
@@ -143,7 +141,7 @@ function deleteSelectedAudio(url, cssSelector) {
     
     const songsToDelete = [];
     $(checked).each(function(index, input) {
-        songsToDelete.push({ nom : input.value })
+        songsToDelete.push({ id : input.value })
     });
     
     $.ajax({

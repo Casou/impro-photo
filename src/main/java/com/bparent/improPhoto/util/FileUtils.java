@@ -1,10 +1,12 @@
 package com.bparent.improPhoto.util;
 
+import com.bparent.improPhoto.dto.UploadedFileDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -18,9 +20,15 @@ import java.util.zip.ZipFile;
 public class FileUtils {
 
     public static String getFileExtension(String fileName) {
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+        if(fileName.lastIndexOf(".") > 0)
             return fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
         else return "";
+    }
+
+    public static String getFileNameWithoutExtension(String fileName) {
+        if(fileName.lastIndexOf(".") >= 0)
+            return fileName.substring(0, fileName.lastIndexOf("."));
+        else return fileName;
     }
 
     public static String formatPathWithCharacter(String path, String replaceChar) {
@@ -66,9 +74,9 @@ public class FileUtils {
         }
     }
 
-    public static void handleUploadedFile(MultipartFile multipart, Predicate<String> isAcceptedFile,
-                                          List<String> fileExtensionAccepted, String destinationFolder,
-                                          boolean flatPath) {
+    public static List<UploadedFileDto> handleUploadedFile(MultipartFile multipart, Predicate<String> isAcceptedFile,
+                                                           List<String> fileExtensionAccepted, String destinationFolder,
+                                                           boolean flatPath) {
         String originalFilename = multipart.getOriginalFilename();
         String fileExtension = getFileExtension(originalFilename);
 
@@ -80,18 +88,19 @@ public class FileUtils {
 
         if (IConstants.ZIP_EXTENSION.equals(fileExtension)) {
             try {
-                unzipUploadedFile(multipart, originalFilename, fileExtensionAccepted, destinationFolder, flatPath);
+                return unzipUploadedFile(multipart, originalFilename, fileExtensionAccepted, destinationFolder, flatPath);
             } catch (IOException e) {
                 throw new RejectedExecutionException("Error while unzip file", e);
             }
         } else {
-            copyUploadedFile(multipart, originalFilename, destinationFolder);
+            return Arrays.asList(copyUploadedFile(multipart, originalFilename, destinationFolder));
         }
     }
 
-    public static File copyUploadedFile(MultipartFile multipart, String newFilename, String folderName) {
-        log.debug("Copy file : " + newFilename);
-        File copiedFile = new File(folderName + newFilename);
+    public static UploadedFileDto copyUploadedFile(MultipartFile multipart, String originalFilename, String destinationFolder) {
+        log.debug("Copy file : " + originalFilename);
+        final String destinationFilePath = getUniqueFilePath(destinationFolder + FileUtils.sanitizeFilename(originalFilename));
+        File copiedFile = new File(destinationFilePath);
         FileOutputStream fos = null;
         try {
             copiedFile.createNewFile();
@@ -99,7 +108,13 @@ public class FileUtils {
             fos = new FileOutputStream(copiedFile);
             fos.write(multipart.getBytes());
 
-            log.debug("File copied : " + newFilename);
+            log.debug("File copied : " + originalFilename);
+
+            return UploadedFileDto.builder()
+                    .copiedFile(copiedFile)
+                    .fileName(FileUtils.getFileName(destinationFilePath))
+                    .name(originalFilename)
+                    .build();
 
         } catch (IOException e) {
             throw new RejectedExecutionException("Error while copying file", e);
@@ -114,47 +129,63 @@ public class FileUtils {
 
             }
         }
-
-        return copiedFile;
     }
 
-    private static void unzipUploadedFile(MultipartFile multipart, String fileZip, List<String> fileExtensionsAccepted,
+    private static String getUniqueFilePath(String filePath) {
+        String uniqueFilePath = filePath;
+        File f = new File(uniqueFilePath);
+        int cpt = 1;
+        while (f.exists()) {
+            uniqueFilePath = getFileNameWithoutExtension(filePath) + "_" + cpt + "." + getFileExtension(filePath);
+            f = new File(uniqueFilePath);
+            cpt++;
+        }
+        return uniqueFilePath;
+    }
+
+    private static List<UploadedFileDto> unzipUploadedFile(MultipartFile multipart, String fileZip, List<String> fileExtensionsAccepted,
                                           String destinationFolder, boolean flatPath) throws IOException {
         log.debug("Unzip file...");
-        File tempZipFile = copyUploadedFile(multipart, fileZip, IConstants.IPath.MEDIAS_TEMP);
+        final List<UploadedFileDto> uploadedFiles = new ArrayList<>();
+
+        final UploadedFileDto uploadedFileDto = copyUploadedFile(multipart, fileZip, IConstants.IPath.MEDIAS_TEMP);
+        final File tempZipFile = uploadedFileDto.getCopiedFile();
 
         int b;
         byte[] buffer = new byte[1024];
 
-        ZipFile zipFile = new ZipFile(tempZipFile, CharsetDetector.detectCharset(tempZipFile));
-        Enumeration e = zipFile.entries();
+        final ZipFile zipFile = new ZipFile(tempZipFile, CharsetDetector.detectCharset(tempZipFile));
+        final Enumeration e = zipFile.entries();
 
         while (e.hasMoreElements()) {
-            ZipEntry entry = (ZipEntry) e.nextElement();
+            final ZipEntry entry = (ZipEntry) e.nextElement();
 
             if (entry.isDirectory()) {
                 log.debug("\t\tDirectory : " + entry.getName());
                 continue;
             }
 
-            String fileName = entry.getName();
+            String filePath = entry.getName();
 
-            if (!fileExtensionsAccepted.contains(getFileExtension(fileName))) {
-                log.debug("\t\tFile : " + fileName + " (rejected)");
+            if (!fileExtensionsAccepted.contains(getFileExtension(filePath))) {
+                log.info("\t\tFile : " + filePath + " (rejected)");
                 continue;
             }
 
-            log.debug("\t\tFile : " + fileName);
+            log.debug("\t\tFile : " + filePath);
+            final String fileName = FileUtils.getFileName(filePath);
             if (flatPath) {
-                fileName = FileUtils.getFileName(fileName);
+                filePath = fileName;
             }
-            File newFile = new File(destinationFolder +
-                    Arrays.stream(fileName.split("/"))
+
+            final String destinationFilePath = destinationFolder +
+                    Arrays.stream(filePath.split("/"))
                             .map(FileUtils::sanitizeFilename)
-                            .collect(Collectors.joining("/")));
+                            .collect(Collectors.joining("/"));
+            final File destinationFile = new File(destinationFilePath);
 
             //create directories for sub directories in zip
-            new File(newFile.getParent()).mkdirs();
+            new File(destinationFile.getParent()).mkdirs();
 
             // Copy file
             BufferedInputStream bis = null;
@@ -162,12 +193,18 @@ public class FileUtils {
             try {
                 bis = new BufferedInputStream(zipFile.getInputStream(entry));
 
-                FileOutputStream fos = new FileOutputStream(newFile);
+                final FileOutputStream fos = new FileOutputStream(destinationFile);
                 bos = new BufferedOutputStream(fos, 1024);
 
                 while ((b = bis.read(buffer, 0, 1024)) != -1) {
                     bos.write(buffer, 0, b);
                 }
+
+                uploadedFiles.add(UploadedFileDto.builder()
+                        .copiedFile(destinationFile)
+                        .fileName(FileUtils.getFileName(destinationFilePath))
+                        .name(fileName)
+                        .build());
             } finally {
                 if (bos != null) {
                     bos.flush();
@@ -184,6 +221,8 @@ public class FileUtils {
         if (!tempZipFile.delete()) {
             throw new RejectedExecutionException("Error while deleting temp zip file");
         }
+
+        return uploadedFiles;
     }
 
     public static String capitalizeCategoryFolderName(String folderName) {

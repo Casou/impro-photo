@@ -83,7 +83,7 @@ public class StartupCheckRunner implements CommandLineRunner {
     private void sanitizeFiles() {
         log.info("***** Sanitize all files *****\n\n");
 
-        this.sanitizeFolder(IConstants.IPath.IAudio.AUDIOS);
+        this.sanitizeFolder(IConstants.IPath.IAudio.AUDIOS_RESSOURCES);
         this.sanitizeFolder(IConstants.IPath.IPhoto.PHOTOS);
         this.sanitizeFolder(IConstants.IPath.IVideo.VIDEOS);
 

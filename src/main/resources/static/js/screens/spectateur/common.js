@@ -41,7 +41,7 @@ function getAllSongs() {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'GET',
-            url: '/list/playlistSongs',
+            url: '/songs',
             dataType: 'json',
             encoding: "UTF-8",
             contentType: 'application/json'

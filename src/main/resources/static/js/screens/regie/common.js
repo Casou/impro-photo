@@ -11,7 +11,7 @@ $(document).ready(function () {
         <div id="playlist">
             <h2>Playlist</h2>
             <div id="playlist_screen">
-                Loading...
+                Loading... (Recharger l'interface spectateur)
             </div>
             <button id="togglePlaylist" class="metal radial" onClick="togglePlaylist();"><span class="fa fa-play" aria-hidden="true"></span></button>
             <button class="metal radial" onClick="nextSong();"><span class="fa fa-step-forward" aria-hidden="true"></span></button>
@@ -80,7 +80,6 @@ function updateVolume(volumeDto) {
     }
     $("#volume_value").html(VOLUME_PLAYLIST);
     $("#volume_buttons button").attr("disabled", false);
-    // $("#playlist audio#playlist").prop("volume", VOLUME_PLAYLIST / 10);
 }
 
 

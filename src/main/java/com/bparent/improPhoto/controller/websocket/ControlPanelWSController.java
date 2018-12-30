@@ -1,11 +1,8 @@
 package com.bparent.improPhoto.controller.websocket;
 
 import com.bparent.improPhoto.dto.BasicCodeLabelDto;
-import com.bparent.improPhoto.dto.SongDto;
+import com.bparent.improPhoto.dto.MusiqueDto;
 import com.bparent.improPhoto.dto.VolumeDto;
-import com.bparent.improPhoto.dto.json.ActionDto;
-import com.bparent.improPhoto.dto.json.MessageResponse;
-import com.bparent.improPhoto.dto.json.NewScreenDto;
 import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +43,8 @@ public class ControlPanelWSController {
 
     @MessageMapping("/action/playlistPlaying")
     @SendTo("/topic/general/playlistPlaying")
-    public SongDto playlistPlaying(SongDto songDto) {
-        etatImproService.updateStatus(IConstants.IEtatImproField.CURRENT_SONG_NAME, songDto.getNom());
+    public MusiqueDto playlistPlaying(MusiqueDto songDto) {
+        etatImproService.updateStatus(IConstants.IEtatImproField.CURRENT_SONG, songDto.getId() + "");
         etatImproService.updateStatus(IConstants.IEtatImproField.PLAYLIST_STATUS, IConstants.IEtatImproField.IStatutPlaylist.PLAYING);
         return songDto;
     }
@@ -61,8 +58,8 @@ public class ControlPanelWSController {
 
     @MessageMapping("/action/updateSong")
     @SendTo("/topic/general/updateSong")
-    public SongDto updateSong(SongDto songDto) {
-        etatImproService.updateStatus(IConstants.IEtatImproField.CURRENT_SONG_NAME, songDto.getNom());
+    public MusiqueDto updateSong(MusiqueDto songDto) {
+        etatImproService.updateStatus(IConstants.IEtatImproField.CURRENT_SONG, songDto.getId() + "");
         return songDto;
     }
 
@@ -81,7 +78,7 @@ public class ControlPanelWSController {
 
     @MessageMapping("/action/playJingle")
     @SendTo("/topic/general/playJingle")
-    public SongDto playJingle(SongDto songDto) {
+    public MusiqueDto playJingle(MusiqueDto songDto) {
         return songDto;
     }
 
