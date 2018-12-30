@@ -1,6 +1,7 @@
 package com.bparent.improPhoto.service;
 
 import com.bparent.improPhoto.dao.JingleCategoryDao;
+import com.bparent.improPhoto.dao.JingleDao;
 import com.bparent.improPhoto.domain.Jingle;
 import com.bparent.improPhoto.domain.JingleCategory;
 import com.bparent.improPhoto.dto.JingleCategoryDto;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,9 @@ public class JingleService {
 
     @Autowired
     private JingleCategoryDao jingleCategoryDao;
+
+    @Autowired
+    private JingleDao jingleDao;
 
     @Autowired
     private JingleCategoryMapper jingleCategoryMapper;
@@ -71,6 +76,16 @@ public class JingleService {
 
         jingleCategoryDao.save(jingleCategories);
         return jingleCategories;
+    }
+
+    public void deleteJingle(BigInteger id) {
+        Jingle jingle = jingleDao.findOne(id);
+        FileUtils.deleteFile(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingle.getCategory().getFolderName()
+                + "/" + jingle.getFileName()));
+
+        jingle.getCategory().getJingles().remove(jingle);
+
+        jingleDao.delete(jingle);
     }
 
     public void deleteJingleCategory(JingleCategoryDto jingleCategoryDto) {

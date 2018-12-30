@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.concurrent.RejectedExecutionException;
 
 @Slf4j
 public class FileUtils {
@@ -71,8 +72,18 @@ public class FileUtils {
             if (file.isDirectory()) {
                 FileUtils.deleteFolder(file);
             } else {
-                file.delete();
+                FileUtils.deleteFile(file);
             }
+        }
+    }
+
+    public static void deleteFile(File f) {
+        if (!f.exists()) {
+            throw new IllegalArgumentException("Le fichier " + f.getName() + " n'existe pas.");
+        }
+
+        if (!f.delete()) {
+            throw new RejectedExecutionException("Une erreur est survenue lors de la suppression du fichier : " + f.getName());
         }
     }
 

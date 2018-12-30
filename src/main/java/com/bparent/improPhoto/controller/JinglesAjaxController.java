@@ -1,7 +1,6 @@
 package com.bparent.improPhoto.controller;
 
 import com.bparent.improPhoto.dto.JingleCategoryDto;
-import com.bparent.improPhoto.dto.JingleDto;
 import com.bparent.improPhoto.dto.UploadedFileDto;
 import com.bparent.improPhoto.dto.json.ErrorResponse;
 import com.bparent.improPhoto.dto.json.MessageResponse;
@@ -20,12 +19,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
-import static com.bparent.improPhoto.controller.MusiqueAjaxController.deleteSong;
 import static com.bparent.improPhoto.controller.MusiqueAjaxController.isAcceptedSongFile;
 
 @RestController
@@ -110,10 +109,9 @@ public class JinglesAjaxController {
         return new SuccessResponse("ok");
     }
 
-    @DeleteMapping(value = "/jingle", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<MessageResponse> deleteJingle(@RequestBody JingleDto jingleDto) {
-        deleteSong(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingleDto.getFolder() + "/", jingleDto.getName());
-
+    @DeleteMapping(value = "/jingle/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingle(@PathVariable BigInteger id) {
+        jingleService.deleteJingle(id);
         return new SuccessResponse("ok");
     }
 

@@ -39,11 +39,8 @@ function renderJingleMainCategory() {
         return;
     }
 
-    let index = 0;
-    const allRowsRendered = JINGLES_CATEGORY_SELECTED.jingles.map(jingle => {
-        index++;
-        return `
-        <tr id="jingle_${ index }">
+    const allRowsRendered = JINGLES_CATEGORY_SELECTED.jingles.map(jingle => `
+        <tr id="jingle_${ jingle.id }">
             <td>
                 <span class="fa fa-play" aria-hidden="true" onClick="playJingle('${ jingle.path }')"></span>
                 ${ jingle.name }
@@ -51,8 +48,7 @@ function renderJingleMainCategory() {
             <td class="actionCell">
                 <span class="delete" onClick="deleteJingle('${ jingle.id }')">[X]</span>
             </td>
-        </tr>`
-    }).join("");
+        </tr>`).join("");
 
     $('#jingleList main').html(`
     <header>
@@ -95,12 +91,10 @@ function deleteJingle(id) {
         dataType: 'json',
         contentType: 'application/json'
     })
-    .done(function (response) {
+    .done(function () {
         $("#jingle_" + id).remove();
-        alert("TODO mettre à jour les jingles de la categorie")
-        console.log(JINGLES_CATEGORY_SELECTED);
-        // JINGLES_CATEGORY_SELECTED.jingles.splice(index - 1, 1);
-        // JINGLES_CATEGORIES[JINGLES_CATEGORY_SELECTED.index].jingles = JINGLES_CATEGORY_SELECTED.jingles;
+        JINGLES_CATEGORY_SELECTED.jingles = JINGLES_CATEGORY_SELECTED.jingles.filter(j => j.id !== id);
+        JINGLES_CATEGORIES.filter(cat => cat.id === JINGLES_CATEGORY_SELECTED.id)[0].jingles = JINGLES_CATEGORY_SELECTED.jingles;
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response delete song");

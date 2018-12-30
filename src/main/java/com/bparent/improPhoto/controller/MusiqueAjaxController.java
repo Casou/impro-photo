@@ -10,6 +10,7 @@ import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
 import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.service.JingleService;
+import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import com.bparent.improPhoto.util.ZipUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -71,7 +71,7 @@ public class MusiqueAjaxController {
             return new ErrorResponse("Musique " + id + " not found");
         }
 
-        deleteSong(IConstants.IPath.IAudio.AUDIOS_PLAYLIST, musique.getFileName());
+        FileUtils.deleteFile(new File(IConstants.IPath.IAudio.AUDIOS_PLAYLIST + musique.getFileName()));
         musiqueDao.delete(musique);
 
         EtatImproDto statut = etatImproService.getStatut();
@@ -80,17 +80,6 @@ public class MusiqueAjaxController {
         }
 
         return new SuccessResponse("ok");
-    }
-
-    protected static void deleteSong(String path, String nom) {
-        File f = new File(path + nom);
-        if (!f.exists()) {
-            throw new IllegalArgumentException("Le fichier " + nom + " n'existe pas.");
-        }
-
-        if (!f.delete()) {
-            throw new RejectedExecutionException("Une erreur est survenue lors de la suppression du fichier : " + nom);
-        }
     }
 
     @DeleteMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
