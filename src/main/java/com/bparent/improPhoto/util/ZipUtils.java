@@ -211,6 +211,8 @@ public class ZipUtils {
             bis = new BufferedInputStream(zipFile.getInputStream(zipFile.getEntry(uploadedFileDto.getOriginalPath())));
 
             File destinationFile = new File(getUniqueFilePath(uploadedFileDto.getDestinationFile().getPath()));
+            uploadedFileDto.setFileName(destinationFile.getName());
+
             final FileOutputStream fos = new FileOutputStream(destinationFile);
             bos = new BufferedOutputStream(fos, 1024);
 

@@ -53,6 +53,10 @@ public class MusiqueAjaxController {
     @PostMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<MessageResponse> uploadSongs(MultipartHttpServletRequest request,
                                                                      HttpServletResponse response) {
+        if (request.getFiles("file").size() == 0 || "".equals(request.getFiles("file").get(0).getOriginalFilename())) {
+            return new ErrorResponse("Aucun fichier choisi");
+        }
+
         List<UploadedFileDto> uploadedFileDtos = request.getFiles("file").stream().map(multipart ->
                 ZipUtils.copyAnyUploadedFile(multipart, isAcceptedSongFile, IConstants.AUDIO_EXTENSION_ACCEPTED,
                         IConstants.IPath.IAudio.AUDIOS_PLAYLIST, true))
