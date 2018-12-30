@@ -20,6 +20,7 @@ public class EtatImproDto {
     private String statutDiapo;
     private List<BigInteger> blockMasques = new ArrayList<>();
     private MusiqueDto currentSong;
+    private BigInteger currentSongId;
     private Boolean isPlaylistPlaying;
     private Integer playlistVolume = 10;
     private Boolean categoriesShown = false;

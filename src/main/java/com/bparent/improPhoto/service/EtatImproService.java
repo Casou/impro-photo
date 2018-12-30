@@ -73,7 +73,12 @@ public class EtatImproService {
                 etatImproDto.setStatutDiapo(etat.getValeur());
                 break;
             case IConstants.IEtatImproField.CURRENT_SONG :
-                Musique musique = musiqueDao.findOne(new BigInteger(etat.getValeur()));
+                if (etat.getValeur() == null) {
+                    break;
+                }
+                final BigInteger songId = new BigInteger(etat.getValeur());
+                etatImproDto.setCurrentSongId(songId);
+                Musique musique = musiqueDao.findOne(songId);
                 if (musique == null) {
                     break;
                 }

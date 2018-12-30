@@ -93,7 +93,10 @@ function getStatusChar() {
 function updatePlaylistScreen() {
     if (CURRENT_SONG) {
         $("#playlist_screen").html("<span class='status_char'>" + getStatusChar() + "</span> " + CURRENT_SONG.nom);
+    } else {
+        $("#playlist_screen").html("<span class='status_char'>" + getStatusChar() + "</span>");
     }
+
     if (IS_PLAYING) {
         $('#togglePlaylist span').removeClass("fa-play").addClass("fa-pause");
     } else {

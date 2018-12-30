@@ -2,13 +2,11 @@ package com.bparent.improPhoto.controller;
 
 import com.bparent.improPhoto.dao.MusiqueDao;
 import com.bparent.improPhoto.domain.Musique;
-import com.bparent.improPhoto.dto.JingleCategoryDto;
-import com.bparent.improPhoto.dto.JingleDto;
-import com.bparent.improPhoto.dto.MusiqueDto;
-import com.bparent.improPhoto.dto.UploadedFileDto;
+import com.bparent.improPhoto.dto.*;
 import com.bparent.improPhoto.dto.json.ErrorResponse;
 import com.bparent.improPhoto.dto.json.MessageResponse;
 import com.bparent.improPhoto.dto.json.SuccessResponse;
+import com.bparent.improPhoto.service.EtatImproService;
 import com.bparent.improPhoto.service.JingleService;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
@@ -36,6 +34,9 @@ public class MusiqueAjaxController {
 
     @Autowired
     private MusiqueDao musiqueDao;
+
+    @Autowired
+    private EtatImproService etatImproService;
 
     private static final Predicate<String> isAcceptedSongFile = fileExtension -> IConstants.ZIP_EXTENSION.equals(fileExtension)
             || IConstants.AUDIO_EXTENSION_ACCEPTED.contains(fileExtension);
@@ -79,6 +80,11 @@ public class MusiqueAjaxController {
 
         deleteSong(IConstants.IPath.IAudio.AUDIOS_PLAYLIST, musique.getFileName());
         musiqueDao.delete(musique);
+
+        EtatImproDto statut = etatImproService.getStatut();
+        if (id.equals(statut.getCurrentSongId())) {
+            etatImproService.updateStatus(IConstants.IEtatImproField.CURRENT_SONG, (String) null);
+        }
 
         return new SuccessResponse("ok");
     }
