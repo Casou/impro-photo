@@ -15,14 +15,13 @@ import java.math.BigInteger;
 public class JingleDto {
 
     private BigInteger id;
-    private String nom;
+    private String name;
+    private String fileName;
     private String folder;
     private String path;
 
-    public JingleDto(String nom, String nomFolder) {
-        this.nom = nom;
-        this.folder = nomFolder;
-        this.path = FileUtils.formatPathWithCharacter("/handler/jingles/" + nomFolder + "/" + nom, "/");
+    public String getPath() {
+        return FileUtils.formatPathWithCharacter("/handler/jingles/" + this.folder + "/" + this.fileName, "/");
     }
 
 }

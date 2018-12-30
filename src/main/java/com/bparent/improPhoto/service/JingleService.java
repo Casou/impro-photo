@@ -4,7 +4,6 @@ import com.bparent.improPhoto.dao.JingleCategoryDao;
 import com.bparent.improPhoto.domain.Jingle;
 import com.bparent.improPhoto.domain.JingleCategory;
 import com.bparent.improPhoto.dto.JingleCategoryDto;
-import com.bparent.improPhoto.dto.JingleDto;
 import com.bparent.improPhoto.dto.UploadedFileDto;
 import com.bparent.improPhoto.mapper.JingleCategoryMapper;
 import com.bparent.improPhoto.util.FileUtils;
@@ -13,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,15 +39,15 @@ public class JingleService {
 
     }
 
-    private List<JingleDto> listJingles(File folder) {
-        return Arrays.stream(
-                Objects.requireNonNull(folder.listFiles((dir, name) ->
-                        IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase()))))
-                )
-                .map(File::getName)
-                .map(nom -> new JingleDto(nom, folder.getName()))
-                .collect(Collectors.toList());
-    }
+//    private List<JingleDto> listJingles(File folder) {
+//        return Arrays.stream(
+//                Objects.requireNonNull(folder.listFiles((dir, name) ->
+//                        IConstants.AUDIO_EXTENSION_ACCEPTED.contains(FileUtils.getFileExtension(name.toLowerCase()))))
+//                )
+//                .map(File::getName)
+//                .map(nom -> new JingleDto(nom, folder.getName()))
+//                .collect(Collectors.toList());
+//    }
 
     public List<JingleCategory> saveUploadedJingles(List<UploadedFileDto> uploadedFiles) {
         List<JingleCategory> jingleCategories = uploadedFiles.stream()

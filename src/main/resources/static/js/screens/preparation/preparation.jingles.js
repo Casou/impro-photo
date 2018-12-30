@@ -1,45 +1,35 @@
 function retrieveJingles() {
     return new Promise((resolve, reject) => {
         fetchDatas("/jingles", function (categoryJingleDtos) {
-            retrieveJinglesCallback(mapJingles(categoryJingleDtos));
+            retrieveJinglesCallback(categoryJingleDtos);
             resolve();
         }, reject);
     });
-}
-
-function mapJingles(categoryJingleDtos) {
-    const mappedCategories = [];
-    for (let i = 0; i < categoryJingleDtos.length; i++) {
-        mappedCategories[i] = { ...categoryJingleDtos[i], index : i };
-    }
-    return mappedCategories;
 }
 
 let JINGLES_CATEGORIES = [];
 let JINGLES_CATEGORY_SELECTED = null;
 function retrieveJinglesCallback(categoryJingleDtos) {
     $('#jingleList aside ul, #jingleList main table tbody').html("");
-    JINGLES_CATEGORIES = categoryJingleDtos;
-
-    console.log("Jingle categories");
-    console.log(categoryJingleDtos);
+    JINGLES_CATEGORIES = [];
+    categoryJingleDtos.forEach(category => JINGLES_CATEGORIES[category.id] = category);
 
     JINGLES_CATEGORIES.forEach(category => {
         $('#jingleList aside ul').append(`
-            <li id="jingle_category_${ category.index }" onClick="selectJingleCategory(${ category.index })">
+            <li id="jingle_category_${ category.id }" onClick="selectJingleCategory(${ category.id })">
                 ${ category.name }
             </li>
         `);
     });
     if (JINGLES_CATEGORY_SELECTED) {
-        selectJingleCategory(JINGLES_CATEGORY_SELECTED.index);
+        selectJingleCategory(JINGLES_CATEGORY_SELECTED.id);
     }
 }
 
-function selectJingleCategory(index) {
+function selectJingleCategory(id) {
     $('#jingleList aside li').removeClass("selected");
-    $('#jingle_category_' + index).addClass("selected");
-    JINGLES_CATEGORY_SELECTED = JINGLES_CATEGORIES[index];
+    $('#jingle_category_' + id).addClass("selected");
+    JINGLES_CATEGORY_SELECTED = JINGLES_CATEGORIES[id];
     renderJingleMainCategory();
 }
 
@@ -56,17 +46,17 @@ function renderJingleMainCategory() {
         <tr id="jingle_${ index }">
             <td>
                 <span class="fa fa-play" aria-hidden="true" onClick="playJingle('${ jingle.path }')"></span>
-                ${ jingle.nom }
+                ${ jingle.name }
             </td>
             <td class="actionCell">
-                <span class="delete" onClick="deleteJingle('${ jingle.nom }', '${ jingle.folder }', ${ index })">[X]</span>
+                <span class="delete" onClick="deleteJingle('${ jingle.id }')">[X]</span>
             </td>
         </tr>`
     }).join("");
 
     $('#jingleList main').html(`
     <header>
-        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle('${ JINGLES_CATEGORY_SELECTED.nom }', ${ JINGLES_CATEGORY_SELECTED.index });">Supprimer le dossier</button>
+        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle('${ JINGLES_CATEGORY_SELECTED.id }'">Supprimer le dossier</button>
         <audio autoplay="false" controls="true"></audio>
         
         <form id="importJinglesIntoCategory" class="importForm" onsubmit="return false;">
@@ -74,7 +64,7 @@ function renderJingleMainCategory() {
             <input id="inputImportJingleIntoCategory" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple"/>
             <span class="fa fa-question-circle helpImage" image="FlatMusiqueZip" onclick="displayHelpImage('FlatMusiqueZip')"></span>
             <button class="submitChanges" onClick="uploadJingleCategory(); return false;">Envoyer</button>
-            <input type="hidden" name="category_name" value="${ JINGLES_CATEGORY_SELECTED.nom }" />
+            <input type="hidden" name="category_id" value="${ JINGLES_CATEGORY_SELECTED.id }" />
         </form>
     </header>
     <div id="jingleTable">
@@ -97,21 +87,20 @@ function playJingle(path) {
     $('#jingleList audio').attr("src", path);
 }
 
-function deleteJingle(nom, folder, index) {
+function deleteJingle(id) {
     $.ajax({
-        url: '/jingle',
+        url: '/jingle/' + id,
         type: 'DELETE',
         encoding: "UTF-8",
         dataType: 'json',
-        data: JSON.stringify({ nom, folder }),
         contentType: 'application/json'
     })
     .done(function (response) {
-        $("#jingle_" + index).remove();
-        JINGLES_CATEGORY_SELECTED.jingles.splice(index - 1, 1);
-        JINGLES_CATEGORIES[JINGLES_CATEGORY_SELECTED.index].jingles = JINGLES_CATEGORY_SELECTED.jingles;
-        console.log(JINGLES_CATEGORIES);
+        $("#jingle_" + id).remove();
+        alert("TODO mettre à jour les jingles de la categorie")
         console.log(JINGLES_CATEGORY_SELECTED);
+        // JINGLES_CATEGORY_SELECTED.jingles.splice(index - 1, 1);
+        // JINGLES_CATEGORIES[JINGLES_CATEGORY_SELECTED.index].jingles = JINGLES_CATEGORY_SELECTED.jingles;
     })
     .fail(function (xhr, ajaxOptions, thrownError) {
         console.error(">> Response delete song");
