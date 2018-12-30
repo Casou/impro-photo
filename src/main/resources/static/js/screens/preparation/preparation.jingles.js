@@ -21,10 +21,13 @@ function retrieveJinglesCallback(categoryJingleDtos) {
     $('#jingleList aside ul, #jingleList main table tbody').html("");
     JINGLES_CATEGORIES = categoryJingleDtos;
 
+    console.log("Jingle categories");
+    console.log(categoryJingleDtos);
+
     JINGLES_CATEGORIES.forEach(category => {
         $('#jingleList aside ul').append(`
             <li id="jingle_category_${ category.index }" onClick="selectJingleCategory(${ category.index })">
-                ${ category.nom }
+                ${ category.name }
             </li>
         `);
     });

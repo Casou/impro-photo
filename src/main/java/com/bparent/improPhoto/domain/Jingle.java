@@ -1,8 +1,7 @@
 package com.bparent.improPhoto.domain;
 
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -10,6 +9,9 @@ import java.math.BigInteger;
 @Entity
 @Table(name="imp_jingle")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Jingle {
 
     @Id

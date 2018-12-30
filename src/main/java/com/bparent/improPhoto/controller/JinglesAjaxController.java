@@ -1,6 +1,5 @@
 package com.bparent.improPhoto.controller;
 
-import com.bparent.improPhoto.dao.MusiqueDao;
 import com.bparent.improPhoto.dto.JingleCategoryDto;
 import com.bparent.improPhoto.dto.JingleDto;
 import com.bparent.improPhoto.dto.UploadedFileDto;
@@ -35,9 +34,6 @@ public class JinglesAjaxController {
     @Autowired
     private JingleService jingleService;
 
-    @Autowired
-    private MusiqueDao musiqueDao;
-
     @GetMapping("/jingles")
     public List<JingleCategoryDto> getAllJingles() {
         return jingleService.getAllJingles();
@@ -65,17 +61,22 @@ public class JinglesAjaxController {
             return new ErrorResponse("Le fichier .zip n'est pas bien formé. Regardez l'image d'aide pour savoir comment créer votre archive.");
         }
 
-        List<UploadedFileDto> uploadedFiles = zipFiles.stream()
+        List<UploadedFileDto> extractedFiles = zipFiles.stream()
                 .flatMap(UploadedFileDto::streamChildren)
                 .peek(dto -> dto.setUploadSuccess(ZipUtils.extractZipFile(zipFile, dto)))
                 .collect(Collectors.toList());
 
-        List<UploadedFileDto> nonUploadedFiles = uploadedFiles.stream()
-                .filter(dto -> !dto.getUploadSuccess())
-                .collect(Collectors.toList());
-
         zipFile.close();
 
+        List<UploadedFileDto> uploadedFiles = extractedFiles.stream()
+                .filter(dto -> dto.getChildren().size() > 0)
+                .filter(UploadedFileDto::getUploadSuccess)
+                .collect(Collectors.toList());
+        jingleService.saveUploadedJingles(uploadedFiles);
+
+        List<UploadedFileDto> nonUploadedFiles = extractedFiles.stream()
+                .filter(dto -> !dto.getUploadSuccess())
+                .collect(Collectors.toList());
         if (nonUploadedFiles.size() > 0) {
             tempZipFile.delete();
             return new ErrorResponse("Une erreur s'est produite lors de l'import des fichiers suivants : " + nonUploadedFiles.stream()

@@ -1,10 +1,15 @@
 package com.bparent.improPhoto.service;
 
+import com.bparent.improPhoto.dao.JingleCategoryDao;
+import com.bparent.improPhoto.domain.Jingle;
+import com.bparent.improPhoto.domain.JingleCategory;
 import com.bparent.improPhoto.dto.JingleCategoryDto;
 import com.bparent.improPhoto.dto.JingleDto;
+import com.bparent.improPhoto.dto.UploadedFileDto;
+import com.bparent.improPhoto.mapper.JingleCategoryMapper;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
-import com.sun.org.apache.bcel.internal.generic.ICONST;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,16 +21,24 @@ import java.util.stream.Collectors;
 @Service
 public class JingleService {
 
-    public List<JingleCategoryDto> getAllJingles() {
-        List<File> folders = Arrays.stream(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES)
-                .listFiles((file) -> file.isDirectory()))
-                .collect(Collectors.toList());
+    @Autowired
+    private JingleCategoryDao jingleCategoryDao;
 
-        return folders.stream().map(folder ->
-                JingleCategoryDto.builder()
-                        .nom(folder.getName())
-                        .jingles(listJingles(folder))
-                        .build()).collect(Collectors.toList());
+    @Autowired
+    private JingleCategoryMapper jingleCategoryMapper;
+
+    public List<JingleCategoryDto> getAllJingles() {
+        return jingleCategoryMapper.toDto(jingleCategoryDao.findAll());
+
+//        List<File> folders = Arrays.stream(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES)
+//                .listFiles((file) -> file.isDirectory()))
+//                .collect(Collectors.toList());
+//
+//        return folders.stream().map(folder ->
+//                JingleCategoryDto.builder()
+//                        .nom(folder.getName())
+//                        .jingles(listJingles(folder))
+//                        .build()).collect(Collectors.toList());
 
     }
 
@@ -39,7 +52,31 @@ public class JingleService {
                 .collect(Collectors.toList());
     }
 
+    public List<JingleCategory> saveUploadedJingles(List<UploadedFileDto> uploadedFiles) {
+        List<JingleCategory> jingleCategories = uploadedFiles.stream()
+                .map(category -> {
+                    JingleCategory jingleCategory = JingleCategory.builder()
+                            .name(category.getName())
+                            .folderName(category.getFileName())
+                            .build();
+
+                    jingleCategory.setJingles(category.getChildren().stream()
+                            .map(file -> Jingle.builder()
+                                    .name(file.getName())
+                                    .fileName(file.getFileName())
+                                    .category(jingleCategory)
+                                    .build())
+                            .collect(Collectors.toList()));
+
+                    return jingleCategory;
+                })
+                .collect(Collectors.toList());
+
+        jingleCategoryDao.save(jingleCategories);
+        return jingleCategories;
+    }
+
     public void deleteJingleCategory(JingleCategoryDto jingleCategoryDto) {
-        FileUtils.deleteFolder(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingleCategoryDto.getNom()));
+        FileUtils.deleteFolder(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingleCategoryDto.getName()));
     }
 }

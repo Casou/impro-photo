@@ -1,18 +1,19 @@
 package com.bparent.improPhoto.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class JingleCategoryDto {
 
-    private String nom;
+    private BigInteger id;
+    private String name;
     private List<JingleDto> jingles;
 
 }
