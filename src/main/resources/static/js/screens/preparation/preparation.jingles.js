@@ -52,7 +52,7 @@ function renderJingleMainCategory() {
 
     $('#jingleList main').html(`
     <header>
-        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle(${ JINGLES_CATEGORY_SELECTED.id }">Supprimer le dossier</button>
+        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle(${ JINGLES_CATEGORY_SELECTED.id })">Supprimer la catégorie</button>
         <audio autoplay="false" controls="true"></audio>
         
         <form id="importJinglesIntoCategory" class="importForm" onsubmit="return false;">
@@ -115,21 +115,20 @@ function deleteJingle(id) {
     });
 }
 
-function deleteCategoryJingle(nom, index) {
-    if (!confirm("Voulez-vous supprimer toutes les jingles de la catégorie " + nom + " ?")) {
+function deleteCategoryJingle(id) {
+    if (!confirm("Voulez-vous supprimer tous les jingles de cette catégorie ?")) {
         return;
     }
 
     $.ajax({
-        url: '/jingleCategory',
+        url: '/jingleCategory/' + id,
         type: 'DELETE',
         encoding: "UTF-8",
         dataType: 'json',
-        data: JSON.stringify({ nom }),
         contentType: 'application/json'
     })
-    .done(function (response) {
-        $("#jingle_category_" + index).remove();
+    .done(function () {
+        $("#jingle_category_" + id).remove();
         JINGLES_CATEGORY_SELECTED = null;
         renderJingleMainCategory();
     })

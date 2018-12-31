@@ -205,9 +205,9 @@ public class JinglesAjaxController {
         return new SuccessResponse("ok");
     }
 
-    @DeleteMapping(value = "/jingleCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleCategory(@RequestBody JingleCategoryDto jingleCategoryDto) {
-        this.jingleService.deleteJingleCategory(jingleCategoryDto);
+    @DeleteMapping(value = "/jingleCategory/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<MessageResponse> deleteJingleCategory(@PathVariable BigInteger id) {
+        this.jingleService.deleteJingleCategory(id);
 
         return new SuccessResponse("ok");
     }

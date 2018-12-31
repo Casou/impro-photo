@@ -96,7 +96,9 @@ public class JingleService {
         jingleDao.delete(jingle);
     }
 
-    public void deleteJingleCategory(JingleCategoryDto jingleCategoryDto) {
-        FileUtils.deleteFolder(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES + jingleCategoryDto.getName()));
+    public void deleteJingleCategory(BigInteger categoryId) {
+        JingleCategory category = jingleCategoryDao.findOne(categoryId);
+        FileUtils.deleteFolder(new File(IConstants.IPath.IAudio.AUDIOS_JINGLES + category.getFolderName()));
+        jingleCategoryDao.delete(category);
     }
 }
