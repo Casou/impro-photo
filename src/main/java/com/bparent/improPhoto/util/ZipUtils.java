@@ -41,7 +41,7 @@ public class ZipUtils {
 
     public static UploadedFileDto copySingleUploadedFile(MultipartFile multipart, String originalFilename, String destinationFolder) {
         log.debug("Copy file : " + originalFilename);
-        final String destinationFilePath = getUniqueFilePath(destinationFolder + FileUtils.sanitizeFilename(originalFilename));
+        final String destinationFilePath = getUniqueFilePath(destinationFolder + FileUtils.sanitizeFilename(originalFilename), false);
         File copiedFile = new File(destinationFilePath);
         FileOutputStream fos = null;
         try {
@@ -54,7 +54,8 @@ public class ZipUtils {
 
             return UploadedFileDto.builder()
                     .fileName(FileUtils.getFileName(destinationFilePath))
-                    .name(originalFilename)
+                    .uploadSuccess(true)
+                    .name(FileUtils.getFileNameWithoutExtension(originalFilename))
                     .build();
 
         } catch (IOException e) {
@@ -72,14 +73,19 @@ public class ZipUtils {
         }
     }
 
-    private static String getUniqueFilePath(String filePath) {
+    private static String getUniqueFilePath(String filePath, boolean isFolder) {
         String uniqueFilePath = filePath;
         File f = new File(uniqueFilePath);
         int cpt = 1;
         while (f.exists()) {
-            String fileExtension = FileUtils.getFileExtension(filePath);
-            uniqueFilePath = FileUtils.getFileNameWithoutExtension(filePath) + "_" + cpt
-                    + (!StringUtils.isEmpty(fileExtension) ? "." + fileExtension : "");
+            if (isFolder) {
+                uniqueFilePath = filePath + "_" + cpt;
+            } else {
+                String fileExtension = FileUtils.getFileExtension(filePath);
+                uniqueFilePath = FileUtils.getFileNameWithoutExtension(filePath) + "_" + cpt
+                        + (!StringUtils.isEmpty(fileExtension) ? "." + fileExtension : "");
+            }
+
             f = new File(uniqueFilePath);
             cpt++;
         }
@@ -121,7 +127,7 @@ public class ZipUtils {
         //create directories for sub directories in zip
         if (!uploadedFileDto.getIsFile()) {
             final String filePath = destinationFolder + uploadedFileDto.getParentPath() + uploadedFileDto.getFileName();
-            final File destinationFile = new File(getUniqueFilePath(filePath));
+            final File destinationFile = new File(getUniqueFilePath(filePath, true));
             uploadedFileDto.setFileName(destinationFile.getName());
             uploadedFileDto.setUploadSuccess(destinationFile.mkdir());
             return uploadedFileDto;
@@ -134,7 +140,7 @@ public class ZipUtils {
             bis = new BufferedInputStream(zipFile.getInputStream(zipFile.getEntry(uploadedFileDto.getOriginalPath())));
 
             final String filePath = destinationFolder + uploadedFileDto.getParentPath() + uploadedFileDto.getFileName();
-            final File destinationFile = new File(getUniqueFilePath(filePath));
+            final File destinationFile = new File(getUniqueFilePath(filePath, false));
             uploadedFileDto.setFileName(destinationFile.getName());
 
             final FileOutputStream fos = new FileOutputStream(destinationFile);

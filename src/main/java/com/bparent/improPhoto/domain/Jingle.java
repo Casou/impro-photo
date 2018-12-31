@@ -12,6 +12,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude={"category"})
 public class Jingle {
 
     @Id

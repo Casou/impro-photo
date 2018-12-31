@@ -52,15 +52,14 @@ function renderJingleMainCategory() {
 
     $('#jingleList main').html(`
     <header>
-        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle('${ JINGLES_CATEGORY_SELECTED.id }'">Supprimer le dossier</button>
+        <button class="submitChanges deleteSongs" onClick="deleteCategoryJingle(${ JINGLES_CATEGORY_SELECTED.id }">Supprimer le dossier</button>
         <audio autoplay="false" controls="true"></audio>
         
         <form id="importJinglesIntoCategory" class="importForm" onsubmit="return false;">
             Archive ZIP / fichiers audio contentant les <span class="instructionImportante">jingles</span> à importer dans ce dossier : 
             <input id="inputImportJingleIntoCategory" type="file" name="file" accept=".mp3,.wav,.ogg,.zip" multiple="multiple"/>
             <span class="fa fa-question-circle helpImage" image="FlatMusiqueZip" onclick="displayHelpImage('FlatMusiqueZip')"></span>
-            <button class="submitChanges" onClick="uploadJingleCategory(); return false;">Envoyer</button>
-            <input type="hidden" name="category_id" value="${ JINGLES_CATEGORY_SELECTED.id }" />
+            <button class="submitChanges" onClick="uploadJingleCategory(${ JINGLES_CATEGORY_SELECTED.id }); return false;">Envoyer</button>
         </form>
     </header>
     <div id="jingleTable">
@@ -161,8 +160,8 @@ function uploadJingles() {
     });
 }
 
-function uploadJingleCategory() {
-    uploadZip("/jingleCategory", "importJinglesIntoCategory", () => {
+function uploadJingleCategory(categoryId) {
+    uploadZip("/jingleCategory/" + categoryId, "importJinglesIntoCategory", () => {
         $("#inputImportJingleIntoCategory").val("");
         retrieveJingles().then(() => hideLoading());
     });

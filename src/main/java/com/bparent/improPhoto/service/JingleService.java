@@ -7,6 +7,7 @@ import com.bparent.improPhoto.domain.JingleCategory;
 import com.bparent.improPhoto.dto.JingleCategoryDto;
 import com.bparent.improPhoto.dto.UploadedFileDto;
 import com.bparent.improPhoto.mapper.JingleCategoryMapper;
+import com.bparent.improPhoto.mapper.JingleMapper;
 import com.bparent.improPhoto.util.FileUtils;
 import com.bparent.improPhoto.util.IConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class JingleService {
 
     @Autowired
     private JingleCategoryMapper jingleCategoryMapper;
+
+    @Autowired
+    private JingleMapper jingleMapper;
 
     public List<JingleCategoryDto> getAllJingles() {
         return jingleCategoryMapper.toDto(jingleCategoryDao.findAll());
@@ -53,6 +57,10 @@ public class JingleService {
 //                .map(nom -> new JingleDto(nom, folder.getName()))
 //                .collect(Collectors.toList());
 //    }
+
+    public Jingle saveUploadedJingle(UploadedFileDto uploadedFile, JingleCategory category) {
+        return jingleDao.save(uploadedFile.toJingle(category));
+    }
 
     public List<JingleCategory> saveUploadedJingles(List<UploadedFileDto> uploadedFiles) {
         List<JingleCategory> jingleCategories = uploadedFiles.stream()

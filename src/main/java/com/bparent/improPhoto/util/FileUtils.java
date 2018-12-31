@@ -9,10 +9,15 @@ import java.util.concurrent.RejectedExecutionException;
 @Slf4j
 public class FileUtils {
 
-    public static String getFileExtension(String fileName) {
-        if(fileName.lastIndexOf(".") > 0)
-            return fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
-        else return "";
+    public static String getFileExtension(String filePath) {
+        final File f = new File(filePath);
+        final String fileName = f.getName();
+
+        if (fileName.lastIndexOf(".") > 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        } else {
+            return "";
+        }
     }
 
     public static String getFileNameWithoutExtension(String fileName) {

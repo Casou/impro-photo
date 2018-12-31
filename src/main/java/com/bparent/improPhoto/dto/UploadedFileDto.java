@@ -1,5 +1,7 @@
 package com.bparent.improPhoto.dto;
 
+import com.bparent.improPhoto.domain.Jingle;
+import com.bparent.improPhoto.domain.JingleCategory;
 import com.bparent.improPhoto.domain.Musique;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +29,14 @@ public class UploadedFileDto {
         return Musique.builder()
                 .name(this.name)
                 .fileName(this.fileName)
+                .build();
+    }
+
+    public Jingle toJingle(JingleCategory category) {
+        return Jingle.builder()
+                .fileName(this.getFileName())
+                .name(this.getName())
+                .category(category)
                 .build();
     }
 
