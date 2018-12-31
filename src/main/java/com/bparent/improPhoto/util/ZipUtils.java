@@ -184,6 +184,7 @@ public class ZipUtils {
         if (flatPath) {
             entryPath = fileName;
         }
+        String dtoName = fileName;
 
         final String folderPath = FileUtils.getFolderName(entryPath);
         Optional<UploadedFileDto> optFolderDto = uploadedFiles.stream()
@@ -204,12 +205,13 @@ public class ZipUtils {
             }
 
             log.debug("\t\tFile : " + entryPath);
+            dtoName = FileUtils.getFileNameWithoutExtension(dtoName);
         }
 
         UploadedFileDto uploadedFileDto = UploadedFileDto.builder()
                 .originalPath(entry.getName())
                 .fileName(FileUtils.sanitizeFilename(fileName))
-                .name(fileName)
+                .name(dtoName)
                 .isFile(isFile)
                 .parent(optFolderDto.orElse(null))
                 .build();
