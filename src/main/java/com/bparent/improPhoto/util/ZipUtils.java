@@ -53,7 +53,6 @@ public class ZipUtils {
             log.debug("File copied : " + originalFilename);
 
             return UploadedFileDto.builder()
-                    .destinationFile(copiedFile)
                     .fileName(FileUtils.getFileName(destinationFilePath))
                     .name(originalFilename)
                     .build();
@@ -78,8 +77,9 @@ public class ZipUtils {
         File f = new File(uniqueFilePath);
         int cpt = 1;
         while (f.exists()) {
-            uniqueFilePath = FileUtils.getFileNameWithoutExtension(filePath) + "_" + cpt + "."
-                    + FileUtils.getFileExtension(filePath);
+            String fileExtension = FileUtils.getFileExtension(filePath);
+            uniqueFilePath = FileUtils.getFileNameWithoutExtension(filePath) + "_" + cpt
+                    + (!StringUtils.isEmpty(fileExtension) ? "." + fileExtension : "");
             f = new File(uniqueFilePath);
             cpt++;
         }
@@ -92,17 +92,18 @@ public class ZipUtils {
         final List<UploadedFileDto> zipFiles = new ArrayList<>();
 
         final UploadedFileDto uploadedFileDto = copySingleUploadedFile(multipart, fileZip, IConstants.IPath.MEDIAS_TEMP);
-        final File tempZipFile = uploadedFileDto.getDestinationFile();
-
+        final File tempZipFile = new File(IConstants.IPath.MEDIAS_TEMP + uploadedFileDto.getFileName());
         final ZipFile zipFile = new ZipFile(tempZipFile, CharsetDetector.detectCharset(tempZipFile));
-        zipFile.stream().forEach(zipEntry -> extractZipEntry(zipEntry, zipFiles, destinationFolder, fileExtensionsAccepted, flatPath));
+
+        zipFile.stream().forEach(zipEntry -> extractZipEntry(zipEntry, zipFiles, fileExtensionsAccepted, flatPath));
 
         Stream<UploadedFileDto> uploadedFileDtoStream = zipFiles.stream();
         if (flatPath) {
             uploadedFileDtoStream = uploadedFileDtoStream.filter(UploadedFileDto::getIsFile);
         }
-        final List<UploadedFileDto> uploadedFiles = uploadedFileDtoStream.collect(Collectors.toList());
-        uploadedFiles.forEach(dto -> dto.setUploadSuccess(ZipUtils.extractZipFile(zipFile, dto)));
+        final List<UploadedFileDto> uploadedFiles = uploadedFileDtoStream
+                .map(dto -> ZipUtils.extractZipFile(zipFile, dto, destinationFolder))
+                .collect(Collectors.toList());
 
         zipFile.close();
 
@@ -113,17 +114,70 @@ public class ZipUtils {
         return uploadedFiles;
     }
 
-    public static List<UploadedFileDto> listZipFiles(ZipFile zipFile, List<String> fileExtensionsAccepted,
-                                          String destinationFolder, boolean flatPath) {
+    public static UploadedFileDto extractZipFile(ZipFile zipFile, UploadedFileDto uploadedFileDto, String destinationFolder) {
+        int b;
+        byte[] buffer = new byte[1024];
+
+        //create directories for sub directories in zip
+        if (!uploadedFileDto.getIsFile()) {
+            final String filePath = destinationFolder + uploadedFileDto.getParentPath() + uploadedFileDto.getFileName();
+            final File destinationFile = new File(getUniqueFilePath(filePath));
+            uploadedFileDto.setFileName(destinationFile.getName());
+            uploadedFileDto.setUploadSuccess(destinationFile.mkdir());
+            return uploadedFileDto;
+        }
+
+        // Copy file
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(zipFile.getInputStream(zipFile.getEntry(uploadedFileDto.getOriginalPath())));
+
+            final String filePath = destinationFolder + uploadedFileDto.getParentPath() + uploadedFileDto.getFileName();
+            final File destinationFile = new File(getUniqueFilePath(filePath));
+            uploadedFileDto.setFileName(destinationFile.getName());
+
+            final FileOutputStream fos = new FileOutputStream(destinationFile);
+            bos = new BufferedOutputStream(fos, 1024);
+
+            while ((b = bis.read(buffer, 0, 1024)) != -1) {
+                bos.write(buffer, 0, b);
+            }
+
+            uploadedFileDto.setUploadSuccess(true);
+        } catch (IOException ioe) {
+            uploadedFileDto.setUploadSuccess(false);
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.flush();
+                    bos.close();
+                } catch (IOException ioe) {
+                    uploadedFileDto.setUploadSuccess(false);
+                }
+            }
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException ioe) {
+                    uploadedFileDto.setUploadSuccess(false);
+                }
+            }
+        }
+        return uploadedFileDto;
+    }
+
+
+    public static List<UploadedFileDto> listZipFiles(ZipFile zipFile, List<String> fileExtensionsAccepted, boolean flatPath) {
         log.debug("Unzip file...");
         final List<UploadedFileDto> uploadedFiles = new ArrayList<>();
 
-        zipFile.stream().forEach(zipEntry -> extractZipEntry(zipEntry, uploadedFiles, destinationFolder, fileExtensionsAccepted, flatPath));
+        zipFile.stream().forEach(zipEntry -> extractZipEntry(zipEntry, uploadedFiles, fileExtensionsAccepted, flatPath));
 
         return uploadedFiles;
     }
 
-    private static void extractZipEntry(ZipEntry entry, List<UploadedFileDto> uploadedFiles, String destinationFolder,
+    private static void extractZipEntry(ZipEntry entry, List<UploadedFileDto> uploadedFiles,
                                         List<String> fileExtensionsAccepted, boolean flatPath) {
         String entryPath = entry.getName();
         final String fileName = FileUtils.getFileName(entryPath);
@@ -133,36 +187,15 @@ public class ZipUtils {
 
         final String folderPath = FileUtils.getFolderName(entryPath);
         Optional<UploadedFileDto> optFolderDto = uploadedFiles.stream()
-                .flatMap(x -> Stream.concat(Stream.of(x), x.getChildren().stream()))
+                .flatMap(UploadedFileDto::streamChildren)
                 .filter(dto -> dto.getOriginalPath().equals(folderPath))
                 .findFirst();
 
-        File destinationFile;
         boolean isFile = true;
 
         if (entry.isDirectory()) {
             log.debug("\t\tDirectory : " + entryPath);
-            destinationFile = new File(destinationFolder + FileUtils.sanitizeFilename(entryPath));
             isFile = false;
-//            if (!directory.exists()) {
-//                directory.mkdir();
-//            }
-//
-//            UploadedFileDto uploadedDirectoryDto = UploadedFileDto.builder()
-//                    .destinationFile(destinationFile)
-//                    .originalPath(entryPath)
-//                    .fileName(destinationFile.getName())
-//                    .name(entryPath.replace("/", ""))
-//                    .build();
-//
-//            if (optFolderDto.isPresent()) {
-//                optFolderDto.get().getChildren().add(uploadedDirectoryDto);
-//            } else {
-//                uploadedFiles.add(uploadedDirectoryDto);
-//            }
-//
-//            extractZipEntryRecursivly(uploadedFiles, destinationFolder, fileExtensionsAccepted, flatPath, zipFile, e);
-//            return;
         } else {
             if (fileExtensionsAccepted != null && fileExtensionsAccepted.size() > 0 &&
                     !fileExtensionsAccepted.contains(FileUtils.getFileExtension(entryPath))) {
@@ -171,75 +204,20 @@ public class ZipUtils {
             }
 
             log.debug("\t\tFile : " + entryPath);
-
-            final String destinationFilePath = destinationFolder +
-                    Arrays.stream(entryPath.split("/"))
-                            .map(FileUtils::sanitizeFilename)
-                            .collect(Collectors.joining("/"));
-            destinationFile = new File(destinationFilePath);
         }
 
-//        extractZipFile(zipFile, entry, destinationFile);
-
         UploadedFileDto uploadedFileDto = UploadedFileDto.builder()
-                .destinationFile(destinationFile)
                 .originalPath(entry.getName())
-                .fileName(destinationFile.getName())
+                .fileName(FileUtils.sanitizeFilename(fileName))
                 .name(fileName)
                 .isFile(isFile)
+                .parent(optFolderDto.orElse(null))
                 .build();
         if (optFolderDto.isPresent()) {
             optFolderDto.get().getChildren().add(uploadedFileDto);
         } else {
             uploadedFiles.add(uploadedFileDto);
         }
-    }
-
-    public static boolean extractZipFile(ZipFile zipFile, UploadedFileDto uploadedFileDto) {
-        int b;
-        byte[] buffer = new byte[1024];
-
-        //create directories for sub directories in zip
-        if (!uploadedFileDto.getIsFile()) {
-            return uploadedFileDto.getDestinationFile().mkdir();
-        }
-
-        // Copy file
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(zipFile.getInputStream(zipFile.getEntry(uploadedFileDto.getOriginalPath())));
-
-            File destinationFile = new File(getUniqueFilePath(uploadedFileDto.getDestinationFile().getPath()));
-            uploadedFileDto.setFileName(destinationFile.getName());
-
-            final FileOutputStream fos = new FileOutputStream(destinationFile);
-            bos = new BufferedOutputStream(fos, 1024);
-
-            while ((b = bis.read(buffer, 0, 1024)) != -1) {
-                bos.write(buffer, 0, b);
-            }
-        } catch (IOException ioe) {
-            return false;
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.flush();
-                    bos.close();
-                } catch (IOException ioe) {
-                    return false;
-                }
-            }
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException ioe) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
 }

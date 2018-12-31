@@ -17,4 +17,7 @@ public class StringUtils {
         return sw.toString();
     }
 
+    public static boolean isEmpty(String fileExtension) {
+        return fileExtension == null || fileExtension.trim().equals("");
+    }
 }

@@ -50,20 +50,16 @@ public class JinglesAjaxController {
         MultipartFile multipart = request.getFiles("file").get(0);
 
         final UploadedFileDto uploadedFileDto = ZipUtils.copySingleUploadedFile(multipart, multipart.getOriginalFilename(), IConstants.IPath.MEDIAS_TEMP);
-        final File tempZipFile = uploadedFileDto.getDestinationFile();
+        final File tempZipFile = new File(IConstants.IPath.MEDIAS_TEMP + uploadedFileDto.getFileName());
         final ZipFile zipFile = new ZipFile(tempZipFile, CharsetDetector.detectCharset(tempZipFile));
 
-        List<UploadedFileDto> zipFiles = ZipUtils.listZipFiles(zipFile, IConstants.AUDIO_EXTENSION_ACCEPTED,
-                IConstants.IPath.IAudio.AUDIOS_JINGLES, false);
+        List<UploadedFileDto> zipFilesList = ZipUtils.listZipFiles(zipFile, IConstants.AUDIO_EXTENSION_ACCEPTED, false);
 
-        if (!checkJingleZipComposition(zipFiles)) {
+        if (!checkJingleZipComposition(zipFilesList)) {
             return new ErrorResponse("Le fichier .zip n'est pas bien formé. Regardez l'image d'aide pour savoir comment créer votre archive.");
         }
 
-        List<UploadedFileDto> extractedFiles = zipFiles.stream()
-                .flatMap(UploadedFileDto::streamChildren)
-                .peek(dto -> dto.setUploadSuccess(ZipUtils.extractZipFile(zipFile, dto)))
-                .collect(Collectors.toList());
+        List<UploadedFileDto> extractedFiles = extractZipFiles(zipFile, zipFilesList);
 
         zipFile.close();
 
@@ -88,6 +84,14 @@ public class JinglesAjaxController {
         }
 
         return new SuccessResponse("ok");
+    }
+
+    private List<UploadedFileDto> extractZipFiles(ZipFile zipFile, List<UploadedFileDto> zipFiles) {
+        return zipFiles.stream().map(dto -> {
+            UploadedFileDto uploadedFileDto = ZipUtils.extractZipFile(zipFile, dto, IConstants.IPath.IAudio.AUDIOS_JINGLES);
+            uploadedFileDto.setChildren(extractZipFiles(zipFile, uploadedFileDto.getChildren()));
+            return uploadedFileDto;
+        }).collect(Collectors.toList());
     }
 
     private boolean checkJingleZipComposition(List<UploadedFileDto> zipFiles) {
