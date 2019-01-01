@@ -19,7 +19,6 @@ import java.math.BigInteger;
 public class Categorie {
 
     @Id
-    @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private BigInteger id;

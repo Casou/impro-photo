@@ -79,7 +79,7 @@ public class JinglesAjaxController {
             throw new ImproControllerException("Le fichier .zip n'est pas bien formé. Regardez l'image d'aide pour savoir comment créer votre archive.");
         }
 
-        List<UploadedFileDto> extractedFiles = extractZipFiles(zipFile, zipFilesList);
+        List<UploadedFileDto> extractedFiles = extractZipFiles(zipFile, zipFilesList, IConstants.IPath.IAudio.AUDIOS_JINGLES);
 
         zipFile.close();
 
@@ -104,10 +104,10 @@ public class JinglesAjaxController {
         }
     }
 
-    private List<UploadedFileDto> extractZipFiles(ZipFile zipFile, List<UploadedFileDto> zipFiles) {
+    protected static List<UploadedFileDto> extractZipFiles(ZipFile zipFile, List<UploadedFileDto> zipFiles, String pathToFolder) {
         return zipFiles.stream().map(dto -> {
-            UploadedFileDto uploadedFileDto = ZipUtils.extractZipFile(zipFile, dto, IConstants.IPath.IAudio.AUDIOS_JINGLES);
-            uploadedFileDto.setChildren(extractZipFiles(zipFile, uploadedFileDto.getChildren()));
+            UploadedFileDto uploadedFileDto = ZipUtils.extractZipFile(zipFile, dto, pathToFolder);
+            uploadedFileDto.setChildren(extractZipFiles(zipFile, uploadedFileDto.getChildren(), pathToFolder));
             return uploadedFileDto;
         }).collect(Collectors.toList());
     }
@@ -175,7 +175,7 @@ public class JinglesAjaxController {
                 .build();
         zipFilesList.forEach(f -> f.setParent(categoryDto));
 
-        List<UploadedFileDto> extractedFiles = extractZipFiles(zipFile, zipFilesList);
+        List<UploadedFileDto> extractedFiles = extractZipFiles(zipFile, zipFilesList, IConstants.IPath.IAudio.AUDIOS_JINGLES);
 
         zipFile.close();
 

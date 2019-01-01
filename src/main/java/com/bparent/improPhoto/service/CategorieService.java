@@ -4,6 +4,7 @@ import com.bparent.improPhoto.dao.CategorieDao;
 import com.bparent.improPhoto.domain.Categorie;
 import com.bparent.improPhoto.dto.CategorieDto;
 import com.bparent.improPhoto.dto.ImageDto;
+import com.bparent.improPhoto.dto.UploadedFileDto;
 import com.bparent.improPhoto.enums.CategorieTypeEnum;
 import com.bparent.improPhoto.exception.ImproMappingException;
 import com.bparent.improPhoto.exception.ImproServiceException;
@@ -123,5 +124,25 @@ public class CategorieService {
 
         List<CategorieDto> categoriesToDelete = this.getMissingCategories(categories);
         categoriesToDelete.forEach(categorieDto -> FileUtils.deleteFolder(new File(IConstants.IPath.IPhoto.PHOTOS_IMPRO + categorieDto.getPathFolder())));
+    }
+
+    public void saveUploadedCategories(List<UploadedFileDto> uploadedFiles) {
+        List<Categorie> categories = uploadedFiles.stream().map(uploadedFileDto -> {
+            Categorie categorie = Categorie.builder()
+                    .nom(uploadedFileDto.getName())
+                    .pathFolder(uploadedFileDto.getFileName())
+                    .termine(false)
+                    .type(CategorieTypeEnum.PHOTO)
+                    .ordre(1)
+                    .build();
+            return categorie;
+        }).collect(Collectors.toList());
+
+        categories.sort(Comparator.comparing(Categorie::getNom));
+        for (int i = 0; i < categories.size(); i++) {
+            categories.get(i).setOrdre(i);
+        }
+
+        categorieDao.save(categories);
     }
 }

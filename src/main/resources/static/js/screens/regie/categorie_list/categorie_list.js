@@ -41,7 +41,7 @@ class CategorieList extends IScreen {
 
     retrieveCategoryList() {
         $.ajax({
-            url: '/list/categories',
+            url: '/categories',
             type: 'GET',
             encoding: "UTF-8",
             dataType: 'json',

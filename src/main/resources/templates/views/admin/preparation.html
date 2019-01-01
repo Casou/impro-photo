@@ -127,12 +127,11 @@
             <input type="hidden" name="action" value="update"/>
 
             <form id="importCategories" class="importForm" onsubmit="return false;">
-                Fichier(s) <span class="instructionImportante">ZIP</span> contenant les fichiers à importer :
+                Fichier <span class="instructionImportante">ZIP</span> contenant les fichiers à importer :
                 <input id="inputImportCategorie"
                        type="file"
                        name="file"
-                       accept=".zip"
-                       multiple="multiple"/>
+                       accept=".zip" />
                 <span class="fa fa-question-circle helpImage" image="CategorieZip"></span>
                 <button class="submitChanges" onClick="uploadCategories(); return false;">Envoyer</button>
             </form>

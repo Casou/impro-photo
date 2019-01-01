@@ -53,11 +53,6 @@ public class ListAjaxController {
     }
 
 
-    @GetMapping("/categories")
-    public List<CategorieDto> getAllCategories() throws ImproMappingException {
-        return this.categorieService.findAll();
-    }
-
     @GetMapping("/categoriesWithCompletion")
     public List<CategorieDto> getAllCategoriesWithCompletion() throws ImproMappingException {
         return this.categorieService.findAllWithCompletion();
