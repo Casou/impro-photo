@@ -40,8 +40,15 @@ public class ZipUtils {
     }
 
     public static UploadedFileDto copySingleUploadedFile(MultipartFile multipart, String originalFilename, String destinationFolder) {
+        return copySingleUploadedFile(multipart, originalFilename , destinationFolder, false);
+    }
+
+    public static UploadedFileDto copySingleUploadedFile(MultipartFile multipart, String originalFilename, String destinationFolder, boolean overwriteExistingFile) {
         log.debug("Copy file : " + originalFilename);
-        final String destinationFilePath = getUniqueFilePath(destinationFolder + FileUtils.sanitizeFilename(originalFilename), false);
+        String destinationFilePath = destinationFolder + FileUtils.sanitizeFilename(originalFilename);
+        if (!overwriteExistingFile) {
+            destinationFilePath = getUniqueFilePath(destinationFolder + FileUtils.sanitizeFilename(originalFilename), false);
+        }
         File copiedFile = new File(destinationFilePath);
         FileOutputStream fos = null;
         try {

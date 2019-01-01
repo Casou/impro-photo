@@ -11,7 +11,8 @@
 <body>
 
 <div id="remerciements" class="content_hidden" th:fragment="remerciements">
-    <h1>Remerciements</h1>
+    <h1 id="titre_remerciements">Remerciements</h1>
+    <h2 id="sous_titre_remerciements" class="regie_only instructions">(cliquer sur les photos pour les faire apparaître)</h2>
 
     <div id="div_joueurs">
         <ul>
@@ -19,7 +20,10 @@
     </div>
 
     <div id="remerciement_text">
-        <h2>Un grand merci :</h2>
+        <h2>
+            Un grand merci :
+            <span class="regie_only instructions">(cliquer sur le texte pour le faire apparaître)</span>
+        </h2>
         <p></p>
     </div>
 

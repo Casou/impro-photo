@@ -42,6 +42,7 @@ public class StartupCheckRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         this.checkDefaultParameters();
         this.sanitizeFiles();
+        this.cleanTemp();
 
         // System.out.println(NetworkUtils.getFormattedIpString(environment.getProperty("server.serverPort")));
         // AsciiArtUtils.printMessage(NetworkUtils.getIpString(serverPort));
@@ -53,6 +54,13 @@ public class StartupCheckRunner implements CommandLineRunner {
         if (Arrays.asList(args).contains("-browser")) {
             this.launchBrowser();
         }
+    }
+
+    private void cleanTemp() {
+        log.info("***** Clearing temporary folder *****");
+        File tempFolder = new File(IConstants.IPath.MEDIAS_TEMP);
+        Arrays.stream(Objects.requireNonNull(tempFolder.listFiles())).forEach(File::delete);
+        log.info("***** Temporary folder cleared *****");
     }
 
     private void checkDefaultParameters() throws ImproServiceException {

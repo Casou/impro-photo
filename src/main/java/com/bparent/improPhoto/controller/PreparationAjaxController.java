@@ -97,7 +97,7 @@ public class PreparationAjaxController {
         if (StringUtils.isEmpty(multipartFile.getOriginalFilename())) {
             throw new IllegalArgumentException("You have to upload a file");
         }
-        ZipUtils.copySingleUploadedFile(multipartFile, videoName, IConstants.IPath.IVideo.VIDEO_INTRO);
+        ZipUtils.copySingleUploadedFile(multipartFile, videoName, IConstants.IPath.IVideo.VIDEO_INTRO, true);
     }
 
     @DeleteMapping(value = "/preparation/images", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
