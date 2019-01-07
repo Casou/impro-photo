@@ -161,8 +161,9 @@ function getAllJingles() {
             encoding: "UTF-8",
             contentType: 'application/json'
         })
-        .done(function (allSongs) {
-            resolve(allSongs);
+        .done(function (allJingles) {
+            console.log(allJingles);
+            resolve(allJingles);
         })
         .fail(function (resultat, statut, erreur) {
             handleAjaxError(resultat, statut, erreur);
@@ -176,20 +177,20 @@ function getAllJingles() {
 function renderJingleList() {
     $('#jingles ul').html("");
     $('#jingles_categories').html(JINGLE_CATEGORIES.map(category => `
-        <li onClick="selectJingleCategory('${ category.nom }')">
-            ${ category.nom }
+        <li onClick="selectJingleCategory(${ category.id })">
+            ${ category.name }
         </li>`).join(""));
 }
 
-function selectJingleCategory(nom) {
-    const category = JINGLE_CATEGORIES.filter(c => c.nom = nom)[0];
+function selectJingleCategory(id) {
+    const category = JINGLE_CATEGORIES.filter(c => c.id = id)[0];
     $('#jingles_files')
         .html(`<li class="back" onClick="unSelectJingleCategory()">Retour</li>`)
         .append(
             category.jingles.map(jingle =>
                 `<li>
                     <button class="jingle" onClick="toggleJingle('${ jingle.path }', this);"><span class="fa fa-play" aria-hidden="true"></span></button>
-                    ${ jingle.nom }
+                    ${ jingle.name }
                 </li>`
             ).join("")
     );

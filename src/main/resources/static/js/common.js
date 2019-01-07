@@ -89,6 +89,10 @@ function isNewestVersion(currentVersion, newestVersion) {
 }
 
 function parseVersionPart(versionPart) {
+    if (!versionPart) {
+        return null;
+    }
+
     if (!isNaN(versionPart)) {
         return parseInt(versionPart);
     }
