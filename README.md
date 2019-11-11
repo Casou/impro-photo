@@ -1,5 +1,16 @@
 # Impro Photo
 
+![Aperçu](https://github.com/basile-parent/impro-photo/blob/master/medias/thumbnail.jpg?raw=true "Aperçu")
+
+Logiciel de gestion des impro-diapo (c) du GIT.
+
+Configuration de l'impro via un back-end. Contrôle de l'écran projeté via une IHM régie gérée par Web-sockets. 
+
+## Technologies
+- Java
+- JQuery
+- Web-sockets
+
 ## Installation
 
 ### Sur PC et Raspberry
